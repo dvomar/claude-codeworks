@@ -1,5 +1,5 @@
 ---
-name: estimate-task
+name: task-estimate
 description: Creates detailed time and cost estimate for a development task
 user-invocable: true
 disable-model-invocation: true
@@ -28,9 +28,9 @@ These are the default values. Override any parameter by prefixing the task descr
 ### Examples
 
 ```
-/estimate-task Implement user avatar upload
-/estimate-task --rate 900 --lang en Implement user avatar upload
-/estimate-task --rate 150 --dir docs/estimates --currency EUR Implement payment gateway integration
+/task-estimate Implement user avatar upload
+/task-estimate --rate 900 --lang en Implement user avatar upload
+/task-estimate --rate 150 --dir docs/estimates --currency EUR Implement payment gateway integration
 ```
 
 Parse the argument string: extract any `--key value` pairs as overrides, treat the remaining text as the task description. Use defaults for any parameter not explicitly provided.
@@ -102,4 +102,4 @@ Create filename from task description:
 ## References
 
 Read methodology: `.claude/knowledge/estimation-methodology.md`
-See example: `.claude/skills/estimate-task/examples/example-estimate.md`
+See example: `.claude/skills/task-estimate/examples/example-estimate.md`

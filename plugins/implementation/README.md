@@ -11,8 +11,8 @@ End-to-end implementation workflow — from requirements clarification through s
 - **implementer** — Implements sub-tasks with 3x self-review following project conventions
 
 ### Skills
-- `/implement-feature` — Complete feature implementation workflow using all 4 agents with quality gates
-- `/quick-implement` — Fast implementation following documented conventions, skipping the full workflow
+- `/code-implement-feature` — Complete feature implementation workflow using all 4 agents with quality gates
+- `/code-quick-implement` — Fast implementation following documented conventions, skipping the full workflow
 
 ## Installation
 
@@ -25,10 +25,10 @@ End-to-end implementation workflow — from requirements clarification through s
 
 Full guided implementation with quality gates:
 ```
-/implement-feature
+/code-implement-feature
 ```
 
 Quick implementation when requirements are clear:
 ```
-/quick-implement
+/code-quick-implement
 ```

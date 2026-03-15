@@ -1,5 +1,5 @@
 ---
-name: review-code
+name: code-review
 description: Comprehensive 3-pass code review for conventions, patterns, and quality. Use after implementation.
 ---
 
@@ -9,11 +9,11 @@ This skill performs comprehensive code review using the **code-reviewer** agent.
 
 ## Prerequisites
 
-Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/analyze-codebase`.
+Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/code-analyze-codebase`.
 
 ## When to Use
 
-Use `/review-code` when you need to:
+Use `/code-review` when you need to:
 - Review code after implementation
 - Check convention compliance
 - Verify pattern usage
@@ -22,12 +22,12 @@ Use `/review-code` when you need to:
 ## How to Use
 
 ```
-/review-code path/to/file.ts
+/code-review path/to/file.ts
 ```
 
 Or for multiple files:
 ```
-/review-code src/services/UserService.ts src/services/AuthService.ts
+/code-review src/services/UserService.ts src/services/AuthService.ts
 ```
 
 ## 3-Pass Review
@@ -66,12 +66,12 @@ Review report saved to: `.claude/reviews/[file-name]-code-review.md`
 After review:
 - Fix critical issues
 - Re-run review if needed
-- Use `/optimize-code` for performance improvements
+- Use `/code-optimize` for performance improvements
 
 ## Example
 
 ```
-User: /review-code src/services/ProductService.ts
+User: /code-review src/services/ProductService.ts
 
 Agent: Code review completed!
 

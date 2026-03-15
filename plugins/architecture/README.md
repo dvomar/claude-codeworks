@@ -13,7 +13,7 @@ Architecture and codebase analysis toolkit. Generates a complete knowledge base 
 - **frontend-analyzer** — Analyzes components, styling, state management, forms, and routing
 
 ### Skills
-- `/analyze-codebase` — Run all analyzer agents to generate a complete project knowledge base
+- `/code-analyze-codebase` — Run all analyzer agents to generate a complete project knowledge base
 
 ## Installation
 
@@ -26,7 +26,7 @@ Architecture and codebase analysis toolkit. Generates a complete knowledge base 
 
 Start working on a new project by generating its knowledge base:
 ```
-/analyze-codebase
+/code-analyze-codebase
 ```
 
 This creates documentation files in `.claude/knowledge/` covering tech stack, conventions, patterns, and architecture.

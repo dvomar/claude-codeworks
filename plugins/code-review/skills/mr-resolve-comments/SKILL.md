@@ -1,5 +1,5 @@
 ---
-name: resolve-mr-comments
+name: mr-resolve-comments
 description: Analyzes unresolved review comments on a GitLab MR from a specific reviewer. For each comment, proposes a fix or counterargument and prepares a reply text ready to copy-paste into GitLab.
 ---
 
@@ -10,10 +10,10 @@ Analyzes unresolved review comments on a GitLab MR and proposes a resolution for
 ## Usage
 
 ```
-/resolve-mr-comments <MR_number> <reviewer>
+/mr-resolve-comments <MR_number> <reviewer>
 ```
 
-Example: `/resolve-mr-comments 155 jane.doe`
+Example: `/mr-resolve-comments 155 jane.doe`
 
 The `<reviewer>` parameter is matched against both `username` and `name` of the comment author (case-insensitive, partial match).
 

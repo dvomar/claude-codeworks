@@ -10,11 +10,11 @@ Comprehensive code review toolkit with multi-pass analysis, optimization suggest
 - **refactor-cleaner** — Finds and removes dead code, unused dependencies, and stale exports
 
 ### Skills
-- `/review-code` — Run a structured 3-pass code review on changed files
-- `/optimize-code` — Analyze code for optimization opportunities after review passes
-- `/review-gitlab-mr` — Review a GitLab MR directly from the terminal with structured findings
-- `/resolve-mr-comments` — Analyze unresolved MR comments and propose fixes or counterarguments
-- `/code-review-excellence` — Guide for effective code review practices and constructive feedback
+- `/code-review` — Run a structured 3-pass code review on changed files
+- `/code-optimize` — Analyze code for optimization opportunities after review passes
+- `/mr-review-gitlab` — Review a GitLab MR directly from the terminal with structured findings
+- `/mr-resolve-comments` — Analyze unresolved MR comments and propose fixes or counterarguments
+- `/code-review-guide` — Guide for effective code review practices and constructive feedback
 
 ## Installation
 
@@ -27,15 +27,15 @@ Comprehensive code review toolkit with multi-pass analysis, optimization suggest
 
 After implementation, run a code review:
 ```
-/review-code
+/code-review
 ```
 
 Review a GitLab merge request:
 ```
-/review-gitlab-mr 123
+/mr-review-gitlab 123
 ```
 
 Optimize code after review passes:
 ```
-/optimize-code
+/code-optimize
 ```

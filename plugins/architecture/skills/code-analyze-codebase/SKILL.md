@@ -1,5 +1,5 @@
 ---
-name: analyze-codebase
+name: code-analyze-codebase
 description: Comprehensive codebase analysis - runs all analyzer agents to extract tech stack, architecture, patterns, conventions. Use this when starting work on a new project or when conventions documentation is missing.
 ---
 
@@ -22,7 +22,7 @@ The analyzers automatically detect and handle:
 ## How to Use
 
 ```
-/analyze-codebase
+/code-analyze-codebase
 ```
 
 ## Analysis Process

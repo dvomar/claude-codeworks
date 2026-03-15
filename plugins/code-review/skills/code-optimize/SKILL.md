@@ -1,5 +1,5 @@
 ---
-name: optimize-code
+name: code-optimize
 description: Analyzes code for optimization opportunities - performance, memory, readability. Use after code review passes.
 ---
 
@@ -9,11 +9,11 @@ This skill analyzes code for optimization opportunities using the **code-optimiz
 
 ## Prerequisites
 
-Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/analyze-codebase`.
+Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/code-analyze-codebase`.
 
 ## When to Use
 
-Use `/optimize-code` when you need to:
+Use `/code-optimize` when you need to:
 - Improve performance
 - Reduce memory usage
 - Enhance readability
@@ -22,14 +22,14 @@ Use `/optimize-code` when you need to:
 ## How to Use
 
 ```
-/optimize-code path/to/file.ts
+/code-optimize path/to/file.ts
 ```
 
 With specific focus:
 ```
-/optimize-code path/to/file.ts --focus performance
-/optimize-code path/to/file.ts --focus memory
-/optimize-code path/to/file.ts --focus readability
+/code-optimize path/to/file.ts --focus performance
+/code-optimize path/to/file.ts --focus memory
+/code-optimize path/to/file.ts --focus readability
 ```
 
 ## Analysis Categories
@@ -73,7 +73,7 @@ Optimization report: `.claude/optimizations/[file-name]-optimization-report.md`
 ## Example
 
 ```
-User: /optimize-code src/services/OrderService.ts
+User: /code-optimize src/services/OrderService.ts
 
 Agent: Optimization analysis completed!
 

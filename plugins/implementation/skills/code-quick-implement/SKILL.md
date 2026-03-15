@@ -1,5 +1,5 @@
 ---
-name: quick-implement
+name: code-quick-implement
 description: Implement new features following all documented conventions. Automatically loads and applies conventions from knowledge base. Use for any new development.
 ---
 
@@ -9,17 +9,17 @@ Fast implementation for **well-defined, smaller tasks** without the full plannin
 
 ## When to Use
 
-Use `/quick-implement` when:
+Use `/code-quick-implement` when:
 - Requirements are **clear and specific**
 - Task is **small to medium** (1-3 files)
 - You **know exactly what you want**
 - No need for Q&A or formal specification
 
-**For larger/unclear features**, use `/implement-feature` instead.
+**For larger/unclear features**, use `/code-implement-feature` instead.
 
 ## Comparison
 
-| | `/quick-implement` | `/implement-feature` |
+| | `/code-quick-implement` | `/code-implement-feature` |
 |---|---|---|
 | Q&A | ❌ | ✅ 2-3 rounds |
 | Specification | ❌ | ✅ Formal spec |
@@ -30,9 +30,9 @@ Use `/quick-implement` when:
 ## How to Use
 
 ```
-/quick-implement Create a new UserValidator
-/quick-implement Add ProductService with CRUD operations
-/quick-implement Create Button component with variants
+/code-quick-implement Create a new UserValidator
+/code-quick-implement Add ProductService with CRUD operations
+/code-quick-implement Create Button component with variants
 ```
 
 ## Process
@@ -61,23 +61,23 @@ Done ✅
 
 ## Prerequisites
 
-Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/analyze-codebase`.
+Conventions are available in CLAUDE.md and MEMORY.md (auto-injected). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/code-analyze-codebase`.
 
 ## Examples
 
 ### Example 1: Create Validator
 ```
-/quick-implement Create ProductValidator with name and price validation
+/code-quick-implement Create ProductValidator with name and price validation
 ```
 
 ### Example 2: Create Component
 ```
-/quick-implement Create UserAvatar component with size variants
+/code-quick-implement Create UserAvatar component with size variants
 ```
 
 ### Example 3: Create Service
 ```
-/quick-implement Create OrderService with GetById and Create methods
+/code-quick-implement Create OrderService with GetById and Create methods
 ```
 
 ## Convention Loading
@@ -98,7 +98,7 @@ After implementation:
 - [ ] Exports/registrations added
 - [ ] Tests if required
 
-## When to Switch to `/implement-feature`
+## When to Switch to `/code-implement-feature`
 
 Use the full workflow when:
 - Requirements are unclear → need Q&A

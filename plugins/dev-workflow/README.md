@@ -5,13 +5,13 @@ Developer workflow tools — git branching, task loading, commit preparation, li
 ## What's included
 
 ### Commands
-- `/create-branch` — Create a new git branch from a task description with conventional naming
-- `/load-task` — Load a ClickUp task by ID or name and display its details
+- `/git-create-branch` — Create a new git branch from a task description with conventional naming
+- `/task-load-clickup` — Load a ClickUp task by ID or name and display its details
 
 ### Skills
-- `/prepare-commit` — Unstage all files, stage only relevant changes, and generate a concise commit title
-- `/live-test` — Test features against local Docker containers, rebuilding services if needed
-- `/estimate-task` — Estimate task effort with structured methodology and examples
+- `/git-prepare-commit` — Unstage all files, stage only relevant changes, and generate a concise commit title
+- `/test-live` — Test features against local Docker containers, rebuilding services if needed
+- `/task-estimate` — Estimate task effort with structured methodology and examples
 
 ## Installation
 
@@ -24,15 +24,15 @@ Developer workflow tools — git branching, task loading, commit preparation, li
 
 Create a branch for your task:
 ```
-/create-branch Add user authentication
+/git-create-branch Add user authentication
 ```
 
 Prepare a clean commit:
 ```
-/prepare-commit
+/git-prepare-commit
 ```
 
 Test against Docker:
 ```
-/live-test
+/test-live
 ```

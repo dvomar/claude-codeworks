@@ -46,4 +46,4 @@
 {{RISKS}}
 
 ---
-*Estimate created with Claude Code estimate-task skill*
+*Estimate created with Claude Code task-estimate skill*

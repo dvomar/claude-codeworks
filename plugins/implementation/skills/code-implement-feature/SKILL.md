@@ -1,5 +1,5 @@
 ---
-name: implement-feature
+name: code-implement-feature
 description: Complete feature implementation workflow using 4 specialized agents. Guides from requirements through implementation with quality gates.
 ---
 
@@ -9,11 +9,11 @@ This skill orchestrates the **4-agent implementation workflow** for high-quality
 
 ## Prerequisites
 
-Conventions are available in CLAUDE.md and MEMORY.md (auto-injected into agent context). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/analyze-codebase` first.
+Conventions are available in CLAUDE.md and MEMORY.md (auto-injected into agent context). If the `## Codebase Conventions (Auto-Generated)` section is empty, run `/code-analyze-codebase` first.
 
 ## When to Use
 
-Use `/implement-feature` when you need to:
+Use `/code-implement-feature` when you need to:
 - Implement a new feature or functionality
 - Make significant code changes
 - Build something that requires planning and review
@@ -59,7 +59,7 @@ Feature Complete ✅
 
 ### Option 1: Full Workflow
 ```
-/implement-feature Add user authentication with JWT tokens
+/code-implement-feature Add user authentication with JWT tokens
 ```
 
 This will run all 4 agents in sequence.
@@ -149,15 +149,15 @@ For EACH sub-task:
 ## Integration with Other Skills
 
 ### After Implementation:
-- Use `/review-code` for additional code review
-- Use `/optimize-code` for performance optimization
+- Use `/code-review` for additional code review
+- Use `/code-optimize` for performance optimization
 
 ### Before Implementation:
-- Conventions are in CLAUDE.md/MEMORY.md. If missing, run `/analyze-codebase`
+- Conventions are in CLAUDE.md/MEMORY.md. If missing, run `/code-analyze-codebase`
 
 ## Workflow Execution
 
-When you invoke `/implement-feature [description]`:
+When you invoke `/code-implement-feature [description]`:
 
 1. **Start req-clarifier** with the feature description
 2. **Wait for Q&A** to complete and user confirmation
@@ -169,4 +169,4 @@ When you invoke `/implement-feature [description]`:
 ## Example Usage
 
 ```
-User: /implement-feature Add product category management with CRUD operations
+User: /code-implement-feature Add product category management with CRUD operations

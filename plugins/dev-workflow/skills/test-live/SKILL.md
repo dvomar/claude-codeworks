@@ -1,5 +1,5 @@
 ---
-name: live-test
+name: test-live
 description: Test newly implemented features or fixes against local Docker containers. Rebuilds services if needed.
 ---
 

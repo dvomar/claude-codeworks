@@ -1,6 +1,6 @@
 {
   "name": "architecture",
-  "description": "Architecture and codebase analysis toolkit. Detects tech stacks, extracts conventions, analyzes backend/frontend patterns, and helps make architectural decisions. Run analyze-codebase to generate a complete knowledge base for any project.",
+  "description": "Architecture and codebase analysis toolkit. Detects tech stacks, extracts conventions, analyzes backend/frontend patterns, and helps make architectural decisions. Run code-analyze-codebase to generate a complete knowledge base for any project.",
   "version": "1.0.0",
   "author": { "name": "dvomar" },
   "license": "MIT"

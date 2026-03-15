@@ -1,5 +1,5 @@
 ---
-name: prepare-commit
+name: git-prepare-commit
 description: Unstage all files, stage only implementation-relevant changes, and generate a concise English commit title.
 ---
 
