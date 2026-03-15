@@ -1,0 +1,7 @@
+{
+  "name": "implementation",
+  "description": "End-to-end implementation workflow — from requirements clarification through spec writing, task planning, and guided implementation with 3x self-review at each stage.",
+  "version": "1.0.0",
+  "author": { "name": "dvomar" },
+  "license": "MIT"
+}

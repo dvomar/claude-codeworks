@@ -1,0 +1,68 @@
+{
+  "name": "codeworks",
+  "owner": {
+    "name": "dvomar",
+    "email": "email@example.com"
+  },
+  "metadata": {
+    "description": "Curated collection of Claude Code plugins for software development — code review, architecture analysis, implementation workflows, and dev tooling.",
+    "version": "1.0.0",
+    "homepage": "https://github.com/dvomar/claude-codeworks"
+  },
+  "plugins": [
+    {
+      "name": "code-review",
+      "source": "./plugins/code-review",
+      "description": "Comprehensive code review toolkit — 3-pass reviews, optimization analysis, refactoring cleanup, and GitLab MR integration.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["code-review", "refactoring", "optimization", "gitlab", "merge-request"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "architecture",
+      "source": "./plugins/architecture",
+      "description": "Architecture and codebase analysis — tech stack detection, convention extraction, backend/frontend pattern analysis, and architectural decisions.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["architecture", "analysis", "conventions", "tech-stack", "patterns"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "implementation",
+      "source": "./plugins/implementation",
+      "description": "End-to-end implementation workflow — requirements clarification, spec writing, task planning, and guided implementation with self-review.",
+      "version": "1.0.0",
+      "category": "productivity",
+      "keywords": ["implementation", "requirements", "specs", "planning", "workflow"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "database",
+      "source": "./plugins/database",
+      "description": "Database schema, query, and migration reviewer — checks performance, security, and correctness of SQL and ORM usage.",
+      "version": "1.0.0",
+      "category": "security",
+      "keywords": ["database", "sql", "migrations", "orm", "security"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "dev-workflow",
+      "source": "./plugins/dev-workflow",
+      "description": "Developer workflow tools — git branching, task loading, commit preparation, live testing, and task estimation.",
+      "version": "1.0.0",
+      "category": "devops",
+      "keywords": ["git", "branching", "commits", "testing", "estimation"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "frontend-design",
+      "source": "./plugins/frontend-design",
+      "description": "Frontend design skill for creating distinctive, production-grade UI components that avoid generic AI aesthetics.",
+      "version": "1.0.0",
+      "category": "utilities",
+      "keywords": ["frontend", "design", "ui", "components", "css"],
+      "author": { "name": "dvomar" }
+    }
+  ]
+}

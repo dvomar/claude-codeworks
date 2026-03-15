@@ -1,0 +1,65 @@
+name: Validate Marketplace
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Validate marketplace.json and plugin manifests
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate marketplace.json exists
+        run: |
+          if [ ! -f ".claude-plugin/marketplace.json" ]; then
+            echo "ERROR: .claude-plugin/marketplace.json not found"
+            exit 1
+          fi
+          echo "marketplace.json found"
+
+      - name: Validate marketplace.json is valid JSON
+        run: |
+          python3 -m json.tool .claude-plugin/marketplace.json > /dev/null
+          echo "marketplace.json is valid JSON"
+
+      - name: Validate all plugin manifests
+        run: |
+          for plugin_dir in plugins/*/; do
+            manifest="$plugin_dir.claude-plugin/plugin.json"
+            if [ ! -f "$manifest" ]; then
+              echo "ERROR: Missing plugin.json in $plugin_dir"
+              exit 1
+            fi
+            python3 -m json.tool "$manifest" > /dev/null
+            echo "Valid: $manifest"
+          done
+
+      - name: Check required fields in marketplace.json
+        run: |
+          python3 - <<'EOF'
+          import json, sys
+
+          with open(".claude-plugin/marketplace.json") as f:
+              data = json.load(f)
+
+          required = ["name", "owner", "plugins"]
+          for field in required:
+              if field not in data:
+                  print(f"ERROR: Missing required field: {field}")
+                  sys.exit(1)
+              print(f"Field present: {field}")
+
+          for plugin in data.get("plugins", []):
+              for pfield in ["name", "source", "description"]:
+                  if pfield not in plugin:
+                      print(f"ERROR: Plugin '{plugin.get('name', '?')}' missing field: {pfield}")
+                      sys.exit(1)
+
+          print("All required fields present")
+          EOF

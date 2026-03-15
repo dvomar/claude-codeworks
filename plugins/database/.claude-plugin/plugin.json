@@ -1,0 +1,7 @@
+{
+  "name": "database",
+  "description": "Database schema, query, and migration reviewer. Checks performance, security, and correctness of SQL queries and ORM usage across any database technology.",
+  "version": "1.0.0",
+  "author": { "name": "dvomar" },
+  "license": "MIT"
+}

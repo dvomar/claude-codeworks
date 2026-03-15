@@ -1,0 +1,7 @@
+{
+  "name": "dev-workflow",
+  "description": "Developer workflow tools — git branch creation from task descriptions, ClickUp task loading, commit preparation, live testing against Docker containers, and task effort estimation.",
+  "version": "1.0.0",
+  "author": { "name": "dvomar" },
+  "license": "MIT"
+}
