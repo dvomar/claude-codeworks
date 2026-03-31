@@ -20,17 +20,17 @@ These are the default values. Override any parameter by prefixing the task descr
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `--rate` | 100 | Hourly rate |
-| `--lang` | en | Output language (`en` for English, or any language code) |
-| `--dir` | docs/estimates | Output directory for the saved estimate file |
-| `--currency` | USD | Currency label used in cost calculation |
+| `--rate` | 700 | Hourly rate in CZK |
+| `--lang` | cs | Output language (`cs` for Czech, `en` for English) |
+| `--dir` | docs/odhady | Output directory for the saved estimate file |
+| `--currency` | CZK | Currency label used in cost calculation |
 
 ### Examples
 
 ```
 /task-estimate Implement user avatar upload
 /task-estimate --rate 900 --lang en Implement user avatar upload
-/task-estimate --rate 150 --dir docs/estimates --currency EUR Implement payment gateway integration
+/task-estimate --rate 650 --dir docs/estimates --currency CZK Implement DMS3 invoice integration
 ```
 
 Parse the argument string: extract any `--key value` pairs as overrides, treat the remaining text as the task description. Use defaults for any parameter not explicitly provided.
@@ -39,8 +39,8 @@ Parse the argument string: extract any `--key value` pairs as overrides, treat t
 
 ### 1. Task Analysis
 
-Explore the codebase using the Explore agent:
-- Identify relevant existing code
+Explore the codebase using Glob, Grep, and Read:
+- Identify relevant existing code and similar implementations
 - Determine which files will be affected
 - Estimate scope of changes (number of files, lines of code)
 
@@ -55,7 +55,7 @@ Determine the task category:
 | Modification/bugfix | 1-4h | Fix, logic change |
 | Trivial change | 0.5-1h | Minor adjustment, configuration |
 
-**Important:** This project has well-established patterns. Most new code follows existing templates. Factor this in — don't estimate as if building from scratch.
+**Important:** Check if the project has established patterns and templates for this type of work. If so, factor that in — don't estimate as if building from scratch.
 
 ### 3. Phase-Based Estimate
 
@@ -102,4 +102,4 @@ Create filename from task description:
 ## References
 
 Read methodology: `.claude/knowledge/estimation-methodology.md`
-See example: `.claude/skills/task-estimate/examples/example-estimate.md`
+See example: `.claude/skills/task-estimate/examples/dms3-estimate.md`

@@ -96,15 +96,7 @@ Output: `.claude/knowledge/conventions.md`
 ├── backend.md               # Server-side patterns & conventions (~250 lines)
 ├── frontend.md              # Client-side patterns & conventions (~250 lines)
 └── conventions.md           # Cross-cutting coding style (~200 lines)
-
-.claude/analysis-archive/    # Process artifacts (not for agents)
-├── reviews/
-│   └── [domain]-review-[1-3].md
-├── summaries/
-└── indexes/
 ```
-
-**Important:** Self-review outputs, summaries, and index files MUST be written to `.claude/analysis-archive/`, NOT to `.claude/knowledge/`. The knowledge directory contains only conventions that agents read during implementation.
 
 ### Phase 6: Convention Summarization
 After all analyzers complete, distill key rules into CLAUDE.md and MEMORY.md:
@@ -131,12 +123,7 @@ After all analyzers complete, distill key rules into CLAUDE.md and MEMORY.md:
 
 ## Quality Assurance
 
-Each analyzer performs **3 self-review passes**:
-- **Pass 1**: Completeness check
-- **Pass 2**: Accuracy verification
-- **Pass 3**: Clarity validation
-
-Review artifacts are saved to `.claude/analysis-archive/reviews/`.
+Each analyzer performs **3 inline self-review passes** (completeness, accuracy, clarity) and fixes issues before finalizing its output.
 
 ## Instructions
 

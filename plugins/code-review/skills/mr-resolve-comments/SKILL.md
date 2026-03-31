@@ -13,13 +13,13 @@ Analyzes unresolved review comments on a GitLab MR and proposes a resolution for
 /mr-resolve-comments <MR_number> <reviewer>
 ```
 
-Example: `/mr-resolve-comments 155 jane.doe`
+Example: `/mr-resolve-comments 155 david.konecny`
 
 The `<reviewer>` parameter is matched against both `username` and `name` of the comment author (case-insensitive, partial match).
 
 ## Instructions
 
-This skill performs analysis in 7 steps. Proposed GitLab replies match the reviewer's language. Nothing is posted anywhere — output goes to the terminal only.
+This skill performs analysis in 7 steps. All outputs are in **Czech**. Proposed GitLab replies are in **English** (if the reviewer writes in English) or **Czech** (if the reviewer writes in Czech) — match the reviewer's language. Nothing is posted anywhere — output goes to the terminal only.
 
 ### Step 1: Load MR metadata and diff
 
@@ -38,10 +38,8 @@ glab mr diff <N>
 Run via Bash tool:
 
 ```bash
-glab api "projects/:fullpath/merge_requests/<N>/discussions" --paginate
+glab api "projects/robe%2Fplm/merge_requests/<N>/discussions" --paginate
 ```
-
-> **Note:** `:fullpath` is automatically resolved by `glab` to the current project. If it doesn't, use the URL-encoded project path (e.g., `group%2Fproject`).
 
 This returns a JSON array of discussions. Each discussion contains a `notes` array with individual comments.
 
@@ -177,6 +175,7 @@ Unresolved comments: <count>
 - **Be objective** — don't defend code at all costs. If the reviewer is right, acknowledge it
 - **Reference conventions** — every disagreement must be backed by conventions from the knowledge base or existing code in the codebase
 - **Replies must be copy-paste ready** — reply text must be directly usable in GitLab without further editing
-- **Reply language** — match the language the reviewer writes in
+- **Reply language** — match the language the reviewer writes in (Czech/English)
+- **Analysis in Czech** — the skill's own analysis and commentary are always in Czech
 - **Do not post to GitLab** — output goes to the terminal only
 - **Ignore system notes** — skip comments where `system == true`

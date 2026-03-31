@@ -85,30 +85,15 @@ Use implementer to execute Sub-Task 1.2
 
 ## Output Structure
 
-Workflow artifacts are split between two locations:
-
 ```
-.claude/tasks/[feature-name]/           # Working documents
-├── clarifications.md                   # From req-clarifier
-├── task-spec.md                        # From spec-writer
-├── task-breakdown.md                   # From task-planner
-├── task-quick-ref.md
-└── implementation-log.md               # From implementer
-
-.claude/analysis-archive/[feature-name]/ # Process artifacts (reviews, summaries)
-├── spec-reviews/
-│   ├── review-pass-1.md                # Completeness
-│   ├── review-pass-2.md                # Conventions
-│   └── review-pass-3.md                # Feasibility
-├── spec-summary.md
-└── implementation-reviews/
-    ├── subtask-1.1-review-1.md
-    ├── subtask-1.1-review-2.md
-    ├── subtask-1.1-review-3.md
-    └── ...
+.claude/tasks/[feature-name]/
+├── clarifications.md          # From req-clarifier
+├── task-spec.md               # From spec-writer
+├── task-breakdown.md          # From task-planner
+└── task-quick-ref.md          # From task-planner
 ```
 
-**Important:** All review and summary files MUST be written to `.claude/analysis-archive/`, NOT to `.claude/tasks/`. This keeps working documents lean for agent context consumption.
+All self-reviews are performed inline by each agent (no separate review files generated).
 
 ## Quality Gates
 
