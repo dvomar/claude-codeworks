@@ -1,49 +1,62 @@
-# Estimate: {{TASK_NAME}}
+# Odhad: {{TASK_NAME}}
 
-**Date:** {{DATE}}
-**Category:** {{CATEGORY}}
+**Datum:** {{DATE}}
+**Kategorie:** {{CATEGORY}}
+**Model práce:** kód píše LLM, senior zadává / reviduje / verifikuje
 
-## Task Description
+## Popis úkolu
 
 {{DESCRIPTION}}
 
-## Analysis
+## Rozsah
 
-### Affected Files
+- **Nové soubory:** {{NEW_FILE_COUNT}}
+- **Modifikované soubory:** {{MODIFIED_FILE_COUNT}}
+- **Odhad LOC:** ~{{LOC}}
+
+### Dotčené soubory
 {{FILES}}
 
-### Scope of Changes
-- **New files:** {{NEW_FILE_COUNT}}
-- **Modified files:** {{MODIFIED_FILE_COUNT}}
-- **Estimated lines of code:** {{LOC}}
+## Časový odhad (senior hodiny)
 
-## Time Estimate
+| Fáze | Hodiny | Popis |
+|------|--------|-------|
+| Zadání & design | {{DESIGN_H}} | {{DESIGN_DESC}} |
+| Supervize LLM implementace | {{SUPERVISION_H}} | {{SUPERVISION_DESC}} |
+| Code review výstupu | {{REVIEW_H}} | {{REVIEW_DESC}} |
+| Runtime / HW verifikace | {{VERIFY_H}} | {{VERIFY_DESC}} |
+| MR / předání / koordinace | {{HANDOFF_H}} | {{HANDOFF_DESC}} |
+| Buffer ({{BUFFER_PCT}}%) | {{BUFFER_H}} | {{BUFFER_REASON}} |
+| **Effort total (senior)** | **{{EFFORT_H}} h** | Fakturovatelná práce |
+| **Calendar (×{{MULTIPLIER}})** | **{{CALENDAR_H}} h** | Wall-clock s běžnými interrupts |
 
-| Phase | Hours | Description |
-|-------|-------|-------------|
-| Analysis | {{ANALYSIS_H}} | {{ANALYSIS_DESC}} |
-| Design | {{DESIGN_H}} | {{DESIGN_DESC}} |
-| Implementation | {{IMPL_H}} | {{IMPL_DESC}} |
-| Testing | {{TEST_H}} | {{TEST_DESC}} |
-| Refinement | {{REF_H}} | {{REF_DESC}} |
-| **Buffer** | {{BUFFER_H}} | {{BUFFER_REASON}} |
-| **TOTAL** | **{{TOTAL_H}}** | |
+*Informativně: LLM implementace ~{{LLM_WALLCLOCK_H}} h wall-clock (běží souběžně se supervizí, nefakturuje se po hodinách).*
 
-## Cost Estimate
+## Cena
 
-| Item | Value |
-|------|-------|
-| Total time | {{TOTAL_H}} hours |
-| Hourly rate | {{RATE}} {{CURRENCY}} |
-| **Total cost** | **{{COST}} {{CURRENCY}}** |
+| Položka | Hodnota |
+|---------|---------|
+| Effort (senior) | {{EFFORT_H}} h |
+| Sazba | {{RATE}} {{CURRENCY}}/h |
+| **Celková cena** | **{{COST}} {{CURRENCY}}** |
 
-## Key Files
+Calendar hours jsou informativní (delivery timeline), ne fakturovatelné.
+
+## Klíčové soubory
 
 {{KEY_FILES}}
 
-## Risks and Notes
+## Senior-only položky (LLM nezrychlí)
+
+{{SENIOR_ONLY_ITEMS}}
+
+## Co odhad NEzahrnuje
+
+{{EXCLUDED}}
+
+## Rizika a poznámky
 
 {{RISKS}}
 
 ---
-*Estimate created with Claude Code task-estimate skill*
+*Estimate created with Claude Code task-estimate skill (LLM-writes-code calibration)*

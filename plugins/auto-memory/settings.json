@@ -1,0 +1,32 @@
+{
+  "statusLine": {
+    "type": "command",
+    "command": "python3 ~/.claude/statusline.py"
+  },
+  "hooks": {
+    "SessionEnd": [
+      {
+        "matcher": "clear|prompt_input_exit",
+        "hooks": [
+          { "type": "command", "command": "python3 ~/.claude/hooks/session-end.py" }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          { "type": "command", "command": "python3 ~/.claude/hooks/post-tool-edit.py" }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          { "type": "command", "command": "python3 ~/.claude/hooks/session-start.py" }
+        ]
+      }
+    ]
+  }
+}

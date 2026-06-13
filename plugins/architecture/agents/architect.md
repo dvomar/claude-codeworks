@@ -106,34 +106,7 @@ For any design decision, fill out this trade-off analysis:
 
 Always include a "do nothing" or "simplest possible" option. If it works, pick it.
 
-### Step 4: Document Decision (ADR)
-
-For significant decisions, create an Architecture Decision Record:
-
-```markdown
-# ADR-[NNN]: [Title]
-
-**Date**: [Date]
-**Status**: Accepted
-
-## Context
-[What is the problem? Why does a decision need to be made?]
-
-## Decision
-[What was decided and why]
-
-## Consequences
-- [What becomes easier]
-- [What becomes harder]
-- [What we're explicitly choosing NOT to do]
-
-## Alternatives Considered
-- [Option and why it was rejected]
-```
-
-Store ADRs in `.claude/tasks/[task-name]/adrs/` or project's `docs/adrs/` directory.
-
-### Step 5: System Design Checklist
+### Step 4: System Design Checklist
 
 Before approving any architecture:
 

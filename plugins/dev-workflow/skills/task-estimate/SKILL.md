@@ -1,6 +1,6 @@
 ---
 name: task-estimate
-description: Creates detailed time and cost estimate for a development task
+description: Creates time and cost estimate for a development task (calibrated for LLM-writes-code workflow — senior dev specifies, reviews and verifies)
 user-invocable: true
 disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Bash, Task
@@ -8,98 +8,120 @@ allowed-tools: Read, Grep, Glob, Bash, Task
 
 # Skill: Task Estimation
 
-Create a detailed time and cost estimate for the specified development task.
+Creates a realistic estimate for the **LLM-writes-code workflow**: the LLM (Claude Code, parallel agents) writes all code, unit tests and docs; the senior developer writes the assignment, makes design decisions, supervises, reviews the output, and does everything the LLM physically cannot — runtime/HW verification, MR process, coordination, deployment. **Billed effort = senior hours.** LLM wall-clock is reported as informative only.
 
 ## Input
 
-The skill argument contains the task description to estimate, optionally prefixed with parameter overrides.
+Argument = task description, optionally prefixed with `--key value` overrides.
 
-## Configurable Parameters
-
-These are the default values. Override any parameter by prefixing the task description with `--param value`:
+## Parameters
 
 | Parameter | Default | Description |
 |-----------|---------|-------------|
-| `--rate` | 700 | Hourly rate in CZK |
-| `--lang` | cs | Output language (`cs` for Czech, `en` for English) |
-| `--dir` | docs/odhady | Output directory for the saved estimate file |
-| `--currency` | CZK | Currency label used in cost calculation |
-
-### Examples
+| `--rate` | 875 | Hourly rate in CZK |
+| `--lang` | cs | Output language (`cs` / `en`) |
+| `--dir` | docs/odhady | Output directory |
+| `--currency` | CZK | Currency label |
 
 ```
 /task-estimate Implement user avatar upload
 /task-estimate --rate 900 --lang en Implement user avatar upload
-/task-estimate --rate 650 --dir docs/estimates --currency CZK Implement DMS3 invoice integration
 ```
 
-Parse the argument string: extract any `--key value` pairs as overrides, treat the remaining text as the task description. Use defaults for any parameter not explicitly provided.
+Parse `--key value` pairs as overrides, treat the rest as task description.
 
 ## Procedure
 
-### 1. Task Analysis
+1. **Analyze codebase** with Glob/Grep/Read (use parallel Explore agents pro broader scope). Identify affected files, similar implementations, existing patterns to reuse.
+2. **Categorize** using table below → gives **LLM wall-clock** (informative) and **senior supervision/design** base.
+3. **List senior-only work items** (verification checklist below) — these are estimated at full price, NOT discounted by LLM.
+4. **Estimate phases** using % table below; sum to get pre-buffer senior total.
+5. **Apply ONE buffer** (highest applicable). Never additively.
+6. **Compute calendar hours** from senior effort hours using multiplier rule.
+7. **Generate output** using `templates/estimate-template.md`. Save to `{dir}/YYYY-MM-DD-task-name.md` (lowercase, hyphenated).
 
-Explore the codebase using Glob, Grep, and Read:
-- Identify relevant existing code and similar implementations
-- Determine which files will be affected
-- Estimate scope of changes (number of files, lines of code)
+## Categorization (LLM writes the code)
 
-### 2. Categorization
+| Category | LLM wall-clock | Senior design+supervision | Criteria |
+|----------|----------------|---------------------------|----------|
+| New integration | 2–5 h | 1–2.5 h | New external system, new HW module, new cross-repo feature |
+| Extension of existing | 0.5–2 h | 0.5–1 h | New functionality in existing module |
+| Modification / bugfix | 0.2–0.5 h | 0.2–0.5 h | Fix, logic change |
+| Trivial | < 0.2 h | 0.1 h | Config tweak, doc, renaming |
 
-Determine the task category:
+**Supervision rule of thumb:** senior design+supervision ≈ **0.5× LLM wall-clock** (zadání, mid-flight rozhodnutí, průběžná kontrola). U dobře ohraničených portů mezi vlastními codebase klesá k 0.3×.
 
-| Category | Typical Time | Criteria |
-|----------|--------------|----------|
-| New integration | 12-24h | New external system, new HW module |
-| Extension of existing | 4-10h | New functionality in existing module |
-| Modification/bugfix | 1-4h | Fix, logic change |
-| Trivial change | 0.5-1h | Minor adjustment, configuration |
+**Kalibrace vůči starému senior-píše-kód modelu:** samotné kódování ≈ **10–15 %** původních hodin; celý task včetně lidské verifikace ≈ **25–35 %**. (Referenční bod: printer-paper-states 06/2026 — původní odhad 40–60 h, realita ~4 h LLM-supervised + ~8 h senior-only = ~12 h.)
 
-**Important:** Check if the project has established patterns and templates for this type of work. If so, factor that in — don't estimate as if building from scratch.
+## Phases (% of senior effort total)
 
-### 3. Phase-Based Estimate
+| Phase | % | Why this share |
+|-------|---|----------------|
+| Zadání & design | 15–20 % | Senior píše prompt/spec, dělá architektonická rozhodnutí; LLM nezrychlí user latency |
+| Supervize LLM implementace | 20–30 % | Sledování průběhu, mid-flight korekce, odpovědi na dotazy; kód samotný píše LLM |
+| Code review výstupu | 15–20 % | Plausible-but-wrong je hlavní riziko LLM kódu — review se NEškrtá, je to hlavní quality gate |
+| Runtime / HW verifikace | 25–40 % | Fyzický test na zařízení, smoke na živém systému — LLM nezrychlí vůbec; u HW tasků dominantní fáze |
+| MR / předání / koordinace | 10–15 % | MR proces, FE/QA koordinace, číselníky, release notes |
 
-Break down work into phases:
+## Senior-only verification checklist
 
-| Phase | % of Time | Description |
-|-------|-----------|-------------|
-| Analysis | 10-15% | Code exploration, understanding architecture |
-| Design | 5-10% | Solution design |
-| Implementation | 45-55% | Writing code |
-| Testing | 15-20% | Manual testing, debugging |
-| Refinement | 5-10% | Adjustments, code review |
+Při kroku 3 projdi a oceň plnou sazbou vše, co platí:
 
-### 4. Apply Buffer
+- [ ] Test na fyzickém HW (tiskárna, cash device, terminál) — typicky 2–4 h per zařízení/platforma
+- [ ] Runtime smoke na živém/staging systému
+- [ ] MR review kolegou + zapracování připomínek
+- [ ] Koordinace s FE/jiným týmem (kódy, kontrakty, release pořadí)
+- [ ] Deploy / konfigurace na místě / per-site zapnutí feature flagu
+- [ ] Přístupy, credentials, VPN do klientské sítě
 
-- Known area: +5-10%
-- New area (first implementation of this type): +15-25%
-- External API dependency: +10-20%
-- Hardware integration: +20-35%
+## Buffer (pick the single highest applicable)
 
-**Rule:** Never apply multiple buffers additively. Pick the single highest applicable buffer. Total estimate should feel tight but achievable.
+- Known area, existing patterns: **+5 %**
+- LLM-unfamiliar domain (proprietární protokol, nedokumentované API) — vyšší riziko plausible-but-wrong: **+15 %**
+- External API dependency: **+10 %**
+- Hardware integration: **+25 %** (fyzické testování LLM nezrychlí; driver chování se ověří až na místě)
+- Multiple parallel sub-features in one task: **+10 %**
 
-### 5. Generate Output
+## Effort → Calendar multiplier
 
-Use the template from `templates/estimate-template.md`. Fill in all placeholders with actual values.
+Senior effort hours ≠ wall-clock. Apply multiplier based on expected workflow:
 
-Apply the configured parameters:
-- Use `--rate` for hourly rate in cost calculation
-- Use `--currency` for currency label
-- Write the estimate in the language specified by `--lang` (translate all headings, labels, and descriptions)
-- Save to the directory specified by `--dir`
+| Workflow | Multiplier |
+|----------|-----------|
+| Dedicated focused session | ×1.0 |
+| Normální pracovní den (mítingy, kontext switch) | ×1.8 |
+| Roztažený přes více dnů s interrupts | ×2.5 |
 
-## Output Format
+**Default:** ×1.8. Override v risks/notes pokud kontext napovídá jinak. LLM wall-clock běží paralelně se supervizí — do calendar se nepřičítá zvlášť.
 
-1. **Display in terminal** — clear table with estimate
-2. **Save to file** — `{dir}/YYYY-MM-DD-task-name.md`
+## Cost rule
 
-Create filename from task description:
-- Convert to lowercase
-- Replace spaces with hyphens
-- Remove special characters
-- Add date prefix
+`Cost = senior_effort_hours × rate × currency`
+
+LLM wall-clock se **nefakturuje po hodinách** (token náklady řeš případně jako samostatnou položku v poznámce). Calendar hours jsou **informativní** (delivery timeline), ne fakturovatelné. Pokud klient bill-by-calendar, zmiň v `Rizika`.
+
+## What the LLM does NOT speed up (estimate at full price)
+
+- Runtime smoke testing on live system / hardware
+- User/stakeholder decision latency
+- Human MR review approval
+- Deployment, ops, monitoring setup, per-site config rollout
+- Acquiring credentials / env access
+- Domain knowledge transfer requiring stakeholder
+- Cross-team release coordination (FE číselníky, translations sync)
+
+These map to the `Runtime/HW verifikace` and `MR/předání` phases — if the task is unusually heavy on them (multi-site rollout, several HW devices), add explicit line items instead of stretching the phase %.
+
+## What the LLM DOES absorb (don't bill as senior hours)
+
+- Psaní kódu, unit testů, šablon, configů, docs
+- Codebase discovery (parallel Explore agents)
+- Build/test iterace, oprava kompilačních chyb
+- Mock/simulátor testy spustitelné lokálně
+- První self-review pass (skill /code-review)
 
 ## References
 
-Read methodology: `.claude/knowledge/estimation-methodology.md`
-See example: `.claude/skills/task-estimate/examples/dms3-estimate.md`
+- Template: `templates/estimate-template.md`
+- Example: `examples/dms3-estimate.md` (legacy senior-writes-code calibration — historical reference, ne baseline)
+- Kalibrace 06/2026: printer-paper-states (2×BE + 2×FE port; odhad 40–60 h → realita ~12 h senior)

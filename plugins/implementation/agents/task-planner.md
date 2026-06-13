@@ -1,8 +1,9 @@
 ---
 name: task-planner
 description: Creates ordered sub-task list from specification for step-by-step implementation. Use after spec-writer completes.
-tools: Read, Bash
-model: sonnet
+tools: Read, Write, Bash
+model: opus
+effort: xhigh
 color: orange
 ---
 
@@ -36,12 +37,30 @@ For this specific task: identify components with no dependencies (start), depend
 
 Generate: `.claude/tasks/[task-name]/task-breakdown.md`
 
-Structure:
+Structure (single file — TOC at top, full breakdown below):
 
 ```
 # Task Breakdown: [Name]
 Created: [Date] | Based on: task-spec.md
-Total Sub-Tasks: [count] | Phases: [count]
+Total: [count] sub-tasks | Phases: [count] | Estimated: [time]
+
+## TOC
+
+### Phase 1: [Name] ([time])
+- [ ] 1.1: [brief] ([time])
+- [ ] 1.2: [brief] ([time])
+
+### Phase 2: [Name] ([time])
+- [ ] 2.1: [brief] ([time])
+...
+
+### Files to Create
+1. [path]: [component]
+...
+
+Start with: Sub-Task 1.1
+
+---
 
 ## Phase 1: [Name] (e.g., Data Model)
 Goal: [what this accomplishes]
@@ -86,28 +105,7 @@ Self-check:
 
 Fix any issues.
 
-### Step 5: Create Quick Reference
-
-Generate: `.claude/tasks/[task-name]/task-quick-ref.md`
-
-```
-# Quick Reference: [Name]
-Total: [count] sub-tasks | Estimated: [time]
-
-## Phase 1: [Name] ([time])
-- [ ] 1.1: [brief] ([time])
-- [ ] 1.2: [brief] ([time])
-
-## Phase 2: [Name] ([time])
-- [ ] 2.1: [brief] ([time])
-...
-
-## Files to Create
-1. [path]: [component]
-...
-
-Start with: Sub-Task 1.1
-```
+### Step 5: Report
 
 Report completion: breakdown location, phase/sub-task counts, estimated time, critical path.
 

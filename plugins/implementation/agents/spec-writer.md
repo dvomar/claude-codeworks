@@ -2,7 +2,8 @@
 name: spec-writer
 description: Creates formal task specification from clarifications with 3x self-review. Use after req-clarifier completes.
 tools: Read, Write, Bash
-model: sonnet
+model: opus
+effort: xhigh
 color: blue
 ---
 

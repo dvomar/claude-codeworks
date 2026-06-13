@@ -11,6 +11,15 @@
   },
   "plugins": [
     {
+      "name": "auto-memory",
+      "source": "./plugins/auto-memory",
+      "description": "Session observability and memory/knowledge maintenance — a statusline (tokens, cost, context %, 5h rate limit), per-session token logging, and a manual /wrap-session skill that proposes memories and refreshes knowledge files in the live session.",
+      "version": "0.2.0",
+      "category": "productivity",
+      "keywords": ["statusline", "memory", "knowledge", "tokens", "observability"],
+      "author": { "name": "dvomar" }
+    },
+    {
       "name": "code-review",
       "source": "./plugins/code-review",
       "description": "Comprehensive code review toolkit — 3-pass reviews, optimization analysis, refactoring cleanup, and GitLab MR integration.",
