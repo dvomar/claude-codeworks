@@ -7,7 +7,7 @@ allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, AskUserQuestion
 
 # Skill: Integration / Feature Design Proposal
 
-Produces the kind of document `docs/withdrawal-tukas/vyplata-hotovosti-tukas-navrh.html` is: a **decision-ready proposal** for a new feature or third-party integration, grounded in the actual codebase, suitable for management/stakeholder approval.
+Produces the kind of document `docs/integration-proposals/withdrawal-tukas/vyplata-hotovosti-tukas-navrh.html` is: a **decision-ready proposal** for a new feature or third-party integration, grounded in the actual codebase, suitable for management/stakeholder approval.
 
 The value of such a document does **not** come from the HTML template — it comes from the **work done before** writing it: multi-codebase discovery, direct verification, and clarifying the decisions that change the design. The template only presents that work. Do the work; don't skip to the HTML.
 
