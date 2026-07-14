@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<!--
+  INTEGRATION PROPOSAL TEMPLATE  (self-contained, inline CSS, PDF-friendly)
+  Fill every {{PLACEHOLDER}}. Delete sections that don't apply — never ship an empty placeholder.
+  Visual system = structure/completeness of the withdrawal proposal + flow-viz of the Raiffeisen flow.
+  Section accents: .guard = red (pre-condition that blocks), .erp = purple (3rd-party call), .crit = critical branch.
+-->
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{FEATURE_TITLE}} | Návrh architektury a flow</title>
+<style>
+  :root{
+    --ink:#1a2230; --muted:#5b6675; --faint:#8a93a8; --line:#e2e6ee; --bg:#ffffff; --soft:#f6f8fc;
+    --accent:#1f6feb; --accent-soft:#e8f0ff;
+    --green:#1a7f4b; --green-soft:#e6f5ec;
+    --amber:#9a6700; --amber-soft:#fff5e0;
+    --red:#b42318; --red-soft:#fdecea;
+    --purple:#6b3fa0; --purple-soft:#f0e9fb;
+    --mono:'SF Mono',ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--ink); background:var(--soft); margin:0; line-height:1.55; font-size:15px;}
+  .page{max-width:1000px; margin:0 auto; background:var(--bg); padding:48px 56px; box-shadow:0 1px 4px rgba(20,30,50,.08);}
+  h1{font-size:30px; line-height:1.15; margin:0 0 6px;}
+  h2{font-size:21px; margin:38px 0 12px; padding-bottom:7px; border-bottom:2px solid var(--line);}
+  h3{font-size:16px; margin:22px 0 8px;}
+  p{margin:9px 0;} .lead{color:var(--muted); font-size:15.5px;}
+  ul,ol{margin:8px 0 8px 4px; padding-left:22px;} li{margin:5px 0;}
+  small{color:var(--muted);}
+  code,.mono{font-family:var(--mono); font-size:12.5px; background:#f1f3f8; padding:1px 5px; border-radius:4px; color:#33405a;}
+
+  .hdr{display:flex; justify-content:space-between; align-items:flex-start; gap:24px; border-bottom:3px solid var(--ink); padding-bottom:18px;}
+  .hdr .meta{text-align:right; font-size:12.5px; color:var(--muted); white-space:nowrap;}
+  .tag{display:inline-block; background:var(--amber-soft); color:var(--amber); font-weight:700; font-size:11px; letter-spacing:.5px; text-transform:uppercase; padding:4px 10px; border-radius:20px; margin-bottom:10px;}
+
+  .box{border:1px solid var(--line); border-left:4px solid var(--accent); background:var(--soft); border-radius:8px; padding:14px 18px; margin:16px 0;}
+  .box.green{border-left-color:var(--green); background:var(--green-soft);}
+  .box.amber{border-left-color:var(--amber); background:var(--amber-soft);}
+  .box.red{border-left-color:var(--red); background:var(--red-soft);}
+  .box h4{margin:0 0 6px; font-size:14px; text-transform:uppercase; letter-spacing:.4px;}
+
+  table{border-collapse:collapse; width:100%; margin:14px 0; font-size:13.5px;}
+  th,td{border:1px solid var(--line); padding:8px 11px; text-align:left; vertical-align:top;}
+  th{background:#eef2f9; font-weight:700;} tbody tr:nth-child(even){background:#fafbfe;}
+  td.c,th.c{text-align:center;}
+
+  .pill{display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:20px; white-space:nowrap;}
+  .ok{background:var(--green-soft); color:var(--green);}
+  .miss{background:var(--red-soft); color:var(--red);}
+  .part{background:var(--amber-soft); color:var(--amber);}
+  .size{display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:5px;}
+  .s{background:var(--green-soft); color:var(--green);} .m{background:var(--amber-soft); color:var(--amber);} .l{background:var(--red-soft); color:var(--red);}
+
+  /* architecture layer diagram */
+  .arch{border:1px solid var(--line); border-radius:10px; padding:20px; margin:16px 0; background:#fcfdff;}
+  .layer{display:flex; align-items:center; gap:14px; margin:10px 0;}
+  .layer .lbl{flex:0 0 92px; font-size:11px; font-weight:700; text-transform:uppercase; color:var(--muted); text-align:right;}
+  .layer .row{flex:1; display:flex; gap:10px; flex-wrap:wrap;}
+  .node{border:1.5px solid var(--accent); background:var(--accent-soft); color:#1a3b6b; border-radius:8px; padding:9px 13px; font-size:12.5px; font-weight:600; flex:1; min-width:120px;}
+  .node.new{border-color:var(--green); background:var(--green-soft); color:#0f5132;}
+  .node.ext{border-color:var(--purple); background:var(--purple-soft); color:#4a2d73;}
+  .node.hw{border-color:var(--amber); background:var(--amber-soft); color:#7a5200;}
+  .node .sub{display:block; font-weight:400; font-size:11px; color:var(--muted); margin-top:2px;}
+  .arr{text-align:center; color:var(--muted); font-size:18px; line-height:1; margin:-2px 0;}
+  .legend{display:flex; gap:16px; flex-wrap:wrap; font-size:11.5px; color:var(--muted); margin-top:12px;}
+  .legend span{display:inline-flex; align-items:center; gap:6px;}
+  .sw{width:13px; height:13px; border-radius:3px; display:inline-block; border:1.5px solid;}
+
+  /* flow spine */
+  .flow{counter-reset:step; margin:18px 0;}
+  .step{position:relative; border:1px solid var(--line); border-radius:9px; padding:12px 16px 12px 52px; margin:9px 0; background:#fff;}
+  .step::before{counter-increment:step; content:counter(step); position:absolute; left:12px; top:12px; width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff; font-weight:700; font-size:13px; display:flex; align-items:center; justify-content:center;}
+  .step.guard::before{background:var(--red);}
+  .step.erp::before{background:var(--purple);}
+  .step.hwf::before{background:var(--amber); color:#3d2a00;}
+  .step .who{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.4px; color:var(--muted);}
+  .step .title{font-weight:700; margin:1px 0 3px;}
+  .step .desc{font-size:13px;}
+
+  /* decision branches */
+  .branches{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:14px 0;}
+  .branch{border-radius:10px; padding:14px 16px; border:1px solid var(--line);}
+  .branch.okb{background:var(--green-soft); border-color:rgba(26,127,75,.35);}
+  .branch.errb{background:var(--red-soft); border-color:rgba(180,35,24,.35);}
+  .branch h4{margin:0 0 6px;} .branch.okb h4{color:var(--green);} .branch.errb h4{color:var(--red);}
+  .branch ul{margin:4px 0 0; font-size:13px; color:var(--ink);}
+
+  .two{display:flex; gap:18px; margin:14px 0;}
+  .two>div{flex:1; border:1px solid var(--line); border-radius:9px; padding:14px 16px; background:#fcfdff;}
+  .two h3{margin-top:0;}
+
+  /* risk grid */
+  .rgrid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:14px 0;}
+  .risk{background:#fcfdff; border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
+  .risk.crit{border-color:rgba(154,103,0,.45); background:var(--amber-soft);}
+  .risk .rt{display:flex; justify-content:space-between; align-items:center; gap:8px; font-weight:700; margin-bottom:5px;}
+  .risk .lvl{font-family:var(--mono); font-size:10px; letter-spacing:.08em; text-transform:uppercase; padding:2px 7px; border-radius:6px; border:1px solid var(--line); color:var(--faint);}
+  .risk.crit .lvl{color:var(--amber); border-color:rgba(154,103,0,.45);}
+  .risk p{margin:0; font-size:13px; color:var(--muted);}
+
+  .footer{margin-top:44px; padding-top:16px; border-top:1px solid var(--line); font-size:12px; color:var(--muted); display:flex; justify-content:space-between;}
+
+  @media print{
+    body{background:#fff; font-size:12.5px;}
+    .page{box-shadow:none; max-width:none; padding:0 14mm;}
+    h2,h3{page-break-after:avoid;}
+    table,.arch,.step,.box,.two,.branch,.risk{page-break-inside:avoid;}
+    .pb{page-break-before:always;}
+  }
+  @page{size:A4; margin:14mm;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ============ HEADER ============ -->
+  <div class="hdr">
+    <div>
+      <div class="tag">{{STATUS_BADGE}}</div><!-- e.g. Návrh k schválení -->
+      <h1>{{FEATURE_TITLE}}</h1>
+      <div class="lead">{{ONE_LINE_SUBTITLE}}</div>
+    </div>
+    <div class="meta">
+      Projekt: <b>{{PROJECT}}</b><br>
+      Klient: <b>{{CLIENT}}</b><br>
+      ERP / IS: <b>{{IS}}</b><br>
+      Datum: <b>{{DATE}}</b><br>
+      Verze: <b>1.0</b> · Stav: <b>Návrh</b>
+    </div>
+  </div>
+
+  <!-- ============ 1. SHRNUTÍ ============ -->
+  <h2>1. Manažerské shrnutí</h2>
+  <p>{{WHAT_AND_WHY}}</p>
+  <div class="box green">
+    <h4>{{HEADLINE_FINDING}}</h4><!-- e.g. "80 % infrastruktury už existuje" / "viabilita závisí na X" -->
+    <p style="margin:4px 0 0;">{{HEADLINE_DETAIL}}</p>
+  </div>
+  <p><b>Co je potřeba doplnit:</b></p>
+  <ol>
+    <li>{{GAP_1}}</li>
+    <li>{{GAP_2}}</li>
+    <li>{{GAP_3}}</li>
+  </ol>
+  <div class="box amber">
+    <h4>Rozhodnutí, která od vedení / 3. strany potřebujeme</h4>
+    <p style="margin:4px 0 0;">{{DECISIONS_NEEDED}}</p>
+  </div>
+
+  <!-- ============ 2. SOUČASNÝ STAV ============ -->
+  <h2>2. Současný stav</h2>
+  <p class="lead">{{CURRENT_STATE_INTRO}}</p>
+  <!-- Cross-generation comparison — keep only if reference repos were mined -->
+  <table>
+    <thead><tr><th style="width:24%">Aspekt</th><th>{{REF_B}}</th><th>{{REF_A}}</th><th>{{TARGET}}</th></tr></thead>
+    <tbody>
+      <tr><td>{{ASPECT_1}}</td><td>{{B_1}}</td><td>{{A_1}}</td><td>{{T_1}}</td></tr>
+      <tr><td>{{ASPECT_2}}</td><td>{{B_2}}</td><td>{{A_2}}</td><td>{{T_2}}</td></tr>
+    </tbody>
+  </table>
+  <h3>Co v {{TARGET}} máme a co chybí</h3>
+  <table>
+    <thead><tr><th style="width:34%">Vrstva</th><th class="c" style="width:14%">Stav</th><th>Umístění v kódu</th></tr></thead>
+    <tbody>
+      <tr><td>{{LAYER_1}}</td><td class="c"><span class="pill ok">je</span></td><td><span class="mono">{{FILE_LINE_1}}</span></td></tr>
+      <tr><td>{{LAYER_2}}</td><td class="c"><span class="pill part">stub</span></td><td><span class="mono">{{FILE_LINE_2}}</span></td></tr>
+      <tr><td>{{LAYER_3}}</td><td class="c"><span class="pill miss">chybí</span></td><td>{{WHERE_TO_BUILD_3}}</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 3. ARCHITEKTURA ============ -->
+  <h2 class="pb">3. Navrhovaná architektura</h2>
+  <p>{{ARCH_PRINCIPLE}}<!-- name the reused conventions; emphasise minimal new surface --></p>
+  <div class="arch">
+    <div class="layer"><div class="lbl">{{L1_LABEL}}</div><div class="row">
+      <div class="node hw">{{L1_NODE}}<span class="sub">{{L1_SUB}}</span></div>
+    </div></div>
+    <div class="arr">▼</div>
+    <div class="layer"><div class="lbl">{{L2_LABEL}}</div><div class="row">
+      <div class="node">{{L2_NODE_EXISTING}}<span class="sub">existuje</span></div>
+      <div class="node new">{{L2_NODE_NEW}}<span class="sub">NOVÉ</span></div>
+    </div></div>
+    <div class="arr">▼</div>
+    <div class="layer"><div class="lbl">{{L3_LABEL}}</div><div class="row">
+      <div class="node hw">{{L3_NODE_HW}}<span class="sub">{{L3_SUB}}</span></div>
+      <div class="node ext">{{L3_NODE_EXT}}<span class="sub">externí</span></div>
+    </div></div>
+    <div class="legend">
+      <span><i class="sw" style="border-color:var(--accent);background:var(--accent-soft)"></i> existující, beze změny</span>
+      <span><i class="sw" style="border-color:var(--green);background:var(--green-soft)"></i> nová komponenta</span>
+      <span><i class="sw" style="border-color:var(--amber);background:var(--amber-soft)"></i> hardware</span>
+      <span><i class="sw" style="border-color:var(--purple);background:var(--purple-soft)"></i> externí systém</span>
+    </div>
+  </div>
+  <div class="box"><h4>Klíčové architektonické rozhodnutí</h4><p style="margin:4px 0 0;">{{ARCH_KEY_DECISION}}</p></div>
+
+  <!-- ============ 4. FLOW ============ -->
+  <h2 class="pb">4. End-to-end procesní flow</h2>
+  <p>{{FLOW_INTRO}}</p>
+  <div class="flow">
+    <div class="step"><div class="who">{{S1_WHO}}</div><div class="title">{{S1_TITLE}}</div><div class="desc">{{S1_DESC}}</div></div>
+    <div class="step"><div class="who">{{S2_WHO}}</div><div class="title">{{S2_TITLE}}</div><div class="desc">{{S2_DESC}}</div></div>
+    <div class="step guard"><div class="who">{{S3_WHO}}</div><div class="title">{{S3_TITLE}} — GUARD</div><div class="desc">{{S3_DESC}}</div></div>
+    <div class="step hwf"><div class="who">{{S4_WHO}}</div><div class="title">{{S4_TITLE}}</div><div class="desc">{{S4_DESC}}</div></div>
+    <div class="step erp"><div class="who">{{S5_WHO}}</div><div class="title">{{S5_TITLE}} — externí potvrzení</div><div class="desc">{{S5_DESC}}</div></div>
+  </div>
+  <div class="branches">
+    <div class="branch okb"><h4>✓ Úspěch</h4><ul><li>{{OK_1}}</li><li>{{OK_2}}</li></ul></div>
+    <div class="branch errb"><h4>✕ Neúspěch / timeout</h4><ul><li>{{ERR_1}}</li><li>{{ERR_2}}</li></ul></div>
+  </div>
+  <div class="box red"><h4>Kritická větev — {{CRITICAL_BRANCH_TITLE}}</h4>
+    <p style="margin:4px 0 0;">{{CRITICAL_BRANCH_DESC}}<!-- the irreversible-action-done-but-confirm-failed case --></p></div>
+
+  <!-- ============ 5. RECONCILIACE ============ -->
+  <h2>5. Hraniční stavy a reconciliace</h2>
+  <table>
+    <thead><tr><th style="width:30%">Situace</th><th>Chování v návrhu</th></tr></thead>
+    <tbody>
+      <tr><td>{{EDGE_1}}</td><td>{{EDGE_1_BEHAVIOR}}</td></tr>
+      <tr><td>{{EDGE_2}}</td><td>{{EDGE_2_BEHAVIOR}}</td></tr>
+      <tr><td>{{EDGE_SIDE_EFFECT}}</td><td>{{EDGE_SIDE_EFFECT_BEHAVIOR}}</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ 6. ROZSAH ============ -->
+  <h2 class="pb">6. Rozsah prací</h2>
+  <table>
+    <thead><tr><th style="width:30%">Komponenta</th><th>Popis</th><th class="c" style="width:12%">Velikost</th></tr></thead>
+    <tbody>
+      <tr><td>{{COMP_1}}</td><td>{{COMP_1_DESC}}</td><td class="c"><span class="size m">M</span></td></tr>
+      <tr><td>{{COMP_2}}</td><td>{{COMP_2_DESC}}</td><td class="c"><span class="size s">S</span></td></tr>
+      <tr><td>{{COMP_3}}</td><td>{{COMP_3_DESC}}</td><td class="c"><span class="size l">L</span></td></tr>
+    </tbody>
+  </table>
+  <p><small>Velikost: <span class="size s">S</span> malá · <span class="size m">M</span> střední · <span class="size l">L</span> velká. Pracnost upřesní <code>/task-estimate</code>.</small></p>
+
+  <!-- ============ 7. POSTUP ============ (optional) -->
+  <h2>7. Návrh postupu</h2>
+  <div class="two">
+    <div><h3>Fáze 1 — {{PHASE_1_TITLE}}</h3><ul><li>{{P1_A}}</li><li>{{P1_B}}</li></ul></div>
+    <div><h3>Fáze 2 — {{PHASE_2_TITLE}}</h3><ul><li>{{P2_A}}</li><li>{{P2_B}}</li></ul></div>
+  </div>
+
+  <!-- ============ 8. OTEVŘENÉ OTÁZKY ============ -->
+  <h2 class="pb">8. Otevřené otázky pro vedení / 3. stranu</h2>
+  <ul>
+    <li>{{Q_1}}</li>
+    <li>{{Q_2}}</li>
+    <li>{{Q_3}}</li>
+  </ul>
+
+  <!-- ============ 9. RIZIKA ============ -->
+  <h2>9. Hlavní rizika</h2>
+  <div class="rgrid">
+    <div class="risk crit"><div class="rt">{{RISK_1}} <span class="lvl">make-or-break</span></div><p>{{RISK_1_DESC}}</p></div>
+    <div class="risk"><div class="rt">{{RISK_2}} <span class="lvl">{{RISK_2_LVL}}</span></div><p>{{RISK_2_DESC}}</p></div>
+    <div class="risk"><div class="rt">{{RISK_3}} <span class="lvl">{{RISK_3_LVL}}</span></div><p>{{RISK_3_DESC}}</p></div>
+    <div class="risk"><div class="rt">{{RISK_4}} <span class="lvl">{{RISK_4_LVL}}</span></div><p>{{RISK_4_DESC}}</p></div>
+  </div>
+
+  <div class="footer">
+    <span>{{FEATURE_TITLE}} · Návrh architektury a flow · v1.0</span>
+    <span>{{PROJECT}} · Interní dokument</span>
+  </div>
+
+</div>
+</body>
+</html>

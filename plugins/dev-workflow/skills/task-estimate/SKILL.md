@@ -3,7 +3,7 @@ name: task-estimate
 description: Creates time and cost estimate for a development task (calibrated for LLM-writes-code workflow — senior dev specifies, reviews and verifies)
 user-invocable: true
 disable-model-invocation: true
-allowed-tools: Read, Grep, Glob, Bash, Task
+allowed-tools: Read, Write, Grep, Glob, Bash, Task
 ---
 
 # Skill: Task Estimation
@@ -38,7 +38,7 @@ Parse `--key value` pairs as overrides, treat the rest as task description.
 4. **Estimate phases** using % table below; sum to get pre-buffer senior total.
 5. **Apply ONE buffer** (highest applicable). Never additively.
 6. **Compute calendar hours** from senior effort hours using multiplier rule.
-7. **Generate output** using `templates/estimate-template.md`. Save to `{dir}/YYYY-MM-DD-task-name.md` (lowercase, hyphenated).
+7. **Generate output: TWO self-contained HTML files** (see `## Output` below) — internal estimate + client offer. Create a per-task subdirectory `{dir}/{date}-{task}/` and save both files inside it (lowercase, hyphenated filenames). **One directory per task** — never dump estimate files flat into `{dir}/`. Any later PDF render of an offer goes into the same task directory.
 
 ## Categorization (LLM writes the code)
 
@@ -100,6 +100,27 @@ Senior effort hours ≠ wall-clock. Apply multiplier based on expected workflow:
 
 LLM wall-clock se **nefakturuje po hodinách** (token náklady řeš případně jako samostatnou položku v poznámce). Calendar hours jsou **informativní** (delivery timeline), ne fakturovatelné. Pokud klient bill-by-calendar, zmiň v `Rizika`.
 
+## Output (two HTML files)
+
+Produce **two self-contained HTML files**, both in the same visual style:
+
+| File | Template | Audience | Obsahuje |
+|------|----------|----------|----------|
+| `{dir}/{date}-{task}/{date}-{task}-odhad.html` | `templates/odhad-template.html` | **interní** | Plný detail: sazba, work-items, fáze, senior-only, NEzahrnuje, rizika, buffer, calendar. Oranžová hlavička + banner „INTERNÍ". |
+| `{dir}/{date}-{task}/{date}-{task}-nabidka.html` | `templates/nabidka-template.html` | **klient** | BEZ hodinové sazby a BEZ sekce NEzahrnuje. Fáze přeskupené do oblastí. Scope vymezený jednou větou. Petrolejová hlavička. |
+
+Both files live in the **same per-task directory** `{dir}/{date}-{task}/` — never flat in `{dir}/`.
+
+Rules:
+- **Self-contained:** inline the ENTIRE contents of `templates/estimate-style.css` into the `<style>{{STYLE}}</style>` of BOTH files. Never `<link>` externally (client must open/print offline).
+- **Same numbers, two views.** Both files derive from the SAME computed effort total, buffer and cost. The internal file shows the phase table (Zadání/Supervize/Review/HW verifikace/MR/Buffer); the client file **reframes those phases into plain areas** that sum to the same total — typically `Backend`, `Frontend`, `Integrace + ověření na HW`, `Předání + nasazení` (distribute buffer proportionally). Adapt area labels to the task.
+- **Client price:** show total cost and an orientational range, but **never the per-hour rate**. Internal shows rate + cost + range.
+- **Client scope sentence (mandatory):** replaces the removed exclusions — one sentence in „Řešení v kostce" stating what the offer covers, so the price can't be read as covering hardware / external systems / SLA.
+- **Lead time** = calendar window as a range (e.g. `~2–4 týdny`), not raw effort hours; add the one-line note that it is a calendar window, not pure work time.
+- Replace every `{{PLACEHOLDER}}`. Omit optional blocks (journey, reuse badges) when they don't apply. Footer company defaults to the org; adjust per project.
+- Honour `--lang` (cs default): translate static labels for `en`.
+- After writing, tell the user both paths and remind that `-odhad.html` is internal-only.
+
 ## What the LLM does NOT speed up (estimate at full price)
 
 - Runtime smoke testing on live system / hardware
@@ -122,6 +143,9 @@ These map to the `Runtime/HW verifikace` and `MR/předání` phases — if the t
 
 ## References
 
-- Template: `templates/estimate-template.md`
+- Shared visual: `templates/estimate-style.css` (single source of truth for the look — tune here)
+- Client template: `templates/nabidka-template.html`
+- Internal template: `templates/odhad-template.html`
 - Example: `examples/dms3-estimate.md` (legacy senior-writes-code calibration — historical reference, ne baseline)
 - Kalibrace 06/2026: printer-paper-states (2×BE + 2×FE port; odhad 40–60 h → realita ~12 h senior)
+- Kalibrace 06/2026: Tukas smart-boxy keybox (BE+FE v cm5be vč. portu Drawers; ~64 h senior / ~56 tis. CZK)

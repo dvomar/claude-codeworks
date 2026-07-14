@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!-- CLIENT OFFER (nabídka). NO hourly rate, NO "co NEzahrnuje" section.
+     Reframe internal phases into plain areas. Save as: {dir}/YYYY-MM-DD-task-name-nabidka.html
+     Inline templates/estimate-style.css fully into <style> below (self-contained). -->
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nabídka – {{TASK_TITLE}}</title>
+<style>
+/* {{STYLE}} ← inline the entire contents of templates/estimate-style.css here */
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="brand">{{COMPANY_SHORT}} · Nabídka řešení</div>
+    <h1>{{TASK_TITLE}}</h1>
+    <p class="lede">{{LEDE}}</p>
+    <div class="meta">
+      <span class="chip">📅 {{DATE}}</span>
+      <span class="chip">🧩 {{SCOPE_CHIP}}</span>
+      <span class="chip">⚙️ {{PLATFORM_CHIP}}</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <h2><span class="num">1</span> Řešení v kostce</h2>
+    <!-- One scoping sentence so the client can't read the price as covering everything
+         (replaces the removed "NEzahrnuje" section). -->
+    <p class="sub">{{SCOPE_SENTENCE}}</p>
+    {{SOLUTION_BODY}}
+    <!-- SOLUTION_BODY = prose + optional bullets, or a .journey block of .flow steps
+         when the task has distinct user flows. Omit what doesn't apply. -->
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Co se musí naprogramovat</h2>
+    <p class="sub">{{DELIVERABLES_INTRO}}</p>
+    <div class="cols">
+      {{DELIVERABLE_PANELS}}
+      <!-- one or more .panel blocks, e.g. Backend / Frontend; structure:
+        <div class="panel"><div class="head">⚙️ Backend <span class="tag">.NET</span></div>
+          <ul><li>…</li></ul></div> -->
+    </div>
+    <h3>Znovu využito (neprogramuje se)</h3>
+    <div class="reuse">{{REUSE_BADGES}}</div>
+    <!-- REUSE_BADGES = <span>…</span> per reused capability; omit the whole <h3>+div if none. -->
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> Nástřel náročnosti</h2>
+    <p class="sub">Orientační odhad pracnosti. Model práce: kód vzniká AI-asistovaně, oceňuje se práce seniora (zadání, návrh, review, ověření).</p>
+    <table>
+      <thead><tr><th>Oblast</th><th class="num">Hodiny</th></tr></thead>
+      <tbody>
+        {{AREA_ROWS}}
+        <!-- rows by plain area (Backend / Frontend / Integrace+ověření / Předání), summing to total -->
+        <tr class="total"><td>Celkem (orientačně)</td><td class="num">{{TOTAL_HOURS}} h</td></tr>
+      </tbody>
+    </table>
+    <div class="price">
+      <div class="box"><div class="k">Pracnost</div><div class="v">~{{TOTAL_HOURS}} h</div></div>
+      <div class="box"><div class="k">Cena</div><div class="v">~{{TOTAL_COST}}</div></div>
+      <div class="box alt"><div class="k">Dodací lhůta</div><div class="v">{{LEAD_TIME}}</div></div>
+    </div>
+    <div class="note">
+      <b>Orientační pásmo:</b> {{RANGE_HOURS}} ({{RANGE_COST}}) podle hladkosti integrace a ověření.
+      Číslo je nástřel pro rozhodnutí o rozsahu, ne závazná cena.<br>
+      <b>Dodací lhůta</b> je kalendářní okno, ne čistý čas práce – {{LEAD_TIME_NOTE}}.
+    </div>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Předpoklady</h2>
+    <ul>{{ASSUMPTIONS}}</ul>
+  </section>
+
+  <footer>
+    {{COMPANY_FOOTER}}<br>
+    <span style="opacity:.7">Tento dokument je předmětem obchodního tajemství.</span>
+  </footer>
+
+</div>
+</body>
+</html>

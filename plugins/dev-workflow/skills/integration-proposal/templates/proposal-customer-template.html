@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<!--
+  CUSTOMER-FACING PROPOSAL TEMPLATE  (self-contained, inline CSS, PDF-friendly)
+  Audience = the CLIENT. Business language only. Visual style = the Raiffeisen flow.
+
+  HARD RULE — these must NEVER appear here (they belong only in the internal doc):
+    • code identifiers, class/interface/method names, file paths or file:line
+    • our internal architecture component names, repo/generation names (e.g. cm5be/cm4be)
+    • our internal scope sizing (S/M/L), effort/hours, or "what already exists in our codebase"
+    • security issues found in our code, names of our other clients
+  Reframe "what we must build" as "how it works"; reframe "open questions" as
+  "what we need from you"; reframe internal risks as "what we validate before launch".
+  Fill every {{PLACEHOLDER}}; delete blocks that don't apply.
+-->
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{FEATURE_TITLE}} — návrh řešení</title>
+<style>
+  :root{
+    --bg:#eef1f7; --panel:#ffffff; --panel2:#f4f6fb; --line:#dde2ec;
+    --text:#1b2030; --muted:#525b72; --faint:#8a93a8;
+    --mono:'SF Mono',ui-monospace,'Cascadia Code',Menlo,Consolas,monospace;
+    /* ACCENT — set to the customer's / partner's brand colour */
+    --accent:#1f6feb; --accent2:#0e9aa0;
+    --customer:#5563e8; --system:#2f6fe0; --partner:#b5800a; --external:#9b4dd6;
+    --ok:#12a06a; --err:#d83a3a; --warn:#c47a0a;
+  }
+  *{box-sizing:border-box} html,body{margin:0;padding:0}
+  html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(79,140,255,.10), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, rgba(20,160,160,.07), transparent 55%),
+      var(--bg);
+    color:var(--text); line-height:1.55; -webkit-font-smoothing:antialiased;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,Arial,sans-serif;
+    padding:48px 24px 80px;
+  }
+  .wrap{max-width:1040px;margin:0 auto}
+
+  header.top{margin-bottom:36px}
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--accent2);
+    border:1px solid rgba(20,160,160,.3);background:rgba(20,160,160,.06);
+    padding:6px 12px;border-radius:999px;margin-bottom:18px;}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--accent2)}
+  h1{font-size:33px;line-height:1.15;margin:0 0 12px;letter-spacing:-.02em}
+  h1 .accent{color:var(--accent)}
+  .lede{color:var(--muted);font-size:17px;max-width:780px;margin:0}
+  .lede b{color:var(--text);font-weight:600}
+  h2{font-size:21px;margin:42px 0 6px;letter-spacing:-.01em}
+  .h2sub{color:var(--faint);font-size:13.5px;margin:0 0 16px}
+
+  /* benefits */
+  .benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+  .benefit{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .benefit .ic{font-size:22px;margin-bottom:8px}
+  .benefit h3{margin:0 0 4px;font-size:15.5px}
+  .benefit p{margin:0;color:var(--muted);font-size:13.5px}
+
+  /* actor legend */
+  .legend{display:flex;flex-wrap:wrap;gap:10px;margin:20px 0;padding:16px;
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;}
+  .legend .lg-title{width:100%;font-family:var(--mono);font-size:11px;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:4px;}
+  .actor{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:500;
+    padding:7px 13px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);}
+  .actor .chip{width:11px;height:11px;border-radius:3px}
+  .actor small{color:var(--faint);font-weight:400;font-family:var(--mono);font-size:11px}
+
+  /* flow spine */
+  .flow{position:relative;margin-top:26px;padding-left:62px}
+  .flow::before{content:"";position:absolute;left:23px;top:14px;bottom:14px;width:2px;background:var(--line)}
+  .step{position:relative;margin-bottom:20px}
+  .step .num{position:absolute;left:-62px;top:0;width:48px;height:48px;border-radius:14px;
+    display:grid;place-items:center;font-weight:700;font-size:18px;font-family:var(--mono);
+    background:var(--panel2);border:1px solid var(--line);color:var(--text);z-index:2;}
+  .card{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--accent);
+    border-radius:14px;padding:18px 20px;box-shadow:0 4px 14px -10px rgba(20,30,60,.12);}
+  .card h3{margin:0 0 6px;font-size:18px;letter-spacing:-.01em}
+  .card p{margin:0;color:var(--muted);font-size:14.5px}
+  .flowline{display:inline-flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:11px;
+    font-family:var(--mono);font-size:12px;color:var(--faint)}
+  .flowline .tok{padding:3px 9px;border-radius:7px;background:rgba(20,30,60,.045);border:1px solid var(--line);color:var(--muted)}
+  /* per-actor accents — set class s-cust / s-sys / s-partner / s-ext on .step */
+  .s-cust .card{border-left-color:var(--customer)} .s-cust .num{color:var(--customer)}
+  .s-sys .card{border-left-color:var(--system)}    .s-sys .num{color:var(--system)}
+  .s-partner .card{border-left-color:var(--partner)} .s-partner .num{color:var(--partner)}
+  .s-ext .card{border-left-color:var(--external)}  .s-ext .num{color:var(--external)}
+
+  /* decision */
+  .decision{position:relative;margin-top:8px;padding-left:62px}
+  .diamond{position:relative;margin-bottom:24px;background:linear-gradient(180deg,#fff7e6,#fffdf7);
+    border:1px solid var(--warn);border-left:3px solid var(--warn);border-radius:14px;padding:16px 20px}
+  .diamond .num{position:absolute;left:-62px;top:0;width:48px;height:48px;border-radius:14px;
+    display:grid;place-items:center;font-size:20px;background:var(--panel2);border:1px solid var(--warn);color:var(--warn)}
+  .diamond h3{margin:0 0 4px;font-size:18px} .diamond p{margin:0;color:var(--muted);font-size:14.5px}
+  .branches{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .branch{border-radius:14px;padding:18px 20px;border:1px solid var(--line)}
+  .branch.ok{background:linear-gradient(180deg,rgba(18,160,106,.10),rgba(18,160,106,.02));border-color:rgba(18,160,106,.35)}
+  .branch.err{background:linear-gradient(180deg,rgba(216,58,58,.10),rgba(216,58,58,.02));border-color:rgba(216,58,58,.35)}
+  .branch h4{margin:0 0 6px;font-size:16px} .branch.ok h4{color:var(--ok)} .branch.err h4{color:var(--err)}
+  .branch ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13.5px} .branch li{margin:4px 0}
+
+  /* panels (prerequisites / validation) */
+  .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin-top:18px}
+  .panel ul{margin:6px 0 0;padding-left:20px;color:var(--muted);font-size:14px} .panel li{margin:6px 0}
+  .panel li b{color:var(--text)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+  .tile{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px 16px}
+  .tile .tt{font-weight:600;font-size:14.5px;margin-bottom:5px}
+  .tile p{margin:0;color:var(--muted);font-size:13px}
+
+  footer{margin-top:44px;color:var(--faint);font-size:12.5px;font-family:var(--mono);
+    border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+  footer a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--faint)}
+
+  @media (max-width:720px){.benefits,.branches,.grid2{grid-template-columns:1fr}
+    .flow,.decision{padding-left:54px}.step .num,.diamond .num{left:-54px;width:42px;height:42px}
+    .flow::before{left:20px}h1{font-size:26px}}
+  @page{size:A4;margin:14mm}
+  @media print{body{background:#fff;padding:0}
+    .step,.card,.branch,.diamond,.legend,.panel,.tile,.benefit{break-inside:avoid}
+    h2{break-after:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ============ HEADER ============ -->
+  <header class="top">
+    <span class="eyebrow"><span class="dot"></span>{{CLIENT}} · {{PRODUCT}} · Návrh řešení</span>
+    <h1>{{FEATURE_TITLE_PLAIN}} <span class="accent">{{FEATURE_TITLE_ACCENT}}</span></h1>
+    <p class="lede">{{BUSINESS_WHAT_AND_WHY}}<!-- business value, no internals --></p>
+  </header>
+
+  <!-- ============ CO TO PŘINÁŠÍ (optional) ============ -->
+  <h2>Co to přináší</h2>
+  <div class="benefits">
+    <div class="benefit"><div class="ic">⚡</div><h3>{{BENEFIT_1}}</h3><p>{{BENEFIT_1_DESC}}</p></div>
+    <div class="benefit"><div class="ic">✓</div><h3>{{BENEFIT_2}}</h3><p>{{BENEFIT_2_DESC}}</p></div>
+    <div class="benefit"><div class="ic">🔒</div><h3>{{BENEFIT_3}}</h3><p>{{BENEFIT_3_DESC}}</p></div>
+  </div>
+
+  <!-- ============ AKTÉŘI ============ -->
+  <div class="legend">
+    <div class="lg-title">Aktéři</div>
+    <div class="actor"><span class="chip" style="background:var(--customer)"></span>{{ACTOR_CUSTOMER}} <small>{{ACTOR_CUSTOMER_SUB}}</small></div>
+    <div class="actor"><span class="chip" style="background:var(--system)"></span>{{ACTOR_SYSTEM}} <small>{{ACTOR_SYSTEM_SUB}}</small></div>
+    <div class="actor"><span class="chip" style="background:var(--partner)"></span>{{ACTOR_PARTNER}} <small>{{ACTOR_PARTNER_SUB}}</small></div>
+  </div>
+
+  <!-- ============ JAK TO FUNGUJE (flow) ============ -->
+  <h2>Jak to funguje</h2>
+  <p class="h2sub">{{FLOW_INTRO}}</p>
+  <div class="flow">
+    <div class="step s-cust"><div class="num">1</div><div class="card">
+      <h3>{{S1_TITLE}}</h3><p>{{S1_DESC}}</p>
+      <div class="flowline"><span class="tok">{{S1_TOK_A}}</span>→<span class="tok">{{S1_TOK_B}}</span></div>
+    </div></div>
+    <div class="step s-sys"><div class="num">2</div><div class="card">
+      <h3>{{S2_TITLE}}</h3><p>{{S2_DESC}}</p>
+    </div></div>
+    <div class="step s-cust"><div class="num">3</div><div class="card">
+      <h3>{{S3_TITLE}}</h3><p>{{S3_DESC}}</p>
+    </div></div>
+    <div class="step s-partner"><div class="num">4</div><div class="card">
+      <h3>{{S4_TITLE}}</h3><p>{{S4_DESC}}</p>
+    </div></div>
+  </div>
+
+  <!-- ============ ROZHODNUTÍ ============ -->
+  <div class="decision">
+    <div class="diamond"><div class="num">?</div>
+      <h3>{{DECISION_TITLE}}</h3><p>{{DECISION_DESC}}</p>
+    </div>
+    <div class="branches">
+      <div class="branch ok"><h4>✓ {{OK_TITLE}}</h4>
+        <ul><li>{{OK_1}}</li><li>{{OK_2}}</li></ul></div>
+      <div class="branch err"><h4>✕ {{ERR_TITLE}}</h4>
+        <ul><li>{{ERR_1}}</li><li>{{ERR_2}}</li></ul></div>
+    </div>
+  </div>
+
+  <!-- ============ CO POTŘEBUJEME OD VÁS ============ -->
+  <h2>Co potřebujeme od vás</h2>
+  <p class="h2sub">Předpoklady a rozhodnutí na vaší straně, bez kterých řešení nespustíme.</p>
+  <div class="panel">
+    <ul>
+      <li><b>{{NEED_1}}</b> — {{NEED_1_DESC}}</li>
+      <li><b>{{NEED_2}}</b> — {{NEED_2_DESC}}</li>
+      <li><b>{{NEED_3}}</b> — {{NEED_3_DESC}}</li>
+    </ul>
+  </div>
+
+  <!-- ============ CO OVĚŘÍME PŘED SPUŠTĚNÍM ============ -->
+  <h2>Co ověříme před spuštěním</h2>
+  <p class="h2sub">Body, které potvrdíme v pilotu, aby řešení fungovalo spolehlivě v provozu.</p>
+  <div class="grid2">
+    <div class="tile"><div class="tt">{{VALIDATE_1}}</div><p>{{VALIDATE_1_DESC}}</p></div>
+    <div class="tile"><div class="tt">{{VALIDATE_2}}</div><p>{{VALIDATE_2_DESC}}</p></div>
+    <div class="tile"><div class="tt">{{VALIDATE_3}}</div><p>{{VALIDATE_3_DESC}}</p></div>
+    <div class="tile"><div class="tt">{{VALIDATE_4}}</div><p>{{VALIDATE_4_DESC}}</p></div>
+  </div>
+
+  <footer>
+    <span>{{CLIENT}} · {{PRODUCT}} · {{FEATURE_TITLE}} — návrh řešení</span>
+    <span>{{DATE}}{{OPTIONAL_REF_LINKS}}</span>
+  </footer>
+
+</div>
+</body>
+</html>

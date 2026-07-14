@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!-- INTERNAL ESTIMATE (interní odhad). Full methodology: rate, phases, work-items,
+     senior-only, NEzahrnuje, risks, buffer, calendar. NOT for the client.
+     Save as: {dir}/YYYY-MM-DD-task-name-odhad.html
+     Inline templates/estimate-style.css fully into <style> below (self-contained). -->
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interní odhad – {{TASK_TITLE}}</title>
+<style>
+/* {{STYLE}} ← inline the entire contents of templates/estimate-style.css here */
+</style>
+</head>
+<body>
+
+<header class="hero internal">
+  <div class="wrap">
+    <div class="brand">Interní odhad · {{CATEGORY}}</div>
+    <h1>{{TASK_TITLE}}</h1>
+    <p class="lede">Model práce: kód píše LLM, senior zadává / reviduje / verifikuje. Fakturuje se senior effort.</p>
+    <div class="meta">
+      <span class="chip">📅 {{DATE}}</span>
+      <span class="chip">🎯 {{SCOPE_CHIP}}</span>
+      <span class="chip">💱 {{RATE}} {{CURRENCY}}/h</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="banner">🔒 INTERNÍ DOKUMENT — neposílat klientovi (obsahuje sazbu, rezervy, rizika, vyloučení).</div>
+
+  <section>
+    <h2><span class="num">1</span> Popis úkolu &amp; předpoklady</h2>
+    {{DESCRIPTION}}
+    <h3>Předpoklady</h3>
+    <ul>{{ASSUMPTIONS}}</ul>
+  </section>
+
+  <section>
+    <h2><span class="num">2</span> Rozsah</h2>
+    <ul>
+      <li><b>Nové soubory:</b> {{NEW_FILES}}</li>
+      <li><b>Modifikované soubory:</b> {{MODIFIED_FILES}}</li>
+      <li><b>Odhad LOC:</b> ~{{LOC}}</li>
+    </ul>
+    <h3>Co se reuse bez psaní</h3>
+    <div class="reuse">{{REUSE_BADGES}}</div>
+  </section>
+
+  <section>
+    <h2><span class="num">3</span> Dekompozice (work-items)</h2>
+    <p class="sub">LLM wc = LLM wall-clock (informativní). Senior = zadání + supervize + review té položky.</p>
+    <table>
+      <thead><tr><th>#</th><th>Položka</th><th>Kat.</th><th class="num">LLM wc</th><th class="num">Senior</th></tr></thead>
+      <tbody>
+        {{WORKITEM_ROWS}}
+        <tr class="subtotal"><td colspan="3">Součet</td><td class="num">{{LLM_WALLCLOCK}}</td><td class="num">{{WORKITEM_SENIOR}}</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span class="num">4</span> Časový odhad (senior hodiny)</h2>
+    <table>
+      <thead><tr><th>Fáze</th><th class="num">Hodiny</th><th>Popis</th></tr></thead>
+      <tbody>
+        {{PHASE_ROWS}}
+        <!-- Zadání & design / Supervize LLM / Code review / Runtime+HW verifikace / MR+předání / Buffer (X%) -->
+        <tr class="total"><td>Effort total (senior)</td><td class="num">{{EFFORT_HOURS}} h</td><td>Fakturovatelná práce</td></tr>
+      </tbody>
+    </table>
+    <p class="small">Informativně: LLM implementace ~{{LLM_WALLCLOCK}} h wall-clock (běží souběžně se supervizí, nefakturuje se po hodinách). Calendar ≈ ×{{MULTIPLIER}} → ~{{CALENDAR_HOURS}} h.</p>
+  </section>
+
+  <section>
+    <h2><span class="num">5</span> Cena</h2>
+    <div class="price">
+      <div class="box"><div class="k">Effort (senior)</div><div class="v">{{EFFORT_HOURS}} h</div></div>
+      <div class="box alt"><div class="k">Sazba</div><div class="v">{{RATE}} {{CURRENCY}}/h</div></div>
+      <div class="box"><div class="k">Celková cena</div><div class="v">~{{TOTAL_COST}}</div></div>
+    </div>
+    <div class="note"><b>Buffer:</b> {{BUFFER_PCT}} % — {{BUFFER_REASON}}. <b>Rozsah ±:</b> {{RANGE_HOURS}} ({{RANGE_COST}}). Calendar je informativní (delivery), ne fakturovatelné.</div>
+  </section>
+
+  <section>
+    <h2><span class="num">6</span> Senior-only položky (LLM nezrychlí)</h2>
+    <ul>{{SENIOR_ONLY}}</ul>
+  </section>
+
+  <section>
+    <h2><span class="num">7</span> Co odhad NEzahrnuje</h2>
+    <ul class="excl">{{EXCLUDED}}</ul>
+  </section>
+
+  <section>
+    <h2><span class="num">8</span> Rizika a poznámky</h2>
+    <ul>{{RISKS}}</ul>
+    <div class="note warn">Odhad vytvořen skillem task-estimate (kalibrace LLM-writes-code). Čísla jsou nástřel pro rozhodnutí o rozsahu.</div>
+  </section>
+
+</div>
+</body>
+</html>
