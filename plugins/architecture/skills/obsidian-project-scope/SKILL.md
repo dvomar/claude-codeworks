@@ -16,7 +16,7 @@ Zmapuje **libovolný** codebase do Obsidian vaultu na úrovni **schopností**: c
 
 ## Kdy NEpoužít
 
-- Když chceš vědět, *jak* něco funguje → to je fáze 2, ne tenhle skill.
+- Když chceš vědět, *jak* něco funguje → to je fáze 2 (skill `obsidian-project-depth`), ne tenhle skill.
 - Na jeden modul/soubor → to je normální otázka, ne mapovací flow.
 
 ## Vstupy
@@ -199,15 +199,18 @@ Index `Nálezy/_Nálezy.md`: tabulky po typu (chyby / nedodělky / drift), sloup
 
 ```bash
 # všechny wikilinky musí vést na existující noty
+# pozor: v tabulkách se alias píše s escapem `[[Note\|alias]]` — ten `\` je nutné z targetu odstranit,
+# jinak checker hlásí false positive na každém tabulkovém odkazu
 python3 - <<'EOF'
 import os, re, glob
 ROOT = "<vault>/<Projekt>"
 files = glob.glob(os.path.join(ROOT, "**", "*.md"), recursive=True)
 names = {os.path.splitext(os.path.basename(f))[0] for f in files}
-broken = [(os.path.basename(f), l.strip())
+broken = [(os.path.basename(f), t)
           for f in files
           for l in re.findall(r'\[\[([^\]|#]+)', open(f, encoding="utf-8").read())
-          if l.strip() not in names]
+          for t in [l.strip().rstrip('\\').strip()]
+          if t not in names]
 print(f"not: {len(files)}")
 print("ROZBITÉ:", broken or "žádné")
 EOF
@@ -217,4 +220,4 @@ Pak uživateli **řekni nálezy** — hlavně rozpory mezi dokumentací a realit
 
 ## Co tenhle skill vědomě nedělá
 
-Nečte implementace do hloubky. Nekreslí sekvenční diagramy. Nemapuje datové toky. Nedělá závislostní graf. **To je fáze 2** — a ta má smysl teprve tehdy, když existuje tahle mapa.
+Nečte implementace do hloubky. Nekreslí sekvenční diagramy. Nemapuje datové toky. Nedělá závislostní graf. **To je fáze 2 — skill `obsidian-project-depth`**, a ta má smysl teprve tehdy, když existuje tahle mapa.
