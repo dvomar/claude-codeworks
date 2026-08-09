@@ -98,6 +98,7 @@ Spawn `security-auditor` subagents **in parallel** — one per relevant focus ar
 - **depth** (quick | deep)
 - **recon_excerpt** — relevant slice of `recon.json` (entry points, sensitive ops, file globs for this area)
 - **scope_paths** — included paths; **exclude_paths** — out-of-scope
+- **stack_checklist** — the contents of `references/stacks/<app_class>.md`. One file per app-class; pass it inline (agents get a prompt, not a working directory). It carries the patterns that only exist in that class plus that class's known false positives — the second half matters as much as the first, because it is what stops a kiosk report from being padded with CSP findings. For `hybrid`, pass the file for each detected class. If no file matches, say so rather than substituting a neighbouring class.
 
 Use `subagent_type: "security-auditor"` if registered (it is — see `.claude/agents/security-auditor.md`). If unavailable, fall back to `subagent_type: "general-purpose"` and inline the system prompt from that same file — it is the only copy.
 
