@@ -32,7 +32,7 @@ Run the three passes in order. Any pass may be a no-op — that's fine, say so a
 
 ### Pass 1 — Memory (runs inline, in this session)
 
-You already lived this conversation, so review it directly. Do **not** spawn the `memory-proposer` agent (it re-reads a transcript from disk — strictly worse than your live context).
+You already lived this conversation, so review it directly — don't delegate this to a subagent that would only re-read a transcript from disk.
 
 1. Load the authoritative rules: read the `# auto memory` section of `~/.claude/CLAUDE.md` (types, when-to-save, what-NOT-to-save, body structure). Your system prompt already contains these — re-skim them.
 2. Read the existing `MEMORY.md` index in your auto-memory directory to avoid duplicates.

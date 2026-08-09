@@ -2,7 +2,8 @@
 name: integration-proposal
 description: Produce a feature/integration design proposal in TWO self-contained HTML documents from one analysis — an internal management doc (code-grounded, file:line, scope/sizing, risks) and a customer-facing doc (business language, flow, no internals). Backed by multi-codebase discovery, direct code verification, business-decision clarification, and convention-fit architecture (+ PDF). Use when asked to design or propose an integration/feature architecture or flow for approval ("navrhni architekturu/flow", "návrh integrace", "podklad pro vedení", "návrh pro zákazníka", "design proposal").
 user-invocable: true
-allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Task, AskUserQuestion
+allowed-tools: Read, Write, Edit, Grep, Glob, Bash, Agent, AskUserQuestion
+argument-hint: "<feature/integrace> [--target repo] [--refs cesty] [--dir path] [--lang cs|en]"
 ---
 
 # Skill: Integration / Feature Design Proposal

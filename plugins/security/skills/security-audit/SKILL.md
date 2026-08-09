@@ -1,6 +1,7 @@
 ---
 name: security-audit
-description: Performs security audits of applications and codebases — language- and stack-agnostic. Triggers on requests to audit security, find vulnerabilities, security review, pentest a codebase, check for security holes, OWASP scan, threat modeling, or any phrasing like "is this secure", "find security issues", "audit my app", "zkontroluj bezpečnost", "najdi bezpečnostní díry". Use this skill whenever the user asks about application security, even informally — including reviewing a single file/PR for security issues, validating an implementation, hardening recommendations, or auditing dependencies. Works on any stack and any application class: web fullstack/SPA/API, thick clients (.NET kiosks, Electron, Tauri, WPF, Qt, mobile), CLI tools, libraries. Produces a prioritized markdown report with concrete fixes plus a machine-readable findings.json.
+description: 'Performs security audits of applications and codebases — language- and stack-agnostic. Triggers on requests to audit security, find vulnerabilities, security review, pentest a codebase, check for security holes, OWASP scan, threat modeling, or any phrasing like "is this secure", "find security issues", "audit my app", "zkontroluj bezpečnost", "najdi bezpečnostní díry". Use this skill whenever the user asks about application security, even informally — including reviewing a single file/PR for security issues, validating an implementation, hardening recommendations, or auditing dependencies. Works on any stack and any application class: web fullstack/SPA/API, thick clients (.NET kiosks, Electron, Tauri, WPF, Qt, mobile), CLI tools, libraries. Produces a prioritized markdown report with concrete fixes plus a machine-readable findings.json.'
+argument-hint: "[cesta|modul]  (prázdné = celý repo; hloubku se doptá)"
 ---
 
 # Security Audit
@@ -98,7 +99,7 @@ Spawn `security-auditor` subagents **in parallel** — one per relevant focus ar
 - **recon_excerpt** — relevant slice of `recon.json` (entry points, sensitive ops, file globs for this area)
 - **scope_paths** — included paths; **exclude_paths** — out-of-scope
 
-Use `subagent_type: "security-auditor"` if registered (it is — see `.claude/agents/security-auditor.md`). If unavailable, fall back to `subagent_type: "general-purpose"` and inline the system prompt from `agents/security-auditor.md`.
+Use `subagent_type: "security-auditor"` if registered (it is — see `.claude/agents/security-auditor.md`). If unavailable, fall back to `subagent_type: "general-purpose"` and inline the system prompt from that same file — it is the only copy.
 
 **Focus area selection — full matrix in `references/focus-areas.md`.** Compressed summary:
 
@@ -184,7 +185,7 @@ Then in chat, summarize concisely:
 
 - App-class detection: `references/app-class-detection.md`
 - Focus-area × app-class matrix: `references/focus-areas.md`
-- Subagent system prompt: `agents/security-auditor.md` (also registered at `.claude/agents/security-auditor.md`)
+- Subagent system prompt: `.claude/agents/security-auditor.md` (single source; `agents/security-auditor.md` is just a pointer to it)
 - Finding schema: `references/finding-schema.md`
 - Recon schema: `references/recon-schema.md`
 - Severity rubric: `references/severity-rubric.md`

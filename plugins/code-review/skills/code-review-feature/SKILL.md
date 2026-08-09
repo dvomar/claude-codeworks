@@ -1,6 +1,7 @@
 ---
 name: code-review-feature
 description: 3-pass review of specific files by path — conventions, patterns, quality. Complements the built-in /code-review (which reviews the current git diff); use this to review arbitrary existing files, not just pending changes. Advisory only (terminal output). Tech-stack agnostic.
+argument-hint: "<cesta> [další-cesta ...]"
 ---
 
 # Code Review (by path)

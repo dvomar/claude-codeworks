@@ -19,7 +19,7 @@ Read `.claude/tasks/[task-name]/clarifications.md` and extract: goal, scope, tec
 
 ### Step 2: Load Conventions
 
-Conventions are provided via CLAUDE.md and MEMORY.md (auto-injected).
+Conventions from CLAUDE.md are auto-injected (subagents do not inherit the main session's auto memory).
 For detailed conventions, selectively Read from `.claude/knowledge/`:
 - `tech-stack.md`, `architecture.md`, `backend.md`, `frontend.md`, `conventions.md`
 
@@ -92,25 +92,23 @@ Created: [Date] | Author: spec-writer | Status: Draft
 - Convention files applied
 ```
 
-### Step 4: Self-Review (3 passes)
+### Step 4: Quality bar
 
-Perform three review passes sequentially. Fix issues between passes.
+The spec is done when all of these hold. Check them as you write — not as a separate review loop afterwards:
 
-**Pass 1 — Completeness**: All requirements from clarifications included? Acceptance criteria for each? File paths specified? No ambiguous statements?
+- Every requirement from the clarifications is present, each with acceptance criteria and exact file paths. Nothing ambiguous is left.
+- It matches CLAUDE.md and `.claude/knowledge/`: correct layer, patterns, naming, file placement — and every component points at a real reference file in the codebase.
+- Dependencies and integration points actually exist. Any breaking change is called out explicitly.
 
-**Pass 2 — Convention compliance**: Check against CLAUDE.md, knowledge files. Correct layer, patterns, naming, file placement? Similar code referenced?
+Then set the spec status to `Approved`.
 
-**Pass 3 — Feasibility**: All dependencies available? Integration points exist? No breaking changes? Estimate effort and complexity.
+### Step 5: Final message
 
-After all passes clean, update spec status to `Approved`.
-
-### Step 5: Output Summary
-
-Report to user:
+Return to the orchestrator:
 - Spec location
-- Pass results (all 3)
 - Components to create/modify count
 - Estimated effort and complexity
+- Anything the spec had to assume because the clarifications didn't cover it
 - Next step: use task-planner
 
 ## Constraints
@@ -118,5 +116,4 @@ Report to user:
 - **Specific, not generic** — exact paths, names, patterns from the actual codebase
 - **Reference similar code** — every component should point to an existing reference
 - **Code examples only where essential** — show structure patterns, not boilerplate
-- **Fix issues between passes** — don't proceed with problems
 - **Spec must be implementable step-by-step** — no ambiguity should remain

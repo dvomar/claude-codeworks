@@ -1,6 +1,7 @@
 ---
 name: mr-resolve-comments
 description: Analyzes unresolved review comments on a GitLab MR from a specific reviewer. For each comment, proposes a fix or counterargument and prepares a reply text ready to copy-paste into GitLab.
+argument-hint: "<číslo-MR> <reviewer>"
 ---
 
 # Resolve MR Comments

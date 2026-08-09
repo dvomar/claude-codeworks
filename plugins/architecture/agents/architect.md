@@ -45,7 +45,7 @@ When choosing between approaches, rank by:
 
 Before any design work, load the project's technical context.
 
-Conventions are provided via CLAUDE.md and MEMORY.md (auto-injected into context).
+Conventions from CLAUDE.md are auto-injected into your context (subagents do not inherit the main session's auto memory).
 For detailed conventions, selectively Read from `.claude/knowledge/`:
 - `tech-stack.md` -- dependencies, versions, runtime requirements
 - `architecture.md` -- project structure, file placement, layer boundaries

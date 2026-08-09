@@ -1,6 +1,7 @@
 ---
 name: code-optimize
 description: Analyzes code for optimization opportunities - performance, memory, readability. Advisory only (no fixes applied); complements /code-review (correctness bugs) and /simplify (applies cleanups). Use after code review passes. Tech-stack agnostic.
+argument-hint: "<cesta> [--focus performance|memory|readability|all]"
 ---
 
 # Code Optimization

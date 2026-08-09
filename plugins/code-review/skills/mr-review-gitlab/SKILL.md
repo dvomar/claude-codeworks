@@ -1,6 +1,7 @@
 ---
 name: mr-review-gitlab
 description: 3-pass code review of a GitLab MR directly from the terminal. Optionally lists open MRs if no number provided. Loads diff, source files, and conventions, performs review, and posts selected inline draft comments in Czech.
+argument-hint: "[číslo-MR]  (prázdné = vypíše otevřené MR)"
 ---
 
 # Review GitLab MR

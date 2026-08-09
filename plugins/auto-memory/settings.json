@@ -1,14 +1,14 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "python3 ~/.claude/statusline.py"
+    "command": "if [ -f ~/.claude/statusline.py ]; then python3 ~/.claude/statusline.py; fi"
   },
   "hooks": {
     "SessionEnd": [
       {
         "matcher": "clear|prompt_input_exit",
         "hooks": [
-          { "type": "command", "command": "python3 ~/.claude/hooks/session-end.py" }
+          { "type": "command", "command": "if [ -f ~/.claude/hooks/session-end.py ]; then python3 ~/.claude/hooks/session-end.py; fi" }
         ]
       }
     ],
@@ -16,7 +16,7 @@
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
-          { "type": "command", "command": "python3 ~/.claude/hooks/post-tool-edit.py" }
+          { "type": "command", "command": "if [ -f ~/.claude/hooks/post-tool-edit.py ]; then python3 ~/.claude/hooks/post-tool-edit.py; fi" }
         ]
       }
     ],
@@ -24,7 +24,7 @@
       {
         "matcher": "startup",
         "hooks": [
-          { "type": "command", "command": "python3 ~/.claude/hooks/session-start.py" }
+          { "type": "command", "command": "if [ -f ~/.claude/hooks/session-start.py ]; then python3 ~/.claude/hooks/session-start.py; fi" }
         ]
       }
     ]

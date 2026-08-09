@@ -1,6 +1,7 @@
 ---
 name: obsidian-project-scope
 description: Fáze 1 mapování libovolného projektu do Obsidian vaultu — CO systém umí (schopnosti), ne JAK to dělá. Fan-out průzkumných agentů po doménách, syntéza do propojených not. Použij při nástupu na neznámý projekt, při onboardingu, nebo když chybí přehled schopností. Spouštěj jako "/obsidian-project-scope", "zmapuj projekt do vaultu", "co ten systém vlastně umí".
+argument-hint: "[cesta-k-projektu] [cesta-k-vaultu]"
 ---
 
 # Obsidian Project Scope — fáze 1: mapa území

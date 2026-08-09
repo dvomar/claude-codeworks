@@ -88,12 +88,8 @@ Observed order from representative files:
 ### DON'T
 ```
 
-## Step 5: Self-Review (3 passes)
+## Step 5: Quality bar
 
-**Pass 1 — Completeness**: Style configs read? 5-10 files sampled? All naming, import, member, type, testing conventions extracted?
+The report is done when the style configs are read and 5-10 files sampled, every convention (naming, imports, member order, types, testing) is backed by what those files actually do rather than what the config claims, and a developer can find the naming convention for a new file without opening the source. Keep it under 200 lines.
 
-**Pass 2 — Accuracy**: Naming patterns match actual files? Import order verified? Formatter settings from config correct?
-
-**Pass 3 — Clarity**: Developer can quickly find naming convention for new file? Import order clear? DO/DON'T actionable?
-
-Fix issues between passes. Ensure under 200 lines. Write to `.claude/knowledge/conventions.md`.
+Write to `.claude/knowledge/conventions.md`.

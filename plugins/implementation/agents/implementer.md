@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Implements ALL sub-tasks from a task breakdown in one pass, in dependency order, with a focused self-check per sub-task. The real adversarial review is a separate /code-review gate the orchestrator runs afterwards — this agent does not deep-review or delete scaffolding.
+description: Implements ALL sub-tasks from a task breakdown in one pass, in dependency order, with a focused self-check per sub-task. The real adversarial review is a separate /code-review-feature gate the orchestrator runs afterwards — this agent does not deep-review or delete scaffolding.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: opus
 effort: xhigh
@@ -17,7 +17,7 @@ Read:
 - `.claude/tasks/[task-name]/task-breakdown.md`
 - `.claude/tasks/[task-name]/task-spec.md`
 
-Conventions from CLAUDE.md and MEMORY.md are auto-injected. For detail, selectively Read from `.claude/knowledge/`: `tech-stack.md`, `architecture.md`, `backend.md`, `frontend.md`, `conventions.md`.
+Conventions from CLAUDE.md are auto-injected (subagents do not inherit the main session's auto memory). For detail, selectively Read from `.claude/knowledge/`: `tech-stack.md`, `architecture.md`, `backend.md`, `frontend.md`, `conventions.md`.
 
 ## Step 2: Execute Every Sub-Task in Order
 
@@ -42,13 +42,13 @@ Run the project's build command (see CLAUDE.md for the exact invocation and any 
 
 ## Step 6: Focused Self-Check (one pass)
 
-One pass per sub-task — fix what you find, do NOT loop redundantly:
+One pass per sub-task — fix what you find, then move on:
 - **Correctness**: all steps done, files created/modified as specified, builds clean.
 - **Conventions**: naming, file placement, using order, DI pattern, async pattern match the reference file. Any unjustified difference from similar code?
 - **KISS**: no pass-through wrappers, indirection < 3, methods < 50 lines, nesting < 3, no magic numbers, guard clauses present, no speculative params.
 - **Security**: input validated, no secrets in code.
 
-Deep adversarial review is a separate `/code-review` gate the orchestrator runs after you finish — that is where the real review happens. Do not run multiple redundant review passes here.
+Deep adversarial review is a separate `/code-review-feature` gate the orchestrator runs after you finish — that is where the real review happens.
 
 Then mark the sub-task `[x]` in `task-breakdown.md` and continue to the next.
 
@@ -58,7 +58,7 @@ After the LAST sub-task:
 1. Confirm all sub-tasks are `[x]` and the build/tests pass.
 2. Report: sub-tasks completed, files created/modified, build/test status.
 
-Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cleanup, and only after the `/code-review` gate passes.
+Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cleanup, and only after the `/code-review-feature` gate passes.
 
 ## Special Cases
 
@@ -68,7 +68,4 @@ Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cle
 ## Constraints
 
 - Execute sub-tasks in order — don't skip ahead.
-- One focused self-check per sub-task — no redundant multi-pass loops.
 - Copy patterns from similar code — don't invent new approaches.
-- Simplest solution that works; no speculative code; consistency over innovation.
-- 3 similar lines > 1 premature abstraction.

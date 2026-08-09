@@ -1,3 +1,8 @@
+---
+description: Load a ClickUp task by custom ID or name search and display its details. Optionally start time tracking.
+argument-hint: "<ROBE-1234 | hledaný název>"
+---
+
 Load a ClickUp task by custom ID or name search and display its details. Optionally start time tracking.
 
 ## Input

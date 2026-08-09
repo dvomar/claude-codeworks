@@ -13,7 +13,7 @@ You are a universal frontend/client-side analysis expert. Analyze ALL client-sid
 ## Step 1: Detect Frontend Framework
 
 ```bash
-Grep -r "\"next\"\|\"react\"\|\"vue\"\|\"@angular/core\"\|\"svelte\"" package.json 2>/dev/null
+grep -E '"(next|react|vue|@angular/core|svelte)"' package.json 2>/dev/null
 ls pubspec.yaml 2>/dev/null && echo "Flutter"
 ```
 
@@ -86,12 +86,8 @@ Analysis Date: [date] | Analyzer: frontend-analyzer
 | Question | Answer | Action |
 ```
 
-## Step 5: Self-Review (3 passes)
+## Step 5: Quality bar
 
-**Pass 1 — Completeness**: All component, styling, state, form, routing, i18n, a11y, performance patterns found?
+The report is done when every pattern area is covered (component, styling, state, forms, routing, i18n, a11y, performance), every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new component without opening the source. Keep it under 250 lines.
 
-**Pass 2 — Accuracy**: Patterns correctly identified? File paths verified? No code blocks?
-
-**Pass 3 — Clarity**: Agent can quickly find component pattern? Quick Reference actionable?
-
-Fix issues between passes. Ensure under 250 lines. Write to `.claude/knowledge/frontend.md`.
+Write to `.claude/knowledge/frontend.md`.

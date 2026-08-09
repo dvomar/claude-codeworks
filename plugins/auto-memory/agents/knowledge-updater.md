@@ -1,6 +1,6 @@
 ---
 name: knowledge-updater
-description: Incrementally updates .claude/knowledge/*.md files for a small set of recently-changed source files. Invoked by SessionEnd hook when dirty list is small (<=10 files). Skips when changes are not architecturally relevant. Conservative — never rewrites whole files.
+description: Incrementally updates .claude/knowledge/*.md files for a small set of recently-changed source files listed in .claude/.knowledge-dirty.txt. Invoked by the /wrap-session skill. Skips when changes are not architecturally relevant. Conservative — never rewrites whole files.
 tools: Read, Edit, Grep, Glob, Bash
 model: sonnet
 color: yellow
@@ -105,4 +105,4 @@ Cleared dirty list.
 - **No new sections without strong evidence** — prefer adding to existing tables/lists.
 - **Clear dirty list only on success or no-op** — partial failures must leave the dirty list intact (or rewritten without successfully-processed paths) so the next session can retry.
 - **Knowledge files cap their length** (e.g., architecture.md ~200 lines). If your update would push beyond, drop a less important entry instead of growing the file.
-- **Run silently**: hook spawned you in background, your output goes to /dev/null. Only stdout matters for diagnostics if user inspects later.
+- **Your final message is the report** — `/wrap-session` runs you in the live session and shows it to the user, so keep it to the Step 6 shape and skip narration of individual edits.

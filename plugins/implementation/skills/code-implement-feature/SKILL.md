@@ -1,6 +1,7 @@
 ---
 name: code-implement-feature
-description: Complete feature implementation workflow. Orchestrator-led clarification, then spec-writer → task-planner → implementer (all Opus 4.8), closed by a /code-review-feature gate.
+description: Complete feature implementation workflow. Orchestrator-led clarification, then spec-writer → task-planner → implementer (all on the opus alias at xhigh effort), closed by a /code-review-feature gate.
+argument-hint: "<popis feature nebo změny>"
 ---
 
 # Feature Implementation Workflow
@@ -9,7 +10,7 @@ This skill orchestrates a high-quality feature implementation pipeline. The orch
 
 ## Models
 
-All pipeline agents run on the top **Opus** tier at `xhigh` reasoning effort (`model: opus`, `effort: xhigh`) — both the preparation (`req-clarifier` scout, `spec-writer`, `task-planner`) and the implementation (`implementer`). The architectural judgment baked into the spec/plan and the convention-correctness of the generated code are both high-stakes: a spec/plan that misreads the project's conventions, or code that quietly violates them, produces subtly-wrong results — so neither stage is downgraded. The `opus` alias auto-tracks the latest Opus, which keeps this template portable across projects; to freeze a specific version, replace `opus` with an exact model ID (e.g. `claude-opus-4-8`).
+All pipeline agents run on the top **Opus** tier at `xhigh` reasoning effort (`model: opus`, `effort: xhigh`) — both the preparation (`req-clarifier` scout, `spec-writer`, `task-planner`) and the implementation (`implementer`). The architectural judgment baked into the spec/plan and the convention-correctness of the generated code are both high-stakes: a spec/plan that misreads the project's conventions, or code that quietly violates them, produces subtly-wrong results — so neither stage is downgraded. The `opus` alias auto-tracks the latest Opus, which keeps this template portable across projects; to freeze a specific version, replace `opus` with an exact model ID (e.g. `claude-opus-5`).
 
 ## Prerequisites
 
@@ -25,43 +26,43 @@ Conventions live in CLAUDE.md and MEMORY.md (auto-injected). For detail, the age
 ```
 User Request
     ↓
-┌─────────────────────────────────────────────┐
-│ 1. Clarification (ORCHESTRATOR, Opus 4.8)    │
+┌──────────────────────────────────────────────┐
+│ 1. Clarification (ORCHESTRATOR)              │
 │    • optional: req-clarifier scout gathers   │
 │      context + proposes questions            │
 │    • orchestrator asks user (AskUserQuestion)│
 │      — 1-3 rounds, then confirm              │
 │    → orchestrator writes clarifications.md   │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
     ↓
-┌─────────────────────────────────────────────┐
-│ 2. spec-writer (Opus 4.8)                    │
-│    • formal spec, 3x dimensional self-review │
+┌──────────────────────────────────────────────┐
+│ 2. spec-writer (opus / xhigh)                │
+│    • formal spec against a quality bar       │
 │    → task-spec.md                            │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
     ↓
-┌─────────────────────────────────────────────┐
-│ 3. task-planner (Opus 4.8)                   │
+┌──────────────────────────────────────────────┐
+│ 3. task-planner (opus / xhigh)               │
 │    • ordered sub-tasks by dependency         │
-│    → task-breakdown.md                        │
-└─────────────────────────────────────────────┘
+│    → task-breakdown.md                       │
+└──────────────────────────────────────────────┘
     ↓
-┌─────────────────────────────────────────────┐
-│ 4. implementer (Opus 4.8) — ONE call         │
+┌──────────────────────────────────────────────┐
+│ 4. implementer (opus / xhigh) — ONE call     │
 │    • loops ALL sub-tasks in order            │
 │    • focused self-check per sub-task         │
 │    → working code + tests                    │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
     ↓
-┌─────────────────────────────────────────────┐
+┌──────────────────────────────────────────────┐
 │ 5. /code-review-feature gate — reviews the   │
 │    files the implementer changed             │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
     ↓
-┌─────────────────────────────────────────────┐
+┌──────────────────────────────────────────────┐
 │ 6. Cleanup (ORCHESTRATOR) — ask user to      │
 │    remove .claude/tasks/[feature-name]/      │
-└─────────────────────────────────────────────┘
+└──────────────────────────────────────────────┘
     ↓
 Feature Complete
 ```

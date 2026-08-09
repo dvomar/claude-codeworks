@@ -1,3 +1,8 @@
+---
+description: List all git worktrees managed by `/worktree-new`, joining the manifest with git's own view so you see active worktrees, orphans and gone entries. Read-only — never mutates state.
+argument-hint: "[--all] [--json]"
+---
+
 List all git worktrees managed by `/worktree-new`. Joins the manifest (`.claude/worktrees.json`) with `git worktree list --porcelain` so you see active worktrees, orphans (in git but not in manifest), and gone entries (in manifest but missing on disk). Read-only — never mutates state.
 
 ## Input

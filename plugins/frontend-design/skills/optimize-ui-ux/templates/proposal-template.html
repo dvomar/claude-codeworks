@@ -1,0 +1,233 @@
+<!doctype html>
+<!--
+  ŠABLONA návrhu UI/UX (skill: ui-ux-optimize).
+  Postup: 1) přepiš :root tokeny na reálné hodnoty produktu (globals.css / theme),
+          2) vyplň sekce 1–7, nepoužité smaž,
+          3) mockupy skládej z .hdr/.menu/.phone/.sheet tříd níž.
+  Soubor musí zůstat samostatný — žádné externí fonty, skripty ani obrázky.
+-->
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Návrh <A> — <název strategie></title>
+<style>
+  /* ——— TOKENY: nahraď reálnými hodnotami produktu ——— */
+  :root{
+    --ink:#444; --muted:#999; --line:#e4e4e4; --paper:#faf8f5; --white:#fff;
+    --accent:#54d5a2; --accent-deep:#2e9e74; --wash:#eafaf3;
+    --amber-bg:#fdf3e3; --amber:#b5751a; --red-bg:#fdecea; --red:#c0392b;
+    --serif:Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  h1{font-family:var(--serif);font-size:2rem;margin:0 0 6px}
+  h2{font-family:var(--serif);font-size:1.3rem;margin:48px 0 4px}
+  .lead{color:#666;max-width:70ch;margin:0 0 4px}
+
+  /* ——— callouty ——— */
+  .thesis{background:var(--wash);border-left:3px solid var(--accent);padding:12px 16px;
+    border-radius:0 3px 3px 0;margin:18px 0 0;max-width:80ch}
+  .warn{background:var(--amber-bg);border-left:3px solid var(--amber);padding:10px 14px;
+    font-size:.85rem;margin-top:12px;border-radius:0 3px 3px 0}
+  .note{font-size:.8rem;color:#666;margin-top:10px}
+
+  /* ——— rámečky zařízení ——— */
+  .grid{display:grid;gap:22px;margin-top:18px}
+  @media(min-width:900px){.grid.dev{grid-template-columns:1fr 1fr}}
+  .frame{background:var(--white);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin:0}
+  .frame > figcaption{font-size:.76rem;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);padding:8px 12px;border-bottom:1px solid var(--line);background:#fcfcfc}
+  .stage{padding:14px;background:repeating-linear-gradient(45deg,#fbfbfb,#fbfbfb 8px,#f7f7f7 8px,#f7f7f7 16px)}
+
+  /* ——— mock chrome ——— */
+  .hdr{background:var(--white);border:1px solid var(--line);border-radius:4px;
+    display:flex;align-items:center;gap:14px;padding:10px 14px}
+  .logo{font-family:var(--serif);font-weight:700;font-size:1.05rem;white-space:nowrap}
+  .nav{display:flex;gap:14px;flex:1;min-width:0;font-size:.82rem;color:#555}
+  .nav span{white-space:nowrap}
+  .cta{background:var(--accent);color:#fff;border-radius:3px;padding:7px 13px;
+    font-size:.8rem;font-weight:600;white-space:nowrap}
+  .btn-o{border:1px solid var(--line);border-radius:3px;padding:6px 12px;font-size:.8rem;
+    font-weight:600;white-space:nowrap;background:#fff}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--wash);color:var(--accent-deep);
+    display:grid;place-content:center;font-weight:700;font-size:.78rem;flex:none;border:1px solid #cfeee0}
+  .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);
+    border-radius:999px;padding:4px 10px 4px 4px;background:#fff;font-size:.8rem;font-weight:600}
+  .role{background:#fff;border:1px solid var(--line);border-radius:2px;padding:1px 7px;
+    font-size:.7rem;font-weight:700;color:#666;white-space:nowrap}
+
+  /* ——— rozbalovací menu ——— */
+  .menu{margin-top:8px;margin-left:auto;width:250px;background:#fff;border:1px solid var(--line);
+    border-radius:4px;box-shadow:0 12px 30px -12px rgba(0,0,0,.25);overflow:hidden}
+  .menu-head{padding:11px 13px;border-bottom:1px solid #f0f0f0}
+  .menu-head b{display:block;font-size:.85rem}
+  .menu-head small{color:var(--muted);font-size:.72rem}
+  .mi{display:flex;align-items:center;gap:9px;padding:9px 13px;font-size:.83rem;border-top:1px solid #f6f6f6}
+  .mi:first-of-type{border-top:0}
+  .mi.primary{background:#fcfffd;font-weight:600}
+  .mi.danger{color:var(--red);border-top:1px solid var(--line)}
+  .ico{width:16px;text-align:center;color:var(--muted);font-size:.85rem}
+  .mi.danger .ico{color:var(--red)}
+
+  /* ——— mobil ——— */
+  .phone{width:290px;margin:0 auto;border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;background:#fff}
+  .sheet{border-top:1px solid var(--line);border-radius:12px 12px 0 0;padding:8px 16px 16px;
+    box-shadow:0 -8px 24px -14px rgba(0,0,0,.25)}
+  .grabber{width:36px;height:4px;border-radius:2px;background:#ddd;margin:4px auto 12px}
+  .bottombar{border-top:1px solid var(--line);background:#fff;display:flex;align-items:center;
+    gap:10px;padding:9px 12px}
+
+  /* ——— modal ——— */
+  .scrim{background:rgba(0,0,0,.35);padding:22px;border-radius:4px}
+  .modal{background:#fff;border:1px solid var(--line);border-radius:4px;max-width:330px;
+    margin:0 auto;padding:20px;box-shadow:0 20px 50px -20px rgba(0,0,0,.4)}
+
+  /* ——— formulářové atrapy ——— */
+  .lbl{font-size:.74rem;color:#666;display:block;margin-bottom:4px}
+  .inp{border:1px solid var(--line);border-radius:3px;height:38px;background:#fff;margin-bottom:11px;
+    display:flex;align-items:center;padding:0 10px;font-size:.8rem;color:#bbb}
+  .full{display:block;text-align:center;padding:10px;border-radius:3px;font-weight:700;font-size:.82rem}
+
+  /* ——— tok ——— */
+  .flow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:.8rem;margin-top:10px}
+  .step{background:#fff;border:1px solid var(--line);border-radius:3px;padding:6px 10px}
+  .arr{color:var(--muted)}
+
+  /* ——— srovnávací tabulka ——— */
+  .cmp{width:100%;border-collapse:collapse;margin-top:12px;font-size:.86rem}
+  .cmp th,.cmp td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+  .cmp th{background:#fafafa;font-size:.78rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .bad{color:var(--red)} .good{color:var(--accent-deep)}
+
+  ul.tight{margin:8px 0 0;padding-left:18px}
+  ul.tight li{margin:5px 0;font-size:.88rem}
+  code{background:#f4f4f4;border-radius:2px;padding:1px 5px;font-size:.85em}
+  .kbd{border:1px solid var(--line);border-bottom-width:2px;border-radius:3px;padding:1px 6px;
+    font-size:.75rem;background:#fafafa}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Návrh &lt;A&gt; — &lt;název strategie&gt;</h1>
+  <p class="lead">&lt;Jednou větou, co se mění — lidsky, bez žargonu.&gt;</p>
+  <div class="thesis">
+    <strong>Teze:</strong> &lt;Na co tenhle návrh sází a jaký konkrétní dnešní problém tím útočí.
+    Odkaž se na to, jak to funguje dnes — s důkazem z kódu.&gt;
+  </div>
+
+  <h2>1 · Desktop (≥ 1280 px)</h2>
+  <div class="grid dev">
+    <figure class="frame">
+      <figcaption>&lt;stav 1, např. nepřihlášený&gt;</figcaption>
+      <div class="stage">
+        <div class="hdr">
+          <span class="logo">Produkt</span>
+          <nav class="nav"><span>Položka</span><span>Položka</span></nav>
+          <span class="btn-o">Sekundární</span><span class="cta">Primární</span>
+        </div>
+        <p class="note"><strong>Změna:</strong> &lt;proč je to takhle, ne jen co to je&gt;</p>
+      </div>
+    </figure>
+    <figure class="frame">
+      <figcaption>&lt;stav 2, např. přihlášený&gt;</figcaption>
+      <div class="stage">
+        <div class="hdr">
+          <span class="logo">Produkt</span><span style="flex:1"></span>
+          <span class="chip"><span class="avatar">XY</span> Jméno ▾</span>
+        </div>
+        <div class="menu">
+          <div class="menu-head"><b>Jméno Příjmení</b><small>mail@example.com</small></div>
+          <div class="mi primary"><span class="ico">▦</span> Hlavní akce</div>
+          <div class="mi"><span class="ico">☺</span> Vedlejší</div>
+          <div class="mi danger"><span class="ico">⇥</span> Destruktivní</div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  <h2>2 · Tablet (768–1279 px)</h2>
+  <div class="grid dev">
+    <figure class="frame">
+      <figcaption>&lt;co na tabletu vypadává&gt;</figcaption>
+      <div class="stage">
+        <div class="hdr">
+          <span class="logo">Produkt</span><span style="flex:1"></span>
+          <span class="cta">Primární</span><span style="font-size:1.2rem;color:#666">☰</span>
+        </div>
+        <p class="note">&lt;Explicitně řekni, co se skrývá a proč zrovna to.&gt;</p>
+      </div>
+    </figure>
+  </div>
+
+  <h2>3 · Mobil (&lt; 768 px)</h2>
+  <div class="grid dev">
+    <figure class="frame">
+      <figcaption>&lt;dosah palce, sheet místo dropdownu&gt;</figcaption>
+      <div class="stage">
+        <div class="phone">
+          <div class="hdr" style="border:0;border-bottom:1px solid var(--line);border-radius:0;padding:8px 10px">
+            <span class="logo" style="font-size:.95rem">Produkt</span><span style="flex:1"></span>
+            <span class="avatar" style="width:30px;height:30px;font-size:.7rem">XY</span>
+          </div>
+          <div style="height:96px;background:#fcfcfc;display:grid;place-content:center;color:#bbb;font-size:.78rem">obsah</div>
+          <div class="sheet">
+            <div class="grabber"></div>
+            <div class="mi primary"><span class="ico">▦</span> Hlavní akce</div>
+            <div class="mi danger"><span class="ico">⇥</span> Destruktivní</div>
+          </div>
+        </div>
+      </div>
+    </figure>
+  </div>
+
+  <h2>4 · Tok od začátku do konce</h2>
+  <div class="frame"><div class="stage">
+    <div class="flow">
+      <span class="step">Vstup</span><span class="arr">→</span>
+      <span class="step">Akce</span><span class="arr">→</span>
+      <span class="step">Odezva</span><span class="arr">→</span>
+      <span class="step">Kam uživatel skončí</span>
+    </div>
+    <ul class="tight"><li>&lt;Co se mění v toku a proč.&gt;</li></ul>
+  </div></div>
+
+  <h2>5 · Přístupnost</h2>
+  <div class="frame"><div class="stage">
+    <ul class="tight">
+      <li>ARIA: &lt;role/atributy dle vzoru z context7&gt;</li>
+      <li>Klávesnice: <span class="kbd">Enter</span> / <span class="kbd">Esc</span> / <span class="kbd">↑↓</span> — &lt;co dělají&gt;</li>
+      <li>Fokus: &lt;kam se vrací po zavření&gt;; kontrast ≥ 4,5:1</li>
+    </ul>
+  </div></div>
+
+  <h2>6 · Co se mění oproti dnešku</h2>
+  <table class="cmp">
+    <thead><tr><th style="width:26%">Místo</th><th>Dnes</th><th>Návrh</th></tr></thead>
+    <tbody>
+      <tr><td>&lt;místo&gt;</td><td class="bad">&lt;dnešní chování + důkaz&gt;</td><td class="good">&lt;nové chování&gt;</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <strong>Co si tenhle návrh nese:</strong> &lt;poctivá nevýhoda právě téhle strategie —
+    ne obecná fráze. Když žádnou nenajdeš, nepromyslel jsi ho.&gt;
+  </div>
+
+  <h2>7 · Cena implementace</h2>
+  <div class="frame"><div class="stage">
+    <ul class="tight">
+      <li>Dotčené komponenty: &lt;seznam&gt;</li>
+      <li>Znovupoužito: &lt;existující primitiva&gt;</li>
+      <li>Změna DB/API: &lt;ano/ne&gt;</li>
+      <li>Riziko: &lt;nízké/střední/vysoké&gt; — &lt;proč&gt;</li>
+    </ul>
+  </div></div>
+
+</div>
+</body>
+</html>

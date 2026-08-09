@@ -94,16 +94,9 @@ Each sub-task MUST have:
 - Reference to similar existing code
 - Verification checklist
 
-### Step 4: Validate Breakdown
+### Step 4: Quality bar
 
-Self-check:
-- [ ] Every component from spec has sub-tasks
-- [ ] Tasks ordered by dependencies, no circular deps
-- [ ] Each sub-task is 15-60 min (not too granular, not too broad)
-- [ ] Every sub-task has verification checklist
-- [ ] Tests are focused (2-8 per component)
-
-Fix any issues.
+The breakdown is done when every component from the spec has sub-tasks, the order follows dependencies with no cycles, each sub-task is 15-60 minutes with a verification checklist, and tests stay focused (2-8 per component). Hold to this while writing rather than as a separate validation pass.
 
 ### Step 5: Report
 

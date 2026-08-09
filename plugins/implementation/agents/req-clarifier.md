@@ -21,7 +21,7 @@ Identify what needs to be built, which layer(s) are involved, what is clear vs u
 
 ## Step 2: Load context
 
-1. Conventions from CLAUDE.md / MEMORY.md are auto-injected. For detail, selectively Read from `.claude/knowledge/`: `tech-stack.md`, `architecture.md`, `backend.md`, `frontend.md`, `conventions.md`.
+1. Conventions from CLAUDE.md are auto-injected (subagents do not inherit the main session's auto memory). For detail, selectively Read from `.claude/knowledge/`: `tech-stack.md`, `architecture.md`, `backend.md`, `frontend.md`, `conventions.md`.
 2. Search for similar code with Glob/Grep. Read the 2-3 most relevant files.
 
 ## Step 3: Return a context + questions packet

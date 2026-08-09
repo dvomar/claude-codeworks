@@ -87,12 +87,8 @@ Analysis Date: [date] | Analyzer: backend-analyzer
 | Question | Answer | Action |
 ```
 
-## Step 5: Self-Review (3 passes)
+## Step 5: Quality bar
 
-**Pass 1 — Completeness**: All API patterns found? Data access, auth, validation, error handling, middleware documented?
+The report is done when every pattern area is covered (API, data access, auth, validation, error handling, middleware), every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new API route without opening the source. Keep it under 250 lines.
 
-**Pass 2 — Accuracy**: Re-verify patterns by reading files. File paths accurate? No code blocks in output?
-
-**Pass 3 — Clarity**: Agent can quickly find pattern for new API route? Quick Reference actionable? All paths provided?
-
-Fix issues between passes. Ensure under 250 lines. Write to `.claude/knowledge/backend.md`.
+Write to `.claude/knowledge/backend.md`.

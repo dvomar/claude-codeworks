@@ -1,3 +1,8 @@
+---
+description: Create a new git worktree for a task with full setup — branch, dependencies, selective `.claude/` symlinks, CLAUDE.md overlay, and manifest tracking. Universal across projects via an optional `worktree-init.sh` hook.
+argument-hint: "<TASK-ID> <popis> [--base branch] [--offline] [--no-hook] [--no-deps]"
+---
+
 Create a new git worktree for a task with full setup: branch, dependencies, selective `.claude/` symlinks, CLAUDE.md overlay, and manifest tracking. Universal across projects — picks up project-specific behavior via an optional `worktree-init.sh` hook.
 
 ## Input
@@ -101,7 +106,7 @@ Three rules:
 
 1. **Skip per-worktree state** — never symlink `worktrees.json`, `settings.local.json`, `memory`.
 2. **Fast path** — if the worktree doesn't yet have an entry for `<item>`, symlink the whole thing (file or directory).
-3. **Merge path for content directories** — if the worktree DOES have a real directory at `.claude/<item>` (because `<item>` is partially tracked in git for this branch), and `<item>` is a known **content directory**, then for each direct child of `$MAIN_REPO/.claude/<item>/` that's missing in the worktree's copy, drop a symlink. This is what was missing in the first PLM run: tracked `agents/gitlab-mr-reviewer.md` caused the whole `agents/` to be skipped, hiding the other 13 agents.
+3. **Merge path for content directories** — if the worktree DOES have a real directory at `.claude/<item>` (because `<item>` is partially tracked in git for this branch), and `<item>` is a known **content directory**, then for each direct child of `$MAIN_REPO/.claude/<item>/` that's missing in the worktree's copy, drop a symlink. Without this, a single tracked file inside `.claude/agents/` makes the fast path skip the whole directory, hiding every other agent from the worktree.
 
 Content directories (children are independent units — each `.md` agent / command / rule, each skill subdirectory):
 

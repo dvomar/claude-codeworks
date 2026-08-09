@@ -1,6 +1,6 @@
 ---
 name: obsidian-project-depth
-description: Fáze 2 hloubkové analýzy projektu do Obsidian vaultu — JAK kritické cesty reálně fungují (sekvence, tok dat, blast radius), ne CO systém umí. Navazuje na fázi 1 (obsidian-project-scope): bere její kotvy, pustí hloubkové agenty na nosné cesty, ověří jejich tvrzení a zapíše toky do vaultu. Použij, když už existuje mapa z fáze 1 a chceš vystopovat konkrétní tok/mechanismus, zjistit skutečný dopad nálezu (co se stane, když vypálí), nebo ověřit, co je reálně nasazené. Spouštěj jako "/obsidian-project-depth", "fáze 2", "jak to reálně funguje", "vystopuj tok X", "jaký je blast radius toho nálezu", "co je reálně nasazené".
+description: 'Fáze 2 hloubkové analýzy projektu do Obsidian vaultu — JAK kritické cesty reálně fungují (sekvence, tok dat, blast radius), ne CO systém umí. Navazuje na fázi 1 (obsidian-project-scope): bere její kotvy, pustí hloubkové agenty na nosné cesty, ověří jejich tvrzení a zapíše toky do vaultu. Použij, když už existuje mapa z fáze 1 a chceš vystopovat konkrétní tok/mechanismus, zjistit skutečný dopad nálezu (co se stane, když vypálí), nebo ověřit, co je reálně nasazené. Spouštěj jako "/obsidian-project-depth", "fáze 2", "jak to reálně funguje", "vystopuj tok X", "jaký je blast radius toho nálezu", "co je reálně nasazené".'
 ---
 
 # Obsidian Project Depth — fáze 2: jak to funguje

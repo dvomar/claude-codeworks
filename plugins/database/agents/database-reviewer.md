@@ -25,7 +25,7 @@ You review:
 
 Before reviewing, load the project's technical context to understand the database stack and patterns.
 
-Conventions are provided via CLAUDE.md and MEMORY.md (auto-injected into context).
+Conventions from CLAUDE.md are auto-injected into your context (subagents do not inherit the main session's auto memory).
 For detailed conventions, selectively Read from `.claude/knowledge/`:
 - `tech-stack.md` -- database engine, ORM, driver versions
 - `architecture.md` -- where DB-related files live (migrations, models, queries)
@@ -35,24 +35,11 @@ These files define the project's specific DB stack (e.g., which ORM, naming conv
 
 ### Step 2: Identify Database Layer
 
-```bash
-# Find schema/migration files
-Glob **/*migration*
-Glob **/*schema*
-Glob **/prisma/schema.prisma
-Glob **/drizzle/**
-Glob **/*.sql
+Use the Glob and Grep **tools** (not shell commands) to locate the database layer:
 
-# Find ORM configuration
-Glob **/*DbContext*
-Glob **/*datasource*
-Glob **/knexfile*
-
-# Find query files
-Grep "SELECT|INSERT|UPDATE|DELETE" --type sql
-Grep "findMany|findFirst|findUnique" --type ts
-Grep "query\(|execute\(" --type py
-```
+- Schema/migrations — Glob `**/*migration*`, `**/*schema*`, `**/prisma/schema.prisma`, `**/drizzle/**`, `**/*.sql`
+- ORM configuration — Glob `**/*DbContext*`, `**/*datasource*`, `**/knexfile*`
+- Queries — Grep `SELECT|INSERT|UPDATE|DELETE` (type `sql`), `findMany|findFirst|findUnique` (type `ts`), `query\(|execute\(` (type `py`)
 
 ### Step 3: Review Schema Design
 
@@ -90,12 +77,7 @@ Check each table/entity for:
 **N+1 Detection**
 Look for patterns where queries are executed inside loops:
 
-```
-# ORM N+1 patterns to grep for
-Grep "for.*await.*find" --type ts
-Grep "foreach.*Get.*Async" --type cs
-Grep "for.*in.*\.query\(" --type py
-```
+Grep for `for.*await.*find` (type `ts`), `foreach.*Get.*Async` (type `cs`), `for.*in.*\.query\(` (type `py`).
 
 Common N+1 indicators:
 - Looping over results and making a query per item

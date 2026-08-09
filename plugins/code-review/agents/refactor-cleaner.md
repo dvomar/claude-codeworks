@@ -20,7 +20,7 @@ You are a dead code cleanup specialist. Your job is to find unused code, verify 
 
 Before any cleanup, load the project's technical context to understand the build system, file structure, and coding conventions.
 
-Conventions are provided via CLAUDE.md and MEMORY.md (auto-injected into context).
+Conventions from CLAUDE.md are auto-injected into your context (subagents do not inherit the main session's auto memory).
 For detailed conventions, selectively Read from `.claude/knowledge/`:
 - `tech-stack.md` -- language, framework, build commands, package manager
 - `architecture.md` -- project structure, file placement, entry points
@@ -87,11 +87,7 @@ deadcode ./...       # Dead code
 go mod tidy          # Unused dependencies
 ```
 
-General (any ecosystem):
-```bash
-# Find files not imported/required anywhere
-Grep "filename" --type [lang]
-```
+General (any ecosystem): use the Grep **tool** for the filename, scoped to the project's language type, to find files nothing imports.
 
 Categorize findings:
 
@@ -127,21 +123,12 @@ Every piece of dead code falls into one of three categories:
 
 ### Step 4: Verify -- Grep Before Removing
 
-For each item, verify it's truly unused:
+For each item, verify it's truly unused with the Grep **tool** (these are tool calls, not shell commands):
 
-```bash
-# Search for any reference to the symbol
-Grep "symbolName" --path .
-
-# Check for string-based references (dynamic imports, reflection)
-Grep "\"symbolName\"|'symbolName'" --path .
-
-# Check for partial matches (re-exports, barrel files)
-Grep "from.*fileContainingSymbol" --path .
-
-# Check config files
-Grep "symbolName" --glob "*.{json,yaml,yml,toml,xml,config,env}"
-```
+- Any reference to the symbol — pattern `symbolName`
+- String-based references (dynamic imports, reflection) — pattern `["']symbolName["']`
+- Partial matches (re-exports, barrel files) — pattern `from.*fileContainingSymbol`
+- Config files — pattern `symbolName`, glob `*.{json,yaml,yml,toml,xml,config,env}`
 
 **Only proceed with removal if grep returns zero relevant results.**
 

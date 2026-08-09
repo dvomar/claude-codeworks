@@ -3,7 +3,8 @@ name: task-estimate
 description: Creates time and cost estimate for a development task (calibrated for LLM-writes-code workflow — senior dev specifies, reviews and verifies)
 user-invocable: true
 disable-model-invocation: true
-allowed-tools: Read, Write, Grep, Glob, Bash, Task
+allowed-tools: Read, Write, Grep, Glob, Bash, Agent
+argument-hint: "[--rate 875] [--lang cs|en] [--dir docs/odhady] [--currency CZK] <popis úlohy>"
 ---
 
 # Skill: Task Estimation
@@ -62,6 +63,11 @@ Parse `--key value` pairs as overrides, treat the rest as task description.
 | Code review výstupu | 15–20 % | Plausible-but-wrong je hlavní riziko LLM kódu — review se NEškrtá, je to hlavní quality gate |
 | Runtime / HW verifikace | 25–40 % | Fyzický test na zařízení, smoke na živém systému — LLM nezrychlí vůbec; u HW tasků dominantní fáze |
 | MR / předání / koordinace | 10–15 % | MR proces, FE/QA koordinace, číselníky, release notes |
+
+**Vyber hodnoty tak, aby součet dal přesně 100 %.** Rozsahy se sčítají na 85 % (dolní
+okraje) až 125 % (horní), takže je nelze brát nezávisle — jsou to relativní váhy, ne
+nezávislé odhady. Střed každého rozsahu dá 105 %, takže i „vezmi všude střed" je potřeba
+dorovnat.
 
 ## Senior-only verification checklist
 

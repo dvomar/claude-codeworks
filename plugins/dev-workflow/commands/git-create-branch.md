@@ -1,3 +1,8 @@
+---
+description: Create a new git branch from the current branch based on the task description provided as argument.
+argument-hint: "<popis úlohy>"
+---
+
 Create a new git branch from the current branch based on the task description provided as argument.
 
 ## Input

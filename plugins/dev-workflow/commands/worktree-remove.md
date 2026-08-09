@@ -1,3 +1,8 @@
+---
+description: Remove a git worktree managed by `/worktree-new`. Performs safety checks for a dirty working tree and unmerged commits before destructive operations, and updates the manifest atomically.
+argument-hint: "<TASK-ID> [--force] [--keep-branch] [--prune]"
+---
+
 Remove a git worktree managed by `/worktree-new`. Performs safety checks (dirty working tree, unmerged commits) before destructive operations. Updates the manifest atomically.
 
 ## Input
