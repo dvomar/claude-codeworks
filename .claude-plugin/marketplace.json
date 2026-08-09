@@ -31,10 +31,10 @@
     {
       "name": "architecture",
       "source": "./plugins/architecture",
-      "description": "Architecture and codebase analysis — tech stack detection, convention extraction, backend/frontend pattern analysis, and architectural decisions.",
-      "version": "1.0.0",
+      "description": "Architecture and codebase analysis — tech stack detection, convention extraction, backend/frontend pattern analysis, and two-phase project mapping into an Obsidian vault (what a system can do, then how its critical paths actually work).",
+      "version": "1.1.0",
       "category": "productivity",
-      "keywords": ["architecture", "analysis", "conventions", "tech-stack", "patterns"],
+      "keywords": ["architecture", "analysis", "conventions", "tech-stack", "obsidian"],
       "author": { "name": "dvomar" }
     },
     {
@@ -58,19 +58,28 @@
     {
       "name": "dev-workflow",
       "source": "./plugins/dev-workflow",
-      "description": "Developer workflow tools — git branching, task loading, commit preparation, live testing, and task estimation.",
+      "description": "Developer workflow tools — git branching and worktrees, commit preparation, task loading, time and cost estimation, integration proposals, and HTML-to-PDF rendering.",
       "version": "1.0.0",
       "category": "devops",
-      "keywords": ["git", "branching", "commits", "testing", "estimation"],
+      "keywords": ["git", "worktrees", "commits", "estimation", "pdf"],
       "author": { "name": "dvomar" }
     },
     {
       "name": "frontend-design",
       "source": "./plugins/frontend-design",
-      "description": "Frontend design skill for creating distinctive, production-grade UI components that avoid generic AI aesthetics.",
-      "version": "1.0.0",
+      "description": "UI and UX work end to end — design an interface from an existing codebase, optimize an existing one via competing proposals, or build distinctive components that avoid generic AI aesthetics.",
+      "version": "1.1.0",
       "category": "utilities",
-      "keywords": ["frontend", "design", "ui", "components", "css"],
+      "keywords": ["frontend", "design", "ui", "ux", "components"],
+      "author": { "name": "dvomar" }
+    },
+    {
+      "name": "security",
+      "source": "./plugins/security",
+      "description": "Language- and stack-agnostic security audit. Detects the application class, gates focus areas to that class, runs scanners in parallel, and produces a prioritized markdown report plus a machine-readable findings.json.",
+      "version": "1.0.0",
+      "category": "security",
+      "keywords": ["security", "audit", "vulnerabilities", "owasp", "findings"],
       "author": { "name": "dvomar" }
     }
   ]

@@ -29,13 +29,13 @@ Go to the **Discover** tab to browse available plugins.
 | Plugin | Description | Category |
 |--------|-------------|----------|
 | `code-review` | 3-pass code reviews, optimization analysis, refactoring cleanup, GitLab MR integration | productivity |
-| `architecture` | Tech stack detection, convention extraction, backend/frontend pattern analysis, project scoping into an Obsidian vault | productivity |
+| `architecture` | Tech stack detection, convention extraction, backend/frontend pattern analysis, two-phase project mapping into an Obsidian vault | productivity |
 | `implementation` | Requirements clarification, spec writing, task planning, guided implementation | productivity |
 | `auto-memory` | Session memory capture, knowledge doc upkeep, end-of-session wrap-up | productivity |
 | `database` | Schema, query, and migration review for performance, security, and correctness | security |
 | `security` | Language- and stack-agnostic security audits with prioritized findings | security |
-| `dev-workflow` | Git branching, task loading, commit preparation, live testing, estimation | devops |
-| `frontend-design` | Distinctive, production-grade UI components with high design quality | utilities |
+| `dev-workflow` | Git branching and worktrees, commit preparation, task loading, estimation, integration proposals, HTML-to-PDF | devops |
+| `frontend-design` | UI/UX designed from an existing codebase, optimization via competing proposals, distinctive production-grade components | utilities |
 
 ## Team Setup
 

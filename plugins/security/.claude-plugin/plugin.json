@@ -1,0 +1,7 @@
+{
+  "name": "security",
+  "description": "Language- and stack-agnostic security audit. Detects the application class, gates focus areas to what the stack can actually be vulnerable to, runs scanners in parallel, and produces a prioritized markdown report plus a machine-readable findings.json.",
+  "version": "1.0.0",
+  "author": { "name": "dvomar" },
+  "license": "MIT"
+}
