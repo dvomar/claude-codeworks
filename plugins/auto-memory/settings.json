@@ -8,7 +8,10 @@
       {
         "matcher": "clear|prompt_input_exit",
         "hooks": [
-          { "type": "command", "command": "if [ -f ~/.claude/hooks/session-end.py ]; then python3 ~/.claude/hooks/session-end.py; fi" }
+          {
+            "type": "command",
+            "command": "if [ -f ~/.claude/hooks/session-end.py ]; then python3 ~/.claude/hooks/session-end.py; fi"
+          }
         ]
       }
     ],
@@ -16,7 +19,10 @@
       {
         "matcher": "Edit|Write|MultiEdit",
         "hooks": [
-          { "type": "command", "command": "if [ -f ~/.claude/hooks/post-tool-edit.py ]; then python3 ~/.claude/hooks/post-tool-edit.py; fi" }
+          {
+            "type": "command",
+            "command": "if [ -f ~/.claude/hooks/post-tool-edit.py ]; then python3 ~/.claude/hooks/post-tool-edit.py; fi"
+          }
         ]
       }
     ],
@@ -24,9 +30,42 @@
       {
         "matcher": "startup",
         "hooks": [
-          { "type": "command", "command": "if [ -f ~/.claude/hooks/session-start.py ]; then python3 ~/.claude/hooks/session-start.py; fi" }
+          {
+            "type": "command",
+            "command": "if [ -f ~/.claude/hooks/session-start.py ]; then python3 ~/.claude/hooks/session-start.py; fi"
+          }
         ]
       }
+    ]
+  },
+  "permissions": {
+    "_why": "Read-only commands only. Build and test runners execute code the opened repository controls, and this fragment is merged into the global ~/.claude/settings.json — granting them here would grant them in every repo on the machine, including one just cloned. Allowlist those per project instead.",
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git branch:*)",
+      "Bash(git remote -v)",
+      "Bash(git stash list)",
+      "Bash(git worktree list)",
+      "Bash(git blame:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(wc:*)",
+      "Bash(grep:*)",
+      "Bash(rg:*)",
+      "Bash(tree:*)",
+      "Bash(file:*)",
+      "Bash(stat:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker compose ps:*)",
+      "Bash(docker compose logs:*)",
+      "Bash(dotnet list package:*)",
+      "Bash(npm ls:*)",
+      "Bash(cargo check:*)"
     ]
   }
 }

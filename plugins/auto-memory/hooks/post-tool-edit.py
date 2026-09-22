@@ -14,6 +14,17 @@ SOURCE_EXTS = {
     ".cs", ".ts", ".tsx", ".js", ".jsx", ".mjs", ".cjs",
     ".py", ".go", ".rb", ".java", ".kt", ".rs", ".php",
     ".vue", ".svelte",
+    # .NET and desktop UI: a .xaml or .razor change moves the architecture as much
+    # as the .cs behind it.
+    ".razor", ".cshtml", ".xaml", ".axaml",
+    # Schema and migrations are architecture too.
+    ".sql",
+    # Styling carries the design conventions frontend.md documents.
+    ".css", ".scss",
+    # Mobile and native.
+    ".swift", ".m", ".mm", ".dart", ".c", ".cpp", ".cc", ".h", ".hpp",
+    # Operational glue that the deployment sections describe.
+    ".sh", ".ps1",
 }
 
 
@@ -22,7 +33,11 @@ def is_source(p: Path) -> bool:
         return False
     parts = set(p.parts)
     skip = {"node_modules", ".git", "bin", "obj", "dist", "build",
-            "__pycache__", ".next", ".venv", "vendor", "coverage"}
+            "__pycache__", ".next", ".venv", "vendor", "coverage",
+            # .NET and Xcode build output: generated sources, not conventions.
+            # Deliberately NOT "packages" — that is the source root of every
+            # pnpm/yarn/Lerna monorepo, and skipping it would hide the whole repo.
+            "Debug", "Release", "DerivedData", "Pods", ".gradle"}
     return not (parts & skip)
 
 

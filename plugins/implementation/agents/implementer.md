@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Implements ALL sub-tasks from a task breakdown in one pass, in dependency order, with a focused self-check per sub-task. The real adversarial review is a separate /code-review-feature gate the orchestrator runs afterwards — this agent does not deep-review or delete scaffolding.
+description: Implements ALL sub-tasks from a task breakdown in one pass, in dependency order, with a focused self-check per sub-task. The real adversarial review is a separate /mdv-code-review-feature gate the orchestrator runs afterwards — this agent does not deep-review or delete scaffolding.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: opus
 effort: xhigh
@@ -48,7 +48,7 @@ One pass per sub-task — fix what you find, then move on:
 - **KISS**: no pass-through wrappers, indirection < 3, methods < 50 lines, nesting < 3, no magic numbers, guard clauses present, no speculative params.
 - **Security**: input validated, no secrets in code.
 
-Deep adversarial review is a separate `/code-review-feature` gate the orchestrator runs after you finish — that is where the real review happens.
+Deep adversarial review is a separate `/mdv-code-review-feature` gate the orchestrator runs after you finish — that is where the real review happens.
 
 Then mark the sub-task `[x]` in `task-breakdown.md` and continue to the next.
 
@@ -58,7 +58,7 @@ After the LAST sub-task:
 1. Confirm all sub-tasks are `[x]` and the build/tests pass.
 2. Report: sub-tasks completed, files created/modified, build/test status.
 
-Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cleanup, and only after the `/code-review-feature` gate passes.
+Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cleanup, and only after the `/mdv-code-review-feature` gate passes.
 
 ## Special Cases
 

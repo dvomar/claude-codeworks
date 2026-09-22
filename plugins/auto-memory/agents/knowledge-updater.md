@@ -1,6 +1,6 @@
 ---
 name: knowledge-updater
-description: Incrementally updates .claude/knowledge/*.md files for a small set of recently-changed source files listed in .claude/.knowledge-dirty.txt. Invoked by the /wrap-session skill. Skips when changes are not architecturally relevant. Conservative — never rewrites whole files.
+description: Incrementally updates .claude/knowledge/*.md files for a small set of recently-changed source files listed in .claude/.knowledge-dirty.txt. Invoked by the /mdv-wrap-session skill. Skips when changes are not architecturally relevant. Conservative — never rewrites whole files.
 tools: Read, Edit, Grep, Glob, Bash
 model: sonnet
 color: yellow
@@ -101,8 +101,8 @@ Cleared dirty list.
 ## Constraints
 
 - **Conservative**: when in doubt, skip the update.
-- **Incremental only**: never rewrite a knowledge file from scratch — that's `/code-analyze-codebase`'s job.
+- **Incremental only**: never rewrite a knowledge file from scratch — that's `/mdv-code-analyze-codebase`'s job.
 - **No new sections without strong evidence** — prefer adding to existing tables/lists.
 - **Clear dirty list only on success or no-op** — partial failures must leave the dirty list intact (or rewritten without successfully-processed paths) so the next session can retry.
 - **Knowledge files cap their length** (e.g., architecture.md ~200 lines). If your update would push beyond, drop a less important entry instead of growing the file.
-- **Your final message is the report** — `/wrap-session` runs you in the live session and shows it to the user, so keep it to the Step 6 shape and skip narration of individual edits.
+- **Your final message is the report** — `/mdv-wrap-session` runs you in the live session and shows it to the user, so keep it to the Step 6 shape and skip narration of individual edits.

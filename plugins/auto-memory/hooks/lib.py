@@ -39,7 +39,7 @@ def memory_dir_for(project: Path) -> Path:
     """Maps a project path to its global auto-memory dir.
 
     Mirrors Claude Code's encoding: absolute path with '/' replaced by '-'.
-    Example: /Users/mw/foo -> ~/.claude/projects/-Users-mw-foo/memory
+    Example: /home/dev/foo -> ~/.claude/projects/-home-dev-foo/memory
     """
     encoded = str(project.resolve()).replace("/", "-")
     return Path.home() / ".claude" / "projects" / encoded / "memory"

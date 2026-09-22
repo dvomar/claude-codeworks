@@ -6,7 +6,7 @@ Matcher: clear|prompt_input_exit
 Note: memory proposing and knowledge updates are NOT done here. Spawning
 headless `claude -p` subagents on every exit cost a separate API session,
 ran on trivial sessions, and was auto-denied on `.claude/` writes in
-non-interactive mode. That work now lives in the `/wrap-session` skill, run
+non-interactive mode. That work now lives in the `/mdv-wrap-session` skill, run
 manually in the live session (full context, no extra session, writes work).
 """
 import json
@@ -96,7 +96,7 @@ def main() -> int:
     )
     pending = dirty_file_count(data_dir)
     if pending:
-        log_stderr(f"{pending} files pending knowledge update — run /wrap-session before clearing to capture them")
+        log_stderr(f"{pending} files pending knowledge update — run /mdv-wrap-session before clearing to capture them")
     return 0
 
 
