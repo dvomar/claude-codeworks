@@ -1,6 +1,6 @@
 ---
 name: mdv-code-implement-feature
-description: Complete feature implementation workflow. Orchestrator-led clarification, then spec-writer → task-planner → implementer (all on the opus alias at xhigh effort), closed by a /mdv-code-review-feature gate.
+description: Complete feature implementation workflow. Orchestrator-led clarification, then spec-writer → task-planner → implementer (all on the opus alias), closed by a /mdv-code-review-feature gate.
 argument-hint: "<popis feature nebo změny>"
 ---
 
@@ -10,7 +10,7 @@ This skill orchestrates a high-quality feature implementation pipeline. The orch
 
 ## Models
 
-All pipeline agents run on the top **Opus** tier at `xhigh` reasoning effort (`model: opus`, `effort: xhigh`) — both the preparation (`req-clarifier` scout, `spec-writer`, `task-planner`) and the implementation (`implementer`). The architectural judgment baked into the spec/plan and the convention-correctness of the generated code are both high-stakes: a spec/plan that misreads the project's conventions, or code that quietly violates them, produces subtly-wrong results — so neither stage is downgraded. The `opus` alias auto-tracks the latest Opus, which keeps this template portable across projects; to freeze a specific version, replace `opus` with an exact model ID (e.g. `claude-opus-5`).
+All pipeline agents run on the top **Opus** tier (`model: opus`). `spec-writer`, `task-planner` and `implementer` run at `effort: high`: the architectural judgment in the spec/plan and the convention-correctness of the generated code are high-stakes — a spec/plan that misreads the project's conventions, or code that quietly violates them, produces subtly-wrong results. The `req-clarifier` scout only reads and proposes questions, so it runs at `medium`. `xhigh` costs markedly more time and tokens; raise an agent to it only after measuring a quality gain on a real feature. The `opus` alias auto-tracks the latest Opus, which keeps this template portable across projects; to freeze a specific version, replace `opus` with an exact model ID (e.g. `claude-opus-5-5`).
 
 ## Prerequisites
 
@@ -36,19 +36,19 @@ User Request
 └──────────────────────────────────────────────┘
     ↓
 ┌──────────────────────────────────────────────┐
-│ 2. spec-writer (opus / xhigh)                │
+│ 2. spec-writer (opus / high)                 │
 │    • formal spec against a quality bar       │
 │    → task-spec.md                            │
 └──────────────────────────────────────────────┘
     ↓
 ┌──────────────────────────────────────────────┐
-│ 3. task-planner (opus / xhigh)               │
+│ 3. task-planner (opus / high)                │
 │    • ordered sub-tasks by dependency         │
 │    → task-breakdown.md                       │
 └──────────────────────────────────────────────┘
     ↓
 ┌──────────────────────────────────────────────┐
-│ 4. implementer (opus / xhigh) — ONE call     │
+│ 4. implementer (opus / high) — ONE call      │
 │    • loops ALL sub-tasks in order            │
 │    • focused self-check per sub-task         │
 │    → working code + tests                    │
@@ -99,9 +99,8 @@ Self-reviews are performed inline by each agent (no separate review files). The 
 ## Best Practices
 
 1. **Be thorough in clarification** — sharp requirements save time later.
-2. **Let spec-writer complete all reviews** — don't skip quality gates.
-3. **Trust the dependency order** — the implementer executes sub-tasks in sequence.
-4. **Don't skip the /mdv-code-review-feature gate** — it's the independent review.
+2. **Trust the dependency order** — the implementer executes sub-tasks in sequence.
+3. **Don't skip the /mdv-code-review-feature gate** — it's the independent review.
 
 ### When to Skip Parts
 - **Small changes**: skip clarification, start at spec-writer.

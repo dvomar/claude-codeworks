@@ -3,7 +3,7 @@ name: req-clarifier
 description: Non-interactive requirements scout. Gathers codebase context (similar code, applicable conventions/landmines) and proposes sharp clarifying questions for a feature. The interactive Q&A and clarifications.md are produced by the orchestrator, NOT this agent.
 tools: Read, Grep, Glob
 model: opus
-effort: xhigh
+effort: medium
 color: cyan
 ---
 

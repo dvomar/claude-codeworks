@@ -3,6 +3,7 @@ name: refactor-cleaner
 description: Finds and removes dead code, unused dependencies, and stale exports. Safe, incremental cleanup.
 tools: Read, Edit, Bash, Grep, Glob
 model: opus
+effort: medium
 color: orange
 ---
 

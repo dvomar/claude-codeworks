@@ -3,7 +3,7 @@ name: task-planner
 description: Creates ordered sub-task list from specification for step-by-step implementation. Use after spec-writer completes.
 tools: Read, Write, Bash
 model: opus
-effort: xhigh
+effort: high
 color: orange
 ---
 

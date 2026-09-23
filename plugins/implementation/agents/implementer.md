@@ -3,7 +3,7 @@ name: implementer
 description: Implements ALL sub-tasks from a task breakdown in one pass, in dependency order, with a focused self-check per sub-task. The real adversarial review is a separate /mdv-code-review-feature gate the orchestrator runs afterwards — this agent does not deep-review or delete scaffolding.
 tools: Read, Write, Edit, Bash, Grep, Glob
 model: opus
-effort: xhigh
+effort: high
 color: green
 ---
 
