@@ -7,7 +7,6 @@
   "hooks": {
     "SessionEnd": [
       {
-        "matcher": "clear|prompt_input_exit",
         "hooks": [
           {
             "type": "command",

@@ -2,11 +2,12 @@
 """Claude Code statusline, three lines:
   1. model · effort · dir · branch · PR · lines changed
   2. prompt cache | ctx % | 5h limit | 7d limit
-  3. in/out tokens · cost | Claude Code version
+  3. in tokens (real · cache read · cache write) · out tokens · cost | Claude Code version
 
 Reads the statusline JSON payload on stdin. Cumulative tokens are summed from the
-session transcript — "in" = input + cache read + cache creation, "out" = output —
-since the payload's context_window.* fields reflect only the current context
+main-thread session transcript (subagents are not included, the cost is) — "in" =
+real (uncached) input + cache read + cache write, "out" = output, which is never
+cached — since the payload's context_window.* fields reflect only the current context
 window, not the whole-session total. The sum is cached per session and only the
 newly appended part of the transcript is read on each refresh. Runs locally and
 consumes no API tokens.
@@ -44,19 +45,26 @@ TOKEN_CACHE_DIR = Path(tempfile.gettempdir()) / "claude-statusline"
 
 
 def load_token_cache(cache_file: Path, transcript: Path) -> dict:
-    """Cached running sum, or a fresh one when missing, corrupt, or the transcript shrank."""
-    fresh = {"path": str(transcript), "offset": 0, "in": 0, "out": 0, "last_id": None}
+    """Cached running sum, or a fresh one when missing, corrupt, from an older layout, or the transcript shrank."""
+    fresh = {
+        "path": str(transcript), "offset": 0, "last_id": None,
+        "input": 0, "cache_read": 0, "cache_write": 0, "out": 0,
+    }
     try:
         cache = json.loads(cache_file.read_text())
     except Exception:
         return fresh
-    if cache.get("path") != str(transcript) or cache.get("offset", 0) > transcript.stat().st_size:
+    if (
+        cache.get("path") != str(transcript)
+        or cache.get("offset", 0) > transcript.stat().st_size
+        or not fresh.keys() <= cache.keys()
+    ):
         return fresh
     return cache
 
 
-def sum_transcript_tokens(transcript_path: str, session_id: str) -> tuple[int, int]:
-    """Sum session tokens as (input incl. cache read/write, output).
+def sum_transcript_tokens(transcript_path: str, session_id: str) -> dict:
+    """Sum session tokens as {input, cache_read, cache_write, out}; "input" is the uncached part only.
 
     Reads only what was appended since the last run (offset cached per session).
     Claude Code writes one transcript row per content block, each repeating the
@@ -64,7 +72,7 @@ def sum_transcript_tokens(transcript_path: str, session_id: str) -> tuple[int, i
     """
     p = Path(transcript_path) if transcript_path else None
     if not p or not p.is_file():
-        return 0, 0
+        return {"input": 0, "cache_read": 0, "cache_write": 0, "out": 0}
     cache_file = TOKEN_CACHE_DIR / f"{session_id or p.stem}.json"
     cache = load_token_cache(cache_file, p)
 
@@ -86,11 +94,9 @@ def sum_transcript_tokens(transcript_path: str, session_id: str) -> tuple[int, i
             continue
         cache["last_id"] = message_id
         usage = message.get("usage", {}) or {}
-        cache["in"] += (
-            (usage.get("input_tokens") or 0)
-            + (usage.get("cache_read_input_tokens") or 0)
-            + (usage.get("cache_creation_input_tokens") or 0)
-        )
+        cache["input"] += usage.get("input_tokens") or 0
+        cache["cache_read"] += usage.get("cache_read_input_tokens") or 0
+        cache["cache_write"] += usage.get("cache_creation_input_tokens") or 0
         cache["out"] += usage.get("output_tokens") or 0
 
     if complete:
@@ -102,7 +108,7 @@ def sum_transcript_tokens(transcript_path: str, session_id: str) -> tuple[int, i
             os.replace(tmp, cache_file)  # atomic: a cancelled run never leaves a torn cache
         except Exception:
             pass
-    return cache["in"], cache["out"]
+    return {k: cache[k] for k in ("input", "cache_read", "cache_write", "out")}
 
 
 def git_branch(cwd: str) -> str:
@@ -268,7 +274,7 @@ def main() -> int:
     except Exception:
         pct = 0.0
 
-    tok_in, tok_out = sum_transcript_tokens(
+    tokens = sum_transcript_tokens(
         data.get("transcript_path", ""), data.get("session_id", "")
     )
     branch = git_branch(cwd)
@@ -294,7 +300,12 @@ def main() -> int:
         if seg:
             line2 += f"{sep}{seg}"
 
-    line3 = f"in {human(tok_in)} · out {human(tok_out)}  ${cost:.2f}"
+    tok_in = tokens["input"] + tokens["cache_read"] + tokens["cache_write"]
+    line3 = (
+        f"in {human(tok_in)} {DIM}(real {human(tokens['input'])} · "
+        f"cache read {human(tokens['cache_read'])} · write {human(tokens['cache_write'])}){RESET}"
+        f" · out {human(tokens['out'])}  ${cost:.2f}"
+    )
     version = data.get("version")
     if version:
         line3 += f"{sep}{CLAUDE_ORANGE}v{version}{RESET}"

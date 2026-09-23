@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
-"""SessionEnd hook: aggregate token usage and append a session summary.
+"""SessionEnd hook: append the session's tokens and cost to .session-summary.jsonl.
 
-Matcher: clear|prompt_input_exit
+Matcher: every reason — a session ended by closing the terminal costs as much as one
+ended by /exit.
+
+The numbers are Claude Code's own `cost-state` transcript row, not a sum of the
+per-message usage: that one misses subagents and Claude Code's internal calls. On
+/clear the row is written only after this hook returns, so the hook hands the
+payload to a detached copy of itself that waits for it. See README → Hooky.
 
 Note: memory proposing and knowledge updates are NOT done here. Spawning
 headless `claude -p` subagents on every exit cost a separate API session,
@@ -10,7 +16,9 @@ non-interactive mode. That work now lives in the `/mdv-wrap-session` skill, run
 manually in the live session (full context, no extra session, writes work).
 """
 import json
+import subprocess
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -23,67 +31,95 @@ from lib import (
     append_jsonl,
 )
 
+WAIT_FOR_COST_STATE_SECONDS = 30
+TOKEN_FIELDS = {
+    "input": "inputTokens",
+    "output": "outputTokens",
+    "cache_read": "cacheReadInputTokens",
+    "cache_creation": "cacheCreationInputTokens",
+}
 
-def written_after(row: dict, until: datetime) -> bool:
-    """Whether a transcript row's timestamp is later than `until`; rows without one count as earlier."""
-    try:
-        return datetime.fromisoformat(row["timestamp"].replace("Z", "+00:00")) > until
-    except Exception:
-        return False
 
-
-def aggregate_transcript(transcript_path: Path, until: datetime | None = None) -> dict:
-    """Sum tokens from all assistant messages in the transcript.
-
-    Claude Code writes one transcript row per content block, each repeating the
-    message's usage, so every message id is counted once. `until` ignores rows
-    written after it — used when recounting an old summary row.
-    """
-    totals = {
-        "input": 0, "output": 0,
-        "cache_read": 0, "cache_creation": 0,
-        "turns": 0, "models": {},
-    }
-    if not transcript_path.is_file():
-        return totals
-    seen_ids = set()
+def read_transcript(transcript_path: Path) -> list[dict]:
+    rows = []
     with transcript_path.open() as f:
         for line in f:
             try:
-                row = json.loads(line)
+                rows.append(json.loads(line))
             except Exception:
                 continue
-            if row.get("type") != "assistant":
-                continue
-            if until and written_after(row, until):
-                continue
-            msg = row.get("message", {}) or {}
-            msg_id = msg.get("id")
-            if msg_id:
-                if msg_id in seen_ids:
-                    continue
-                seen_ids.add(msg_id)
-            usage = msg.get("usage", {}) or {}
-            model = msg.get("model", "unknown")
-            totals["turns"] += 1
-            totals["input"] += usage.get("input_tokens", 0) or 0
-            totals["output"] += usage.get("output_tokens", 0) or 0
-            totals["cache_read"] += usage.get("cache_read_input_tokens", 0) or 0
-            totals["cache_creation"] += usage.get("cache_creation_input_tokens", 0) or 0
-            totals["models"][model] = totals["models"].get(model, 0) + 1
-    return totals
+    return rows
 
 
-def write_session_summary(data_dir: Path, payload: dict, totals: dict) -> Path:
-    summary = {
+def count_api_calls(rows: list[dict]) -> int:
+    """Main-thread API calls; Claude Code writes one row per content block, so each message id counts once."""
+    return len({
+        row["message"]["id"]
+        for row in rows
+        if row.get("type") == "assistant"
+        and (row.get("message") or {}).get("id")
+        and row["message"].get("model") != "<synthetic>"
+    })
+
+
+def final_cost_state(rows: list[dict]) -> dict | None:
+    """The cost-state row written after the last assistant message; None until Claude Code writes it."""
+    state = None
+    for row in rows:
+        if row.get("type") == "assistant":
+            state = None
+        elif row.get("type") == "cost-state":
+            state = row
+    return state
+
+
+def usage_by_model(cost_state: dict) -> dict:
+    return {
+        model: {
+            **{key: usage.get(field, 0) or 0 for key, field in TOKEN_FIELDS.items()},
+            "cost_usd": usage.get("costUSD", 0.0) or 0.0,
+        }
+        for model, usage in (cost_state.get("modelUsage") or {}).items()
+    }
+
+
+def start_detached_copy(payload: dict) -> None:
+    """Run the recording in a copy of this hook that outlives Claude Code's wait on the hook."""
+    child = subprocess.Popen(
+        [sys.executable, __file__, "--record"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
+        start_new_session=True,
+    )
+    child.stdin.write(json.dumps(payload).encode())
+    child.stdin.close()
+
+
+def record_session(payload: dict) -> None:
+    transcript = Path(payload.get("transcript_path") or "")
+    if not transcript.is_file():
+        return
+    rows = read_transcript(transcript)
+    api_calls = count_api_calls(rows)
+    if not api_calls:
+        return
+    cost_state = final_cost_state(rows)
+    deadline = time.monotonic() + WAIT_FOR_COST_STATE_SECONDS
+    while cost_state is None and time.monotonic() < deadline:
+        time.sleep(0.5)
+        rows = read_transcript(transcript)
+        cost_state = final_cost_state(rows)
+
+    append_jsonl(project_data_dir(payload) / ".session-summary.jsonl", {
         "ts": datetime.now(timezone.utc).isoformat(),
         "reason": payload.get("reason"),
         "session_id": payload.get("session_id"),
-        "tokens": totals,
-    }
-    path = data_dir / ".session-summary.jsonl"
-    append_jsonl(path, summary)
-    return path
+        "turns": api_calls,
+        "cost_source": "claude-code" if cost_state else "missing",
+        "cost_usd": cost_state.get("totalCostUSD", 0.0) if cost_state else 0.0,
+        "models": usage_by_model(cost_state) if cost_state else {},
+    })
 
 
 def dirty_file_count(data_dir: Path) -> int:
@@ -97,25 +133,13 @@ def dirty_file_count(data_dir: Path) -> int:
 def main() -> int:
     if hooks_disabled():
         return 0
-
     payload = read_payload()
-    tp = payload.get("transcript_path") or ""
-    transcript: Path | None = Path(tp) if tp else None
-    data_dir = project_data_dir(payload)
+    if "--record" in sys.argv:
+        record_session(payload)
+        return 0
 
-    totals = aggregate_transcript(transcript) if transcript else {
-        "input": 0, "output": 0, "cache_read": 0, "cache_creation": 0,
-        "turns": 0, "models": {},
-    }
-    write_session_summary(data_dir, payload, totals)
-
-    reason = payload.get("reason", "?")
-    log_stderr(
-        f"session-end ({reason}): {totals['turns']} turns | "
-        f"in={totals['input']} out={totals['output']} "
-        f"cache_read={totals['cache_read']} cache_create={totals['cache_creation']}"
-    )
-    pending = dirty_file_count(data_dir)
+    start_detached_copy(payload)
+    pending = dirty_file_count(project_data_dir(payload))
     if pending:
         log_stderr(f"{pending} files pending knowledge update — run /mdv-wrap-session before clearing to capture them")
     return 0
