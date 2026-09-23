@@ -58,7 +58,7 @@
     {
       "name": "dev-workflow",
       "source": "./plugins/dev-workflow",
-      "description": "Developer workflow tools — git branching and worktrees, commit preparation, task loading, time and cost estimation, integration proposals, and HTML-to-PDF rendering.",
+      "description": "Developer workflow tools — git branching and worktrees, commit preparation, time and cost estimation, integration proposals, an English-language policy for repositories, and HTML-to-PDF rendering.",
       "version": "1.0.0",
       "category": "devops",
       "keywords": ["git", "worktrees", "commits", "estimation", "pdf"],
