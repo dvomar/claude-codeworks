@@ -1,7 +1,8 @@
 {
   "statusLine": {
     "type": "command",
-    "command": "if [ -f ~/.claude/statusline.py ]; then python3 ~/.claude/statusline.py; fi"
+    "command": "if [ -f ~/.claude/statusline.py ]; then python3 ~/.claude/statusline.py; fi",
+    "refreshInterval": 30
   },
   "hooks": {
     "SessionEnd": [

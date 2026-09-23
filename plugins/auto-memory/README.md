@@ -7,7 +7,7 @@ Earlier versions spawned background `claude -p` subprocesses on every `/clear` o
 ## What's included
 
 ### Statusline (`statusline.py`)
-A two-line statusline rendered below the prompt. Line 1: model · directory · git branch. Line 2: cumulative session tokens (summed from the transcript), session cost in USD, context-window %, and — for Claude.ai Pro/Max — the 5-hour rate-limit usage with time-to-reset. Runs locally, consumes **zero API tokens**, refreshes after each assistant message.
+A three-line statusline rendered below the prompt. Line 1: model · reasoning effort · directory · git branch · open PR/MR (clickable, colored by review state) · lines added/removed. Line 2: prompt-cache state (time until it goes cold, hit ratio), context-window % and — for Claude.ai Pro/Max — the 5-hour and 7-day rate-limit usage with time-to-reset. Line 3: cumulative session tokens (summed incrementally from the transcript, each message counted once), session cost in USD, and the Claude Code version. Runs locally, consumes **zero API tokens**, refreshes after each assistant message and every 30 s.
 
 ### Skill (`skills/mdv-wrap-session/`)
 - **`/mdv-wrap-session`** — run manually right before `/clear` or `/exit`. Two passes:

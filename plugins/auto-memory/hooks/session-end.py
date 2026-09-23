@@ -24,8 +24,21 @@ from lib import (
 )
 
 
-def aggregate_transcript(transcript_path: Path) -> dict:
-    """Sum tokens from all assistant messages in the transcript."""
+def written_after(row: dict, until: datetime) -> bool:
+    """Whether a transcript row's timestamp is later than `until`; rows without one count as earlier."""
+    try:
+        return datetime.fromisoformat(row["timestamp"].replace("Z", "+00:00")) > until
+    except Exception:
+        return False
+
+
+def aggregate_transcript(transcript_path: Path, until: datetime | None = None) -> dict:
+    """Sum tokens from all assistant messages in the transcript.
+
+    Claude Code writes one transcript row per content block, each repeating the
+    message's usage, so every message id is counted once. `until` ignores rows
+    written after it — used when recounting an old summary row.
+    """
     totals = {
         "input": 0, "output": 0,
         "cache_read": 0, "cache_creation": 0,
@@ -33,6 +46,7 @@ def aggregate_transcript(transcript_path: Path) -> dict:
     }
     if not transcript_path.is_file():
         return totals
+    seen_ids = set()
     with transcript_path.open() as f:
         for line in f:
             try:
@@ -41,7 +55,14 @@ def aggregate_transcript(transcript_path: Path) -> dict:
                 continue
             if row.get("type") != "assistant":
                 continue
+            if until and written_after(row, until):
+                continue
             msg = row.get("message", {}) or {}
+            msg_id = msg.get("id")
+            if msg_id:
+                if msg_id in seen_ids:
+                    continue
+                seen_ids.add(msg_id)
             usage = msg.get("usage", {}) or {}
             model = msg.get("model", "unknown")
             totals["turns"] += 1
