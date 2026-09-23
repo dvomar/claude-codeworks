@@ -6,7 +6,7 @@ machine-readable `findings.json`.
 ## What's included
 
 ### Skills
-- **security-audit** — Detects the application class, gates focus areas to that class, runs scanners in parallel, then triages and reports
+- `/mdv-security-audit` — Detects the application class, gates focus areas to that class, runs scanners in parallel, then triages and reports
 
 ### Agents
 - **security-auditor** — Scans a single focus area (injection, auth, secrets, crypto, deps, realtime-transport, hardware-io, …) and returns JSON findings. Invoked in parallel by the skill, not directly
@@ -21,8 +21,8 @@ machine-readable `findings.json`.
 ## Usage
 
 ```
-/security-audit
-/security-audit src/api
+/mdv-security-audit
+/mdv-security-audit src/api
 ```
 
 Works on any stack and any application class — web fullstack/SPA/API, thick clients

@@ -1,6 +1,6 @@
 # Architecture
 
-Architecture and codebase analysis toolkit. Generates a complete knowledge base for any project — tech stack, conventions, patterns, and file structure rules.
+Architecture and codebase analysis toolkit. Generates a complete knowledge base for any project — tech stack, conventions, patterns, and file structure rules — checks that it still matches the code, and maps a project into an Obsidian vault.
 
 ## What's included
 
@@ -13,7 +13,10 @@ Architecture and codebase analysis toolkit. Generates a complete knowledge base 
 - **frontend-analyzer** — Analyzes components, styling, state management, forms, and routing
 
 ### Skills
-- `/code-analyze-codebase` — Run all analyzer agents to generate a complete project knowledge base
+- `/mdv-code-analyze-codebase` — Run all analyzer agents to generate a complete project knowledge base
+- `/mdv-knowledge-verify` — Check whether `.claude/knowledge/` still describes the code and propose corrections
+- `/mdv-obsidian-project-scope` — Phase 1: map what a system can do into an Obsidian vault
+- `/mdv-obsidian-project-depth` — Phase 2: trace how its critical paths actually work (sequence, data flow, blast radius)
 
 ## Installation
 
@@ -26,7 +29,12 @@ Architecture and codebase analysis toolkit. Generates a complete knowledge base 
 
 Start working on a new project by generating its knowledge base:
 ```
-/code-analyze-codebase
+/mdv-code-analyze-codebase
 ```
 
 This creates documentation files in `.claude/knowledge/` covering tech stack, conventions, patterns, and architecture.
+
+Check later that the knowledge base has not drifted from the code:
+```
+/mdv-knowledge-verify
+```

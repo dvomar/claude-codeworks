@@ -1,6 +1,6 @@
 {
   "name": "code-review",
-  "description": "Comprehensive code review toolkit with 3-pass reviews, optimization analysis, refactoring cleanup, and GitLab MR integration. Includes specialized agents for reviewing, optimizing, and cleaning code, plus skills for structured review workflows.",
+  "description": "Code review and debugging toolkit — 3-pass reviews of files and of GitLab MRs or GitHub PRs, MR comment resolution, root-cause debugging with a regression test, optimization analysis, and refactoring cleanup.",
   "version": "1.0.0",
   "author": { "name": "dvomar" },
   "license": "MIT"

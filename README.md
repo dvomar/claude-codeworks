@@ -28,13 +28,13 @@ Go to the **Discover** tab to browse available plugins.
 
 | Plugin | Description | Category |
 |--------|-------------|----------|
-| `code-review` | 3-pass code reviews, optimization analysis, refactoring cleanup, GitLab MR integration | productivity |
-| `architecture` | Tech stack detection, convention extraction, backend/frontend pattern analysis, two-phase project mapping into an Obsidian vault | productivity |
-| `implementation` | Requirements clarification, spec writing, task planning, guided implementation | productivity |
-| `auto-memory` | Session memory capture, knowledge doc upkeep, end-of-session wrap-up | productivity |
+| `code-review` | 3-pass reviews of files and GitLab MRs / GitHub PRs, root-cause debugging, optimization analysis, refactoring cleanup | productivity |
+| `architecture` | Tech stack detection, convention extraction, backend/frontend pattern analysis, knowledge-base verification, two-phase project mapping into an Obsidian vault | productivity |
+| `implementation` | Requirements clarification, spec writing, task planning, implementation closed by a review gate | productivity |
+| `auto-memory` | Statusline, session token logging, end-of-session wrap-up into rules, memories and knowledge docs | productivity |
 | `database` | Schema, query, and migration review for performance, security, and correctness | security |
 | `security` | Language- and stack-agnostic security audits with prioritized findings | security |
-| `dev-workflow` | Git branching and worktrees, commit preparation, task loading, estimation, integration proposals, HTML-to-PDF | devops |
+| `dev-workflow` | Git branching and worktrees, commit preparation, estimation, integration proposals, English-language policy, HTML-to-PDF | devops |
 | `frontend-design` | UI/UX designed from an existing codebase, optimization via competing proposals, distinctive production-grade components | utilities |
 
 ## Team Setup

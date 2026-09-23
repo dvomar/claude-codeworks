@@ -1,6 +1,6 @@
 {
   "name": "frontend-design",
-  "description": "Frontend design skill for creating distinctive, production-grade UI components with high design quality that avoids generic AI aesthetics.",
+  "description": "UI and UX work end to end — design an interface from an existing codebase, optimize an existing one via competing proposals, or build distinctive, production-grade components from a brief that avoid generic AI aesthetics.",
   "version": "1.0.0",
   "author": { "name": "dvomar" },
   "license": "MIT"

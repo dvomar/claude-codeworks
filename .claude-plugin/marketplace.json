@@ -13,7 +13,7 @@
     {
       "name": "auto-memory",
       "source": "./plugins/auto-memory",
-      "description": "Session observability and memory/knowledge maintenance — a statusline (tokens, cost, context %, 5h rate limit), per-session token logging, and a manual /wrap-session skill that proposes memories and refreshes knowledge files in the live session.",
+      "description": "Session observability and memory/knowledge maintenance — a statusline (tokens, cost, context %, rate limits), per-session token logging, and a manual /mdv-wrap-session skill that routes what is worth keeping into rules or memories and refreshes knowledge files in the live session.",
       "version": "0.2.0",
       "category": "productivity",
       "keywords": ["statusline", "memory", "knowledge", "tokens", "observability"],
@@ -22,7 +22,7 @@
     {
       "name": "code-review",
       "source": "./plugins/code-review",
-      "description": "Comprehensive code review toolkit — 3-pass reviews, optimization analysis, refactoring cleanup, and GitLab MR integration.",
+      "description": "Code review and debugging toolkit — 3-pass reviews of files and of GitLab MRs or GitHub PRs, MR comment resolution, root-cause debugging, optimization analysis, and refactoring cleanup.",
       "version": "1.0.0",
       "category": "productivity",
       "keywords": ["code-review", "refactoring", "optimization", "gitlab", "merge-request"],
@@ -40,7 +40,7 @@
     {
       "name": "implementation",
       "source": "./plugins/implementation",
-      "description": "End-to-end implementation workflow — requirements clarification, spec writing, task planning, and guided implementation with self-review.",
+      "description": "End-to-end implementation workflow — requirements clarification, spec writing, task planning, and implementation, closed by a review gate.",
       "version": "1.0.0",
       "category": "productivity",
       "keywords": ["implementation", "requirements", "specs", "planning", "workflow"],

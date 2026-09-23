@@ -1,34 +1,30 @@
 # Implementation
 
-End-to-end implementation workflow — from requirements clarification through spec writing, task planning, and guided implementation with self-review at each stage.
+End-to-end implementation workflow — requirements clarification, spec writing, task planning, and implementation, closed by a review gate.
 
 ## What's included
 
 ### Agents
-- **req-clarifier** — Interactively clarifies requirements through Q&A sessions
-- **spec-writer** — Creates formal task specifications with 3x self-review
-- **task-planner** — Breaks specifications into ordered sub-tasks for step-by-step implementation
-- **implementer** — Implements sub-tasks with 3x self-review following project conventions
+- **req-clarifier** — Gathers codebase context and proposes sharp clarifying questions (the Q&A itself runs in your session)
+- **spec-writer** — Creates a formal task specification from the clarifications
+- **task-planner** — Breaks the specification into ordered sub-tasks
+- **implementer** — Implements all sub-tasks in dependency order with a focused self-check per sub-task
 
 ### Skills
-- `/code-implement-feature` — Complete feature implementation workflow using all 4 agents with quality gates
-- `/code-quick-implement` — Fast implementation following documented conventions, skipping the full workflow
+- `/mdv-code-implement-feature` — Complete feature workflow: clarification, then spec-writer → task-planner → implementer, closed by a `/mdv-code-review-feature` gate
+
+The review gate uses `/mdv-code-review-feature` from the `code-review` plugin; install both.
 
 ## Installation
 
 ```
 /plugin marketplace add dvomar/claude-codeworks
 /plugin install implementation@codeworks
+/plugin install code-review@codeworks
 ```
 
 ## Usage
 
-Full guided implementation with quality gates:
 ```
-/code-implement-feature
-```
-
-Quick implementation when requirements are clear:
-```
-/code-quick-implement
+/mdv-code-implement-feature Add CSV export to the orders list
 ```

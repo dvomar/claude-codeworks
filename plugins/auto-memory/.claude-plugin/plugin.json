@@ -1,6 +1,6 @@
 {
   "name": "auto-memory",
-  "description": "Session observability + memory/knowledge maintenance. A lightweight statusline shows cumulative tokens, cost, context %, and 5h rate-limit usage; a SessionEnd hook logs per-session token totals; and the /wrap-session skill (run manually before /clear) proposes memories and refreshes knowledge files using the live session — no headless subagents, no separate API cost.",
+  "description": "Session observability + memory/knowledge maintenance. A lightweight statusline shows tokens, cost, context % and rate-limit usage; a SessionEnd hook logs per-session token totals; and the /mdv-wrap-session skill (run manually before /clear) routes what is worth keeping into rules or memories and refreshes knowledge files using the live session — no headless subagents, no separate API cost.",
   "version": "0.2.0",
   "author": { "name": "dvomar" },
   "license": "MIT"
