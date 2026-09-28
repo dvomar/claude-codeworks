@@ -112,8 +112,12 @@ Verify instead that the run landed:
 2. Each names concrete things from **this** project — real directories, real class or
    component names, real library versions. A file full of generic advice means the
    analyzer had no sample to generalize from; say so rather than presenting it as fact.
-3. Report per file: created or updated, line count, and anything the analyzer marked
-   uncertain.
+3. Spot-check 2–3 falsifiable claims per file yourself — a directory that should exist,
+   a version against the lockfile, a naming rule against two real files. An analyzer's
+   output is a claim until some of it is checked; correct what is wrong now, before other
+   agents build on it. `/mdv-knowledge-verify` does the same for every claim.
+4. Report per file: created or updated, line count, what the spot-check corrected, and
+   the analyzer's Unconfirmed list.
 
 Tell the user to read the output. This is also the check on whether the analyzers
 understood the project — when `architecture.md` claims something unexpected, correct it

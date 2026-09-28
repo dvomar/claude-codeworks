@@ -125,6 +125,7 @@ Rules:
 - **Lead time** = calendar window as a range (e.g. `~2–4 týdny`), not raw effort hours; add the one-line note that it is a calendar window, not pure work time.
 - Replace every `{{PLACEHOLDER}}`. Omit optional blocks (journey, reuse badges) when they don't apply. Footer company defaults to the org; adjust per project.
 - Honour `--lang` (cs default): translate static labels for `en`.
+- **Cross-check before handing over.** Re-read both files and compare them: the internal phase rows and the client areas both add up to the same total, cost, range, date and task title match, and the client lead time fits the internal calendar hours. Quote each mismatch and where it is, fix it, then report.
 - After writing, tell the user both paths and remind that `-odhad.html` is internal-only.
 
 ## What the LLM does NOT speed up (estimate at full price)

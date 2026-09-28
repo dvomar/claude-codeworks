@@ -39,7 +39,7 @@ glab mr diff <N>
 Run via Bash tool:
 
 ```bash
-glab api "projects/robe%2Fplm/merge_requests/<N>/discussions" --paginate
+glab api "projects/:fullpath/merge_requests/<N>/discussions" --paginate
 ```
 
 This returns a JSON array of discussions. Each discussion contains a `notes` array with individual comments.

@@ -10,7 +10,7 @@ Remove a git worktree managed by `/mdv-worktree-new`. Performs safety checks (di
 `$ARGUMENTS`:
 
 - **TASK_ID** — required (e.g., `CF-42`). If missing, ask the user.
-- `--force` — bypass dirty / unmerged-commit checks
+- `--force` — bypass dirty / unmerged-commit checks. It counts only when the user typed it; never add it yourself.
 - `--keep-branch` — do not delete the local branch
 - `--prune` — fully delete the manifest entry (default: mark `status: "removed"`)
 
@@ -157,6 +157,7 @@ Removed worktree:
 
 - Never delete uncommitted work without `--force`.
 - Never delete unmerged commits without `--force`.
+- When a safety check fails, stop: show what would be lost (`git -C "$path" status --short`, the unmerged commits) and let the user decide. The "Re-run with --force" messages are for the user, not an instruction to you.
 - Manifest writes are atomic (`tmp` + `mv`).
 - If the worktree path is already missing, run `git worktree prune` instead of `git worktree remove`.
 - The main repo itself is never in the manifest, but defensively refuse to operate on `$MAIN_REPO` if somehow targeted.

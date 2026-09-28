@@ -110,8 +110,10 @@ band-aid because it is smaller.
 
 ## 6. Regression test
 
-**The test must fail on the old code.** Write it, revert the fix (`git stash`), watch it
-go red, restore the fix, watch it go green. A test that passes either way protects
+**The test must fail on the old code.** Write it, revert only the fix
+(`git stash push -- <the fix's files>`, then `git stash pop`) — a plain `git stash` would
+also take the test, if it lives in an existing file, and any unrelated work in progress.
+Watch it go red, restore the fix, watch it go green. A test that passes either way protects
 nothing and will be trusted anyway, which is worse than having no test.
 
 Put it where the project keeps its tests, named after the behaviour rather than the

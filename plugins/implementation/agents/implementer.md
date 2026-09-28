@@ -40,6 +40,8 @@ Respect the project's established conventions and invariants (from CLAUDE.md / `
 
 Run the project's build command (see CLAUDE.md for the exact invocation and any platform-specific flags). Work through the sub-task's verification checklist. Fix failures before moving on.
 
+If a failure survives your fix attempts, or the breakdown contradicts the code in a way the spec does not settle, stop there: leave that sub-task and the rest unticked and go to Step 7 with the blocker. You cannot ask the user mid-run — returning early is how you stop and ask.
+
 ## Step 6: Focused Self-Check (one pass)
 
 One pass per sub-task — fix what you find, then move on:
@@ -55,8 +57,8 @@ Then mark the sub-task `[x]` in `task-breakdown.md` and continue to the next.
 ## Step 7: Final Report
 
 After the LAST sub-task:
-1. Confirm all sub-tasks are `[x]` and the build/tests pass.
-2. Report: sub-tasks completed, files created/modified, build/test status.
+1. Confirm all sub-tasks are `[x]` and the build/tests pass — or, if you stopped early, name the sub-task you stopped on.
+2. Report: sub-tasks completed, files created/modified, the exact build and test commands you ran with their result lines, and any blocker with its error output.
 
 Do NOT delete the `.claude/tasks/[task-name]/` folder. The orchestrator owns cleanup, and only after the `/mdv-code-review-feature` gate passes.
 

@@ -73,6 +73,9 @@ Analysis Date: [date] | Analyzer: tech-stack-analyzer
 
 ## Notes
 - [Special observations, deprecated packages, security concerns]
+
+## Unconfirmed
+- [What you inferred rather than saw in a file, or looked for and did not find — each with where you looked]
 ```
 
 ## Step 4: Self-Review (3 passes)

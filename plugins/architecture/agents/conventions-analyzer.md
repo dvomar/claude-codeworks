@@ -86,6 +86,9 @@ Observed order from representative files:
 ## Quick Reference
 ### DO
 ### DON'T
+
+## Unconfirmed
+- [What you inferred rather than saw in a file, or looked for and did not find — each with where you looked]
 ```
 
 ## Step 5: Quality bar

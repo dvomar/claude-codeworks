@@ -89,4 +89,4 @@ Then **stop**. Do NOT create the commit. The user will confirm, adjust, or ask f
 - Never auto-commit. Only prepare the staging area and propose a title.
 - Never stage files from the exclusion list unless the user explicitly requests it.
 - If there are no relevant changes to stage, report that clearly and stop.
-- If unsure whether a file is relevant, ask the user.
+- If unsure whether a file is relevant, leave it unstaged and list it under the excluded files with the reason — the user reviews the staging area at the end anyway.

@@ -85,10 +85,13 @@ Analysis Date: [date] | Analyzer: backend-analyzer
 ### DON'T
 ### Decision Table: New API Route
 | Question | Answer | Action |
+
+## Unconfirmed
+- [What you inferred rather than saw in a file, or looked for and did not find — each with where you looked]
 ```
 
 ## Step 5: Quality bar
 
-The report is done when every pattern area is covered (API, data access, auth, validation, error handling, middleware), every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new API route without opening the source. Keep it under 250 lines.
+The report is done when every pattern area is covered (API, data access, auth, validation, error handling, middleware) or listed under Unconfirmed, every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new API route without opening the source. Keep it under 250 lines.
 
 Write to `.claude/knowledge/backend.md`.

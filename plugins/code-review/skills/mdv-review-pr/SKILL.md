@@ -106,6 +106,7 @@ Changed files: <count>
 ## CRITICAL (must be fixed before merge)
 ### [C1] <file>:<line> — <short description>
 **Problem:** <what is wrong and why>
+**How it fails:** <the input, call or test that shows it>
 **Proposed fix:**
 ```<language>
 <concrete code>

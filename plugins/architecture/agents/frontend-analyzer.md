@@ -84,10 +84,13 @@ Analysis Date: [date] | Analyzer: frontend-analyzer
 ### DON'T
 ### Decision Table: New Component
 | Question | Answer | Action |
+
+## Unconfirmed
+- [What you inferred rather than saw in a file, or looked for and did not find — each with where you looked]
 ```
 
 ## Step 5: Quality bar
 
-The report is done when every pattern area is covered (component, styling, state, forms, routing, i18n, a11y, performance), every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new component without opening the source. Keep it under 250 lines.
+The report is done when every pattern area is covered (component, styling, state, forms, routing, i18n, a11y, performance) or listed under Unconfirmed, every claim cites a path you actually read, there are no code blocks, and an agent can pick the pattern for a new component without opening the source. Keep it under 250 lines.
 
 Write to `.claude/knowledge/frontend.md`.

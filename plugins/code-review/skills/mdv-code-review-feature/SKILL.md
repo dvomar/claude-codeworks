@@ -26,7 +26,7 @@ Examples:
 
 ### Step 1: Load code and context
 
-1. Resolve the target path(s). If a directory or long list is given and there are more than ~10 source files, review in batches and tell the user exactly what was covered and what was deferred — do NOT silently read a large tree into context.
+1. Resolve the target path(s). If a directory or long list is given and there are more than ~10 source files, do NOT read the whole tree into your own context: split it into batches of ~10 and give each batch to its own `general-purpose` subagent, passing it Steps 1–4 and the finding format below. When a subagent reports back, open the `file:line` of each of its Critical and Warning findings before you accept it, then merge every batch into one findings list and one summary.
 2. Read all target files using the Read tool.
 3. CLAUDE.md and `.claude/rules/*.md` are already in context — both load automatically at session start, so never spend a Read on them. For the generated detail behind them, read the target's layer from `.claude/knowledge/` — `conventions.md` plus `backend.md` for server code, `frontend.md` for client code, `architecture.md` when file placement is in question. Read only what's relevant to the target, not all five.
 4. For each target file, use Glob to find **similar existing files** in the same folder/layer. Read 2-3 of them — comparison with established code is the most reliable way to spot inconsistencies.
@@ -71,6 +71,7 @@ Format each finding as:
 **Severity**: CRITICAL | WARNING | SUGGESTION
 **Confidence**: High | Medium | Low — for correctness/perf/security claims, state what would confirm it
 **Problem:** What is wrong and why.
+**How it fails:** the input, call or test that shows it — required for CRITICAL
 **Fix:**
 <concrete fix or code example>
 ```

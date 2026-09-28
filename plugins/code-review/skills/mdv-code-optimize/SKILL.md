@@ -31,7 +31,7 @@ Examples:
 
 ### Step 1: Load code and context
 
-1. Resolve `<path>`. If it is a directory, list the target source files first. If there are more than ~10, analyze in batches and tell the user exactly what was covered and what was deferred — do NOT silently read a large tree into context (it blows the session budget and hides what was skipped). For very large targets, prefer running the skill per-subdirectory.
+1. Resolve `<path>`. If it is a directory, list the target source files first. If there are more than ~10, do NOT read them all into your own context (it blows the session budget and hides what was skipped): split them into batches of ~10 and give each batch to its own `general-purpose` subagent, passing it Steps 1–3. When a subagent reports back, open the `file:line` of each of its High and Medium findings before you accept it, then merge every batch into one findings list and one summary table.
 2. Read the target file(s) using the Read tool.
 3. CLAUDE.md and `.claude/rules/*.md` are already in context — both load automatically at session start, so never spend a Read on them. For the generated detail behind them, read the target's layer from `.claude/knowledge/` — `backend.md` and `conventions.md` for server code, `frontend.md` for client code, `architecture.md` / `tech-stack.md` as needed. Read only what's relevant to the target, not all five.
 4. For each target file, use Glob to find **similar files** in the same folder/layer — comparison with existing code helps identify inconsistencies and missed patterns.

@@ -102,6 +102,8 @@ Bez tohohle průchodu fáze 2 šíří sebejisté nesmysly hlouběji než fáze 
 
 ## Fáze D — Zápis do vaultu
 
+Vault je v iCloudu, mimo git — co zapíšeš, nejde vrátit. Nové noty (`Fáze 2/`, nové nálezy) piš bez ptaní. Než upravíš existující noty — MOC, přeřazené nálezy z fáze 1, nebo `Fáze 2/` z dřívějšího běhu — vypiš je i s tím, co v každé změníš, a zeptej se jednou otázkou na celou dávku.
+
 Struktura (vedle výstupu fáze 1, ne místo něj):
 
 ```

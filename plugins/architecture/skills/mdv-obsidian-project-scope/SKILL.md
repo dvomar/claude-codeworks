@@ -98,6 +98,8 @@ Agenti si **protiřečí** a **věří dokumentaci**. Než začneš psát vault:
 
 ## Fáze D — Zápis do vaultu
 
+Vault je v iCloudu, mimo git — co zapíšeš, nejde vrátit. Když `<Vault>/<Projekt>/` už existuje, nepiš do něj naslepo: ukaž, co v něm je, a zeptej se jednou otázkou, jestli doplnit, přepsat, nebo založit novou složku. Do neexistující složky piš bez ptaní.
+
 Struktura (drž ji, ať jsou vaulty napříč projekty stejné):
 
 ```

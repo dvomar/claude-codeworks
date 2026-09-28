@@ -84,6 +84,9 @@ Analysis Date: [date] | Analyzer: architecture-analyzer
 ## Quick Reference: Where to Put New Files
 | File Type | Location |
 |-----------|----------|
+
+## Unconfirmed
+- [What you inferred rather than saw in a file, or looked for and did not find — each with where you looked]
 ```
 
 ## Step 7: Self-Review (3 passes)

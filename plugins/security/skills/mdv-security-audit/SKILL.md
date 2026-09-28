@@ -147,8 +147,9 @@ Collect findings from all agents. Then:
 
 1. **Deduplicate** — same root cause flagged by multiple agents collapses into one finding with multiple `references[]`. Hashing by `(file, line_range, vulnerability_class)` is a reasonable start.
 2. **Re-score severity** using `references/severity-rubric.md`. **Severity = impact × exploitability × scope, scaled by deployment exposure** (from recon). Don't trust individual agent severities — you have the global view and the deployment context.
-3. **Build attack chains** (Deep only) — can two Mediums combine into a Critical? E.g., IDOR + missing rate limit = mass enumeration; weak service-menu password + reachable from LAN + ability to enable shell exec command = RCE. Document chains as a separate section.
-4. **Suppress false positives** — be honest. Common FPs: test fixtures with fake secrets, intentional `eval` in build scripts, dev-only debug routes guarded by env flag, mock credentials in `appsettings.Development.json`, code under `#if DEBUG`. Mark these `confidence: "false-positive-suppressed"` with rationale, don't silently drop them.
+3. **Verify the evidence** — an agent's finding is a claim, not a fact. Before any finding that is Critical or High after re-scoring goes further, `Read` its `evidence[]` lines yourself and confirm the code is there and does what the finding says. When the problem is real but cited wrong, fix the citation; when it is not there, it becomes a false positive (step 5), not a silent drop.
+4. **Build attack chains** (Deep only) — can two Mediums combine into a Critical? E.g., IDOR + missing rate limit = mass enumeration; weak service-menu password + reachable from LAN + ability to enable shell exec command = RCE. Verify the evidence of every finding you put in a chain the same way as in step 3. Document chains as a separate section.
+5. **Suppress false positives** — be honest. Common FPs: test fixtures with fake secrets, intentional `eval` in build scripts, dev-only debug routes guarded by env flag, mock credentials in `appsettings.Development.json`, code under `#if DEBUG`. Mark these `confidence: "false-positive-suppressed"` with rationale, don't silently drop them.
 
 ### Phase 4: Report
 

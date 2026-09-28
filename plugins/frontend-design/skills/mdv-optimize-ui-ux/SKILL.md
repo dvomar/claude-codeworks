@@ -49,6 +49,8 @@ Do not design from vibes, and do not stop at generic advice either.
 - **context7** — for the *implementation* pattern: the accessible spec for the widget (W3C APG `/w3c/wai-aria-practices` for menu button, dialog, disclosure, combobox…), or the framework/library docs you'll build on. This is what keeps proposals implementable and accessible.
 - **web search** — for the *product* pattern: current UX guidance for this specific interaction (e.g. sign-out placement, form field order, destructive-action confirmation). Prefer sources with reasoning over listicles.
 
+Component and state rules — tables, inputs, dropdowns, avatars, calendar, radius, density, loading, real-data edge cases — are already written in `.claude/skills/mdv-code-design-ui-ux/references/design-system.md` and `patterns.md`. Read the part for the component you touch instead of re-deriving it.
+
 Keep it to a few targeted queries. Fold the findings into the proposals as concrete rules (keyboard map, ARIA attributes, confirmation policy), not as a bibliography.
 
 ## Step 3 — Choose three *different* strategies
@@ -67,7 +69,7 @@ Each proposal must state, in one sentence, **what it optimizes for and what it s
 
 ## Step 4 — Write the three HTML proposals
 
-Copy `templates/proposal-template.html` and fill it in. It already carries the layout, device frames and callout styles — replace the `--color` variables at the top with the product's real tokens and write the content.
+Copy `templates/proposal-template.html` and fill it in. It already carries the layout, device frames and callout styles — replace the `:root` tokens at the top (`--ink`, `--paper`, `--accent` …) with the product's real ones and write the content.
 
 Each file must contain, in this order:
 

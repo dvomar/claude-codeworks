@@ -81,7 +81,8 @@ conventions.md:42
             — or the six files.
 ```
 
-Close with a one-line verdict per doc — `ok`, `N contradictions`, or `not checked` —
+List what was not checked — claims cut off by `--max` and checks that stayed inconclusive —
+with where you looked, so that silence is not read as verified. Then close with a one-line verdict per doc — `ok`, `N contradictions`, or `not checked` —
 and a single recommendation:
 
 - **1–3 contradictions** → correct the doc by hand; it is faster and preserves the parts

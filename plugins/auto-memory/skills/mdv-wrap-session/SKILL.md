@@ -75,7 +75,7 @@ The dirty list at `.claude/.knowledge-dirty.txt` tracks source files edited this
 
    > Use the knowledge-updater workflow. PROJECT_DIR is the current project root. Read the dirty list at `.claude/.knowledge-dirty.txt` (absolute paths, one per line). For each file, decide which `.claude/knowledge/*.md` doc it affects (architecture / backend / frontend / conventions / tech-stack) and make minimal surgical edits — never rewrite whole files, skip files with no architectural change. Clear the dirty list (`> .claude/.knowledge-dirty.txt`) ONLY if every needed edit succeeded or none were needed; on partial failure leave the failed paths. Report which docs you updated and how many files you skipped.
 
-3. Relay the agent's summary (which docs changed, what was skipped).
+3. Check the summary against `git diff --stat .claude/knowledge/` and flag any edit the agent claims that is missing from the diff. Then relay it (which docs changed, what was skipped).
 
 ### Pass 3 — Obsidian vault (runs inline, propose-then-write)
 

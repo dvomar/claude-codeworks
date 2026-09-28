@@ -93,17 +93,17 @@ decision to whoever implements it at 6pm.
 
 | State | Must specify |
 |---|---|
-| **Loading — first** | Skeleton preserving final layout (not a spinner in a void); target under 400ms perceived |
-| **Loading — refresh** | Keep old content visible, indicate refresh subtly; do not blank the screen |
+| **Loading — first** | Under ~300ms show nothing — a flash of loading feels more broken than a short delay. Past that: a skeleton mirroring the final layout when the content's shape is known, height held so nothing jumps; a spinner for a short wait of unknown length (up to ~3s), never over a whole page; a progress bar with a real percentage past ~3s. Shell first, regions after |
+| **Loading — refresh** | Keep old content visible, indicate refresh subtly; do not blank the screen. On touch, the pull indicator itself becomes the spinner |
 | **Empty — first run** | What goes here, why it is useful, and the creating action in place |
 | **Empty — filtered** | Which filters are active + clear them; distinct from first run |
 | **Empty — good** | "Nothing needs attention" framed positively |
 | **Partial** | Some data loaded, some failed — show what you have, mark what failed, offer retry for just that part |
 | **Error — per type** | One entry per error type found in the code: human sentence + recovery control |
-| **Offline / stale** | If the app can be used offline or shows cached data, say how stale and offer refresh |
+| **Offline / stale** | If the app can be used offline or shows cached data, say how stale and offer refresh. Edits made offline queue locally with a visible count and sync oldest first on reconnect, with progress ("Synced 3/4") |
 | **No permission** | Explain what is missing and who grants it; never a blank page or a lie that it does not exist |
 | **Success** | Confirmation of what changed, and the next likely action |
-| **Busy / optimistic** | What the user sees between action and confirmation, and what happens on failure |
+| **Busy / optimistic** | Acknowledge instantly, before the work finishes; what the user sees until confirmation, and what happens on failure |
 
 ---
 
@@ -116,14 +116,25 @@ on this page" vs "all 1,284 matching"). State the count in the action button. Fo
 destructive bulk actions, show what will be affected before committing, and prefer a
 reversible job with progress over an irreversible instant action.
 
-**Long-running operations** — Never block the UI. Show progress with a real estimate
-when possible, allow navigating away, and notify on completion. Make the result
+**Long-running operations** — Never block the UI. Progress is honest: percent, the
+current step and time left. Allow navigating away and notify on completion. Fail out
+loud: after a timeout say so, and offer retry and a way out. Make the result
 findable later — a job history — because the user will close the tab.
 
 **Optimistic updates** — Only for actions that rarely fail and are cheap to reverse.
 Anything involving money, external systems, or irreversibility waits for
 confirmation. A silently-reverted optimistic update destroys trust in every other
 indicator in the product.
+
+**Real data breaks layouts** — `min-width: 0` on flex children that must shrink.
+Truncate filenames, emails and paths in the middle, so the extension or domain
+survives. `overflow-wrap: anywhere` for URLs, tokens and IDs. Tabular figures on
+anything that updates live, so it does not jitter. Test every text slot with three
+fixtures: empty, one character, and 40 characters plus an emoji.
+
+**Autosave** — Commit one write after ~800ms of typing silence, not one per keystroke.
+The indicator has explicit states (typing, saving, saved, offline, error) and never says
+"Saved" for a write that failed. Guard closing the tab while anything is unsaved.
 
 **Concurrent editing** — Detect conflicts and show both versions with a real choice.
 Last-write-wins with no indication is data loss with extra steps.
@@ -144,6 +155,8 @@ switching must be unmistakable. Acting in the wrong tenant is a serious, quiet e
 
 **Money and units** — Always show currency and, where relevant, timezone. Never
 render a raw minor-unit integer. Right-align, tabular figures, consistent decimals.
+Pin the currency symbol so decimals align. Abbreviate large values (1.2M) only in KPIs and charts, with the exact value on hover;
+in tables and anywhere money is compared, reconciled or exported, show it in full.
 
 **Dates** — Absolute date on hover/detail, relative in lists ("2 hours ago"). State
 the timezone when users span more than one.

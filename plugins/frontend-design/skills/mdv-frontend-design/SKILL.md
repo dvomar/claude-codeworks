@@ -28,6 +28,8 @@ Then implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
 - Cohesive with a clear aesthetic point-of-view
 - Meticulously refined in every detail
 
+Aesthetics are yours to choose; component behaviour is not. Tables, inputs, dropdowns, avatars, calendars, radius, density, loading states and real-data edge cases follow `.claude/skills/mdv-code-design-ui-ux/references/design-system.md` and `patterns.md`.
+
 ## Frontend Aesthetics Guidelines
 
 Focus on:
@@ -49,6 +51,14 @@ Generated frontends look alike because they fall back on the same few defaults, 
 - numbered "01 / 02 / 03" section labels
 - monospace labels
 - pill-shaped buttons
+
+On landing pages the same rule applies to five more tells; each has a replacement:
+
+- a headline made of adjectives ("Supercharge your workflow") — name the outcome and who it is for
+- a gradient or blob behind the hero that decorates instead of showing the product — a neutral background, with the accent kept for the product screenshot and the primary button
+- two buttons of equal weight — one primary button, the second as a text link with an arrow
+- social proof nobody can check ("Trusted by 10,000+") — a real quote with a name, a role and a measurable result
+- a row of three icon-in-a-circle cards with one-word labels — the product screenshot with three annotations pointing at real UI
 
 If the result still lands on a recognisable stock pattern not listed here, replace it with a choice made for this context. Vary light and dark themes, fonts and aesthetics from one design to the next.
 

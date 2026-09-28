@@ -63,7 +63,7 @@ Same discovery and design produce two audience-tuned files. **They share the fea
 |---|---|---|
 | Template | `templates/proposal-internal-template.html` | `templates/proposal-customer-template.html` |
 | Audience | vedení / dev — decision & build | klient — value & buy-in |
-| Visual | structured/corporate (withdrawal style) | designed/visual (Raiffeisen style) |
+| Visual | printed document (withdrawal structure) | printed document (Raiffeisen structure) |
 | Language | business + technical | business only |
 
 **HARD RULE — the customer doc must NEVER contain:** code identifiers (class/interface/method names), file paths or `file:line`, our internal architecture component names, repo/generation names (cm5be/cm4be/cm2), our internal scope sizing (S/M/L) or effort/hours, "what already exists in our codebase", security issues found in our code, or names of our other clients. When in doubt, leave it out of the customer doc.
@@ -74,7 +74,7 @@ Same discovery and design produce two audience-tuned files. **They share the fea
 
 | Section | Internal | Customer |
 |---------|:---:|:---:|
-| Header + status badge | ✅ | ✅ (eyebrow + lede, no "Návrh k schválení" badge) |
+| Header + status | ✅ | ✅ (client line + title + lede, no "Návrh k schválení" status) |
 | Manažerské shrnutí + "rozhodnutí, která potřebujeme" | ✅ | — |
 | Co to přináší (business benefits) | ◻ | ✅ |
 | Současný stav — exists vs missing, **file:line**, cross-generation table | ✅ | — (never) |
@@ -106,14 +106,14 @@ Drop sections that don't apply; never ship empty placeholders.
 
 - **Two** self-contained HTML files in `{dir}/`: `<kebab-feature>-navrh-interni.html` and `<kebab-feature>-navrh-zakaznik.html`.
 - Both inline their CSS (no CDN), are print/PDF-ready (`@page` + `break-inside`), and derive from the **same** analysis — only the disclosure level differs (see "Two documents, one analysis").
-- Internal visual = withdrawal style (structure/completeness). Customer visual = Raiffeisen style (numbered spine, decision branches, actor legend, validation grid). Set the customer `--accent` to the client's/partner's brand colour.
+- Both docs share the templates' printed-document look. From the references take only structure, not styling: completeness from the withdrawal proposal, the numbered spine, decision branches, actor legend and validation grid from the Raiffeisen flow. Set the customer `--accent` to the client's/partner's brand colour.
 - Language follows the audience (`cs` default for both here; the customer doc is business-only).
-- After writing, **re-scan the customer doc for leaks** (run the HARD RULE checklist — grep for class names, file paths, `cm5be`/`cm4be`, S/M/L), print both paths, note which is internal-only, and **offer `/mdv-html-to-pdf`** for the handover PDFs.
+- After writing, **re-scan the customer doc for leaks** (run the HARD RULE checklist — grep for class names, file paths, `cm5be`/`cm4be`, S/M/L), then **check both docs against each other**: numbers, limits, dates, names and decision outcomes must agree — quote each mismatch and where it is, and fix it. Then print both paths, note which is internal-only, and **offer `/mdv-html-to-pdf`** for the handover PDFs.
 
 ## References
 
 - **Internal gold standard** (completeness + code-grounding + decision framing): `docs/withdrawal-tukas/vyplata-hotovosti-tukas-navrh.html`
-- **Customer-style reference** (spine, decision OK/error branches, actor legend, validation grid): `docs/raiffeisen-instant-qr/flow.html`
+- **Customer-structure reference** (spine, decision OK/error branches, actor legend, validation grid): `docs/raiffeisen-instant-qr/flow.html`
 - **Templates:** `templates/proposal-internal-template.html` · `templates/proposal-customer-template.html`
 - **Costing:** `/mdv-task-estimate` (its internal `-odhad` / client `-nabidka` split mirrors this skill's two-doc model) · **Discovery:** Explore agents, `/mdv-code-analyze-codebase` · **PDF:** `html-to-pdf` skill
 - Default reference repos: cm4be (legacy), cm2 (older) under `/Users/mw/Develop/Projects/Czech-Kiosk/`

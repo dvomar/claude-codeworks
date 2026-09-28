@@ -185,8 +185,9 @@ For **each key screen**, specify:
   everything needed to *decide* is visible without navigating away; everything else
   is not.
 - **The state matrix** — `empty` (first-run vs filtered-to-nothing, which need
-  different copy), `loading` (skeleton if <1s, progress if longer, and keep the
-  interface responsive under ~400ms or it stops feeling direct), `partial`, `error`
+  different copy), `loading` (nothing under ~300ms, then a skeleton or spinner, a progress bar past
+  ~3s — thresholds in `references/patterns.md` — and keep the interface responsive
+  under ~400ms or it stops feeling direct), `partial`, `error`
   (per error type from Phase 1, each with a recovery action), `success`,
   `no-permission`. A state you did not write is a state someone will ship as a blank
   screen.
@@ -215,9 +216,15 @@ A second parallel system is a maintenance tax and an inconsistency generator, wh
 is why adoption beats derivation every time. When deriving: grayscale and layout
 first, colour last, so hierarchy comes from spacing, size and weight rather than from
 colour doing work it cannot do for colour-blind users. Constrained scales only — a
-fixed spacing ramp, a fixed type ramp, a small semantic colour set, two or three
-radii, two or three elevations. Read `references/design-system.md` for the concrete
+fixed spacing ramp, a fixed type ramp, a small semantic colour set, one radius
+scale that follows element size, two or three elevations. Read `references/design-system.md` for the concrete
 scales and component specs.
+
+A derived system also avoids the defaults generated interfaces fall back on — a
+general "avoid a generic look" only swaps one default for another. Unless the product
+already uses them: no cream or off-white page background, no italic accent words in
+headings, no numbered "01 / 02 / 03" section labels, no monospace labels, no
+pill-shaped buttons.
 
 ### Working from an established design language
 
@@ -362,7 +369,8 @@ Read these when the phase needs them, not upfront:
   checklist. Read during Phases 2, 5 and 8.
 - **`references/design-system.md`** — token scales (type, spacing, colour, radius,
   elevation, motion), density, breakpoints, dark mode, and specs for the components
-  that carry data-heavy tools: tables, forms, modals, toasts, empty states. Read
+  that carry data-heavy tools: buttons, inputs, dropdowns, tables, avatars, calendar,
+  modals, toasts, empty states. Read
   during Phase 6.
 - **`references/patterns.md`** — app archetypes mapped to IA and screen sets, the
   screen state matrix, and a guide to what to research per domain. Read during

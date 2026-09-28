@@ -95,11 +95,21 @@ hierarchy at all.
 ### Radius, elevation, motion
 
 ```
-radius-sm  4px   inputs, chips, small controls
-radius-md  8px   cards, buttons, panels
-radius-lg  12px  modals, sheets
-radius-full      pills, avatars
+radius-sm   4px   tooltips, badges, tags
+radius-md   8px   buttons, inputs
+radius-lg   12px  cards
+radius-xl   16px  modals, sheets
+radius-2xl  24px  large panels
+radius-full       avatars, toggles, pill chips
 ```
+
+Radius follows size: one scale (4 · 8 · 12 · 16 · 24), every element on it — larger
+surfaces get larger corners, and never one value for everything or a one-off per component.
+Full radius is a shape, not a number: only for an element that is exactly one line tall.
+A side that touches a screen edge gets no corner (a bottom sheet is `16px 16px 0 0`).
+Small radii read formal, large ones friendly — pick the scale's range to match the
+product's tone, then stay on it. A nested corner is the outer radius minus the inset
+(card 12, image inset 8 → 4), or the card clips the image with `overflow: hidden`.
 
 Elevation — three levels maximum. Shadows should be soft and layered (a tight dark
 shadow plus a wide diffuse one), not one hard drop shadow. In dark mode elevation is
@@ -114,8 +124,8 @@ Motion — fast and purposeful. Motion's job is to explain *where something came
 not to decorate.
 
 ```
-duration-fast    100–150ms   hover, focus, small state changes
-duration-base    200–250ms   dropdowns, accordions, tab switches
+duration-fast    100–150ms   hover, focus, small state changes, dropdown open (~150ms)
+duration-base    200–250ms   accordions, tab switches
 duration-slow    300–400ms   modals, page-level transitions
 easing-out       cubic-bezier(0.16, 1, 0.3, 1)     entering (decelerate)
 easing-in-out    cubic-bezier(0.4, 0, 0.2, 1)      moving
@@ -133,10 +143,12 @@ wants small type and tight rows; an occasional user wants breathing room. Choose
 the audience identified in Phase 1 and state the choice.
 
 ```
-compact      row 32px, text-sm, space-2   power tools, dense tables
-comfortable  row 40px, text-sm/base, space-3   default
-spacious     row 48px+, text-base, space-4   consumer, touch, kiosk
+compact      row 36px, text-sm, space-2        ops, power tools, dense tables
+default      row 48px, text-sm/base, space-3   everyday work
+comfortable  row 60px, text-base, space-4      review, consumer, touch, kiosk
 ```
+
+Density is a token, not a guess: one control switches the row height for the whole table.
 
 Breakpoints — content-driven, but these are conventional:
 
@@ -154,11 +166,14 @@ viewport: design for it exactly and skip responsive complexity entirely.
 
 Only if genuinely needed; a bad dark mode is worse than none. If included:
 
-- Not an inversion. Pure `#000` on pure `#fff` causes halation; use `#0d0f12`-ish
-  surfaces and `#e6e8eb`-ish text.
-- Desaturate and lighten brand/semantic colours — saturated colours vibrate on dark
-  backgrounds.
+- Not an inversion. Pure `#000` flattens elevation and hides shadows, and pure `#fff`
+  text glares; use `#121212`-ish surfaces and a soft off-white for text.
+- Desaturate (roughly 20%) and lighten brand/semantic colours — saturated colours
+  vibrate on dark backgrounds.
+- Text hierarchy from opacity tiers of one off-white, not from several colours; pure
+  white glares.
 - Elevation via lighter surfaces, not shadows.
+- Carry every layer over, not just the background: surface, elevation, text and accent.
 - Re-check every contrast ratio; light-mode ratios do not transfer.
 - Define all tokens on `:root`, override only the changed ones under
   `prefers-color-scheme: dark` and an explicit `[data-theme]` attribute, so both the
@@ -175,9 +190,15 @@ improvising.
 ### Buttons
 Hierarchy: `primary` (one per screen) → `secondary` → `tertiary/ghost` →
 `destructive`. States: default, hover, active, focus-visible, disabled, loading.
-Minimum height 32px compact / 40px comfortable / 44px touch. Label with a verb and
+Minimum height 32px compact / 40px default / 44px touch. Label with a verb and
 its object — "Save changes", "Delete 47 invoices" — not "OK" and never "Submit". A
 loading button keeps its width to avoid layout shift and blocks repeat submission.
+
+A submit that charges, sends or creates something gets one tap, one result: disable
+it on the first tap, spinner inside at a locked width, a client guard plus a server
+idempotency key, resolve on the button itself to a check or to the error with its
+reason, and re-enable on the response — never on a timer. This is only while the
+request is in flight; before submit the button stays enabled (see forms in `ux-foundations.md`).
 
 ### Inputs
 Label above, always visible. Helper text below, error text replacing it in the same
@@ -185,16 +206,36 @@ slot so nothing jumps. Focus ring 2px, offset 2px, ≥3:1 against the adjacent c
 Error state uses border colour **plus** an icon **plus** text. Never rely on the
 placeholder to say what a field is.
 
+### Dropdowns and selects
+- The trigger looks clickable and is a 48px touch target; the menu opens in about
+  150ms (50ms feels cheap, 500ms drags). Arrow keys move the highlight, Enter selects,
+  Esc closes.
+- Under 5 options: no menu — a segmented control or radios, one tap, nothing hidden.
+- Past ~10 options: a type-to-filter field at the top of the list.
+- Dates: a text field that parses what is typed, plus month and year jumps.
+- Multi-select stays open on pick: checkboxes, a live count, an explicit Done.
+- Collision-aware: render in a portal and flip up when the space below runs out.
+- A disabled option says why, inline, with the one action that unlocks it.
+
 ### Tables — the workhorse of internal tools
-- Sticky header; sticky first column when horizontally scrollable.
+- Sticky header on vertical scroll and a frozen first column on horizontal scroll,
+  each with a subtle shadow on the edge that overlaps content.
 - Right-align numbers, use tabular figures (`font-variant-numeric: tabular-nums`) so
-  digits line up; left-align text; never centre either.
-- Row height fixed by density; truncate with tooltip rather than wrapping, unless the
-  column is genuinely prose.
+  digits line up; left-align text; never centre either. A numeric column's header
+  aligns with its numbers.
+- One line per row, height fixed by density. Truncate text with the full value in a
+  tooltip rather than wrapping, unless the column is genuinely prose. Numbers never
+  truncate. A missing value shows a dash, never a blank cell.
+- Row separation follows density: zebra stripes at comfortable spacing, collapsing to
+  hairlines when compact.
 - Sort, filter and column visibility are controls above the table, not hidden in
-  headers alone.
+  headers alone. Sorting cycles ascending → descending → back to the original order,
+  so the natural order is never lost.
 - Selection: checkbox column, a header select-all scoped to the *visible page*, and a
-  bulk action bar that appears on selection stating the count explicitly.
+  bulk action bar that appears on selection stating the count explicitly. The whole
+  row is the click target (tint, an accent bar on the left edge, and the checkbox),
+  not the small box alone, and the header checkbox shows a dash when only some rows
+  are selected.
 - Pagination for exact counts, infinite scroll only for browsing (never for tasks
   needing "did I do all of them").
 - Empty, loading (skeleton rows preserving layout), error, and
@@ -202,6 +243,18 @@ placeholder to say what a field is.
   action, and conflating it with genuine emptiness is a routine bug.
 - Row click behaviour must be one thing consistently: either open detail or select.
   Do not mix.
+
+### Avatars
+- Fallback chain: photo → initials → icon.
+- Two initials; one when the avatar is tiny.
+- Colour derived from the name, so the same person has the same hue everywhere.
+- Presence status on the ring, never as a second badge.
+
+### Calendar (day and week views)
+- Time grid with a now-line; all-day events pinned in a row at the top.
+- Height equals duration; creating and dragging snap to 15 minutes.
+- Overlapping events split into side-by-side columns, never stack on top of each other.
+- Category colour as a stripe on the event, with a legend.
 
 ### Modals and dialogs
 Only for a focused decision that must block. Anything longer belongs on a page or in

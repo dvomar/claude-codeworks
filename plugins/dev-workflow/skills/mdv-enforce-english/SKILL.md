@@ -94,7 +94,9 @@ The output is candidates, not verdicts. Classify each:
   noun, or anything covered by a recorded exception.
 
 Report the violations individually; for the legitimate ones give a count and the reason
-they are fine. Then stop — fixing is step 5, and only on request.
+they are fine. Say what the scan did not cover (excluded paths, commits beyond `--commits`,
+string literals without `--strings`) and any candidate you could not classify. Then stop —
+fixing is step 5, and only on request.
 
 ### 5. Fixing violations (only when asked)
 
@@ -107,7 +109,8 @@ they are fine. Then stop — fixing is step 5, and only on request.
   rebase, and only on a branch that has not been shared, or with the user's explicit
   agreement to force-push.
 - Re-run the project's own checks afterwards (lint, typecheck, formatter, tests), and
-  `audit.py` again to confirm the count dropped.
+  `audit.py` again. Done means it reports nothing outside the recorded exceptions; list
+  any violation that remains, with the reason.
 
 ## Example
 
