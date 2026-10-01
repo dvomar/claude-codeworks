@@ -141,19 +141,28 @@ Stejná jako fáze 1: česky, identifikátory anglicky, `[[wikilink]]` uvnitř v
 
 ## Fáze E — Kontrola (poslední krok, nepřeskakuj)
 
-Stejný link-check jako fáze 1 — všechny wikilinky musí vést na existující noty (pozor na tabulkový escape `\|`):
+Stejný link-check jako fáze 1 — všechny wikilinky musí vést na existující noty a odkazovaný nadpis musí
+existovat (tabulkový escape `\|` se odstraňuje, `[[...]]` v kódu se ignoruje, `[[#Nadpis]]` míří do téže noty):
 
 ```bash
 python3 - <<'EOF'
 import os, re, glob
 ROOT = "<vault>/<Projekt>"
 files = glob.glob(os.path.join(ROOT, "**", "*.md"), recursive=True)
-names = {os.path.splitext(os.path.basename(f))[0] for f in files}
-broken = [(os.path.basename(f), t)
-          for f in files
-          for l in re.findall(r'\[\[([^\]|#]+)', open(f, encoding="utf-8").read())
-          for t in [l.strip().rstrip('\\').strip()]
-          if t not in names]
+def body(f):
+    text = open(f, encoding="utf-8").read()
+    return re.sub(r"`[^`\n]*`", "", re.sub(r"```.*?```", "", text, flags=re.S))
+notes = {os.path.splitext(os.path.basename(f))[0]: body(f) for f in files}
+def headings(text):
+    return {re.sub(r"^#+\s+", "", l).strip() for l in text.splitlines() if re.match(r"#+\s", l)}
+broken = []
+for name, text in notes.items():
+    for raw in re.findall(r"\[\[(.+?)\]\]", text):
+        target, _, anchor = re.split(r"\\?\|", raw)[0].partition("#")
+        target = target.strip().rstrip("\\").strip() or name
+        anchor = anchor.split("#")[-1].strip()
+        if target not in notes or (anchor and not anchor.startswith("^") and anchor not in headings(notes[target])):
+            broken.append((name, raw))
 print(f"not: {len(files)}")
 print("ROZBITÉ:", broken or "žádné")
 EOF

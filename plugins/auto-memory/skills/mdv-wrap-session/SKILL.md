@@ -126,18 +126,30 @@ A defect you can't reproduce or point at is a hunch. Write it as an open questio
 
 #### Finally
 
-Validate the wikilinks (a broken `[[link]]` in a fresh vault is invisible until someone clicks it):
+Validate the wikilinks (a broken `[[link]]` in a fresh vault is invisible until someone clicks it). The check
+skips `[[...]]` inside code (log excerpts, JSON), resolves `[[#Heading]]` against the note itself and checks
+that a linked heading exists:
 
 ```bash
 python3 - <<'EOF'
 import os, re, glob
 ROOT = "<vault>/<Project>"
 files = glob.glob(os.path.join(ROOT, "**", "*.md"), recursive=True)
-names = {os.path.splitext(os.path.basename(f))[0] for f in files}
-broken = [(os.path.basename(f), re.split(r'\\?\||#', raw)[0].strip())
-          for f in files
-          for raw in re.findall(r'\[\[(.+?)\]\]', open(f, encoding="utf-8").read())
-          if re.split(r'\\?\||#', raw)[0].strip() not in names]
+def body(f):
+    # [[...]] inside fenced or inline code is text, not a link (log excerpts, JSON).
+    text = open(f, encoding="utf-8").read()
+    return re.sub(r"`[^`\n]*`", "", re.sub(r"```.*?```", "", text, flags=re.S))
+notes = {os.path.splitext(os.path.basename(f))[0]: body(f) for f in files}
+def headings(text):
+    return {re.sub(r"^#+\s+", "", l).strip() for l in text.splitlines() if re.match(r"#+\s", l)}
+broken = []
+for name, text in notes.items():
+    for raw in re.findall(r"\[\[(.+?)\]\]", text):
+        target, _, anchor = re.split(r"\\?\|", raw)[0].partition("#")  # drop the alias; tables escape it as \|
+        target = target.strip().rstrip("\\").strip() or name             # [[#Heading]] points into this note
+        anchor = anchor.split("#")[-1].strip()                           # [[Note#H1#H2]] names the last heading
+        if target not in notes or (anchor and not anchor.startswith("^") and anchor not in headings(notes[target])):
+            broken.append((name, raw))
 print(f"notes: {len(files)} | broken: {broken or 'none'}")
 EOF
 ```
