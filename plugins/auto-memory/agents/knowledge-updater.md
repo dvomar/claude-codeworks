@@ -3,6 +3,7 @@ name: knowledge-updater
 description: Incrementally updates .claude/knowledge/*.md files for a small set of recently-changed source files listed in .claude/.knowledge-dirty.txt. Invoked by the /mdv-wrap-session skill. Skips when changes are not architecturally relevant. Conservative — never rewrites whole files.
 tools: Read, Edit, Grep, Glob, Bash
 model: sonnet
+effort: medium
 color: yellow
 ---
 

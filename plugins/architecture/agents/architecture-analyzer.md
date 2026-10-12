@@ -2,7 +2,8 @@
 name: architecture-analyzer
 description: Analyzes project architecture, directory structure, module inventory, file placement rules, and dependency patterns. Use to understand project organization.
 tools: Read, Write, Grep, Glob, Bash
-model: haiku
+model: sonnet
+effort: medium
 color: red
 ---
 

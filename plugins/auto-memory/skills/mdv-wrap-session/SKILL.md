@@ -109,6 +109,7 @@ Scan `Nálezy/` for notes with `status: open` whose subject was touched this ses
 - add `fixed: <commit-sha>` (and the date) to the frontmatter
 - tick the `Hotovo, když` checkboxes that are genuinely met — **not the ones that aren't.** A defect fixed in code but unverified on hardware is not done; say so in the note rather than ticking the box.
 - update the row in `Nálezy/_Nálezy.md`
+- move the note into `Nálezy/Vyřešené/` (create the folder with the first one). `Nálezy/` itself holds only unfinished findings; a note that is fixed in code but still unverified keeps `status: open` and stays where it is.
 
 If the commit doesn't exist yet (wrap-session usually runs after committing, but not always), say so and use the branch name — don't invent a sha.
 
@@ -118,7 +119,7 @@ If the commit doesn't exist yet (wrap-session usually runs after committing, but
 
 Bugs are mostly found *while working*, not during audits. Anything that surfaced this session and is a defect — "this returns BUSY every time", "this guard never fires", "the docs describe a module that doesn't exist" — gets a new note in `Nálezy/`, in the format `/mdv-obsidian-project-scope` defines:
 
-- frontmatter: `id` (next free number), `type` (bug/gap/drift), `severity` (by cost of failure, not effort), `status: open`, `area` (`[[Sekce note]]`), `evidence` (`file:line` — no evidence, no note), `source` (where it came from)
+- frontmatter: `id` (next free number — closed findings live in `Nálezy/Vyřešené/`, so count those too), `type` (bug/gap/drift), `severity` (by cost of failure, not effort), `status: open`, `area` (`[[Sekce note]]`), `evidence` (`file:line` — no evidence, no note), `source` (where it came from)
 - body: **what's wrong → how it shows up in production → what to do about it → done when** (checkboxes)
 - add a row to `Nálezy/_Nálezy.md`
 

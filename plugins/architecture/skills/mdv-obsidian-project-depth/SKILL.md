@@ -110,7 +110,7 @@ Struktura (vedle výstupu fáze 1, ne místo něj):
 <Vault>/<Projekt>/
 ├── <Projekt>.md            ← MOC z fáze 1: přidej odkaz na [[_Fáze 2]]
 ├── Sekce/                  ← z fáze 1, neměň
-├── Nálezy/                 ← z fáze 1; přidej nové nálezy z fáze 2, aktualizuj přeřazené
+├── Nálezy/                 ← z fáze 1; přidej nové nálezy z fáze 2, aktualizuj přeřazené (uzavřené leží v Nálezy/Vyřešené/)
 └── Fáze 2/
     ├── _Fáze 2.md          ← index: seznam toků + co fáze 2 změnila na prioritách
     └── Tok <název>.md      ← jedna nota = jeden tok/kotva

@@ -7,7 +7,7 @@ user-invocable: true
 
 # Review a merge or pull request
 
-Eight steps. Only steps 1, 2 and 8 know which forge is in play; everything between them
+Nine steps, 0 to 8. Only steps 0, 1, 2 and 8 know which forge is in play; everything between them
 is the same review either way, which is why this is one skill and not two.
 
 ## Step 0: Detect the forge
@@ -67,8 +67,9 @@ For each changed file, `Glob` and `Grep` for its siblings — the other controll
 other services, the other screens. Most real review findings are inconsistencies, and an
 inconsistency is invisible without the thing it is inconsistent with.
 
-**Large requests:** over 10 changed files, do this only for files that raised a CRITICAL
-or IMPORTANT finding in Pass 1. At 10 or fewer, do it for all of them.
+**Large requests:** over 10 changed files, run Pass 1 (Step 6) first and do this only for
+the files that raised a CRITICAL or IMPORTANT finding in it. At 10 or fewer, do it for
+all of them before the passes.
 
 ## Step 6: The three passes
 

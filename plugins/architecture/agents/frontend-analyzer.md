@@ -3,6 +3,7 @@ name: frontend-analyzer
 description: Analyzes client-side patterns - components, styling, state, forms, routing, i18n, a11y, performance. Use to understand frontend conventions.
 tools: Read, Write, Grep, Glob, Bash
 model: sonnet
+effort: medium
 color: cyan
 ---
 

@@ -88,7 +88,7 @@ Self-reviews are performed inline by each agent (no separate review files). The 
 - Pass 1: Completeness · Pass 2: Convention compliance · Pass 3: Feasibility
 
 ### Gate 3: Planning (task-planner)
-- Dependencies identified · sub-tasks 15-60 min · verification checklists included
+- Dependencies identified · each sub-task decision-free (exact names, signatures, `path:line` reference, error behavior) · verification checklists included
 
 ### Gate 4: Implementation (implementer)
 - Per sub-task: correctness + conventions + KISS self-check, build passes
@@ -123,7 +123,7 @@ When `/mdv-code-implement-feature [description]` is invoked, you (the orchestrat
    - c. Write the confirmed requirements to `clarifications.md`.
    - Do NOT expect a subagent to run interactive Q&A — subagents run to completion and cannot pause for the user.
 3. Call `Agent` with `subagent_type: "spec-writer"`, pointing at `clarifications.md`. Wait for `task-spec.md`.
-4. Call `Agent` with `subagent_type: "task-planner"`, pointing at `task-spec.md`. Wait for `task-breakdown.md`.
+4. Call `Agent` with `subagent_type: "task-planner"`, pointing at `task-spec.md`. Wait for `task-breakdown.md`. If its report lists open questions, put them to the user, record the answers in `clarifications.md` and re-run the planner before going on.
 5. Record a baseline first: `git status --porcelain --untracked-files=all` and one test run. It is how you later tell the implementer's changes from the user's own work, and new failures from ones that were already red. Then call `Agent` with `subagent_type: "implementer"` **ONCE**, passing the breakdown file. It loops through ALL sub-tasks in order in a single context and returns when every sub-task is `[x]` and the build passes, or earlier with a blocker it could not fix. (For an unusually large breakdown — more than ~8 sub-tasks — you may split into sequential batches, but NEVER run sub-tasks in parallel: later ones depend on earlier ones.)
 6. **REVIEW gate:** the changed files are the entries `git status --porcelain --untracked-files=all` shows now but not in the baseline, minus `.claude/tasks/`; a file that was already dirty counts only if the implementer's report names it. Re-run the build and tests yourself — the report is a claim, the working tree is the evidence. Run the `/mdv-code-review-feature` skill on those files. Address findings and any blocker (re-invoke `implementer` or fix those files directly) until the review is clean and nothing is red that was green in the baseline. Stop and ask the user when a blocker or finding needs a decision that `clarifications.md` and the code don't settle, or a new test failure has a cause you can't explain; otherwise keep going.
 7. **CLEANUP:** report a short summary of what was implemented, then ask the user whether to delete `.claude/tasks/[feature-name]/` (default: delete). You own this step — the implementer does not delete scaffolding.

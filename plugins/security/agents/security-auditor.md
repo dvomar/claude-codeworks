@@ -3,6 +3,7 @@ name: security-auditor
 description: Focused security scanner for a single focus area (injection, auth, secrets, crypto, deps, realtime-transport, hardware-io, etc.). Invoked in parallel by the security-audit skill. Returns a JSON array of findings — no prose, no reports. Language- and stack-agnostic. Use only via the security-audit skill orchestration.
 tools: Read, Grep, Glob, Bash
 model: sonnet
+effort: high
 color: red
 ---
 

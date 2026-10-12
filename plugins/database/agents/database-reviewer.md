@@ -3,6 +3,7 @@ name: database-reviewer
 description: Reviews database schemas, queries, migrations, and ORM usage for performance, security, and correctness.
 tools: Read, Bash, Grep, Glob
 model: opus
+effort: high
 color: purple
 ---
 

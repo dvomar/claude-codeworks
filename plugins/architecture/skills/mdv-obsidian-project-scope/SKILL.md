@@ -108,9 +108,11 @@ Struktura (drž ji, ať jsou vaulty napříč projekty stejné):
 ├── Sekce/
 │   ├── <Schopnost 1>.md
 │   └── <Schopnost 2>.md
-└── Nálezy/                     ← vždy, i kdyby byl prázdný
+└── Nálezy/                     ← vždy, i kdyby byl prázdný; jen nedokončené nálezy
     ├── _Nálezy.md              ← index s tabulkou
-    └── <PRE>-001 <název>.md    ← jedna nota = jeden defekt
+    ├── <PRE>-001 <název>.md    ← jedna nota = jeden defekt
+    └── Vyřešené/               ← uzavřené nálezy; vzniká s prvním uzavřeným
+        └── <PRE>-002 <název>.md
 ```
 
 ### MOC (`<Projekt>.md`)
@@ -183,6 +185,8 @@ Tělo vždy ve čtyřech krocích — poslední je ten, kvůli kterému to celé
 2. **Jak se to projeví** — v provozu, jazykem důsledku. Ne „metoda vrací null", ale „zákazníkovi se strhnou peníze a nikdo je nestornuje".
 3. **Co s tím** — návrh, včetně varianty „smazat to". Když jsou legitimní cesty dvě, nabídni obě a řekni, že je potřeba rozhodnout.
 4. **Hotovo, když** — zaškrtávací akceptační kritéria. Z téhle sekce má jít udělat issue bez přemýšlení.
+
+**Uzavřený nález se stěhuje.** Ve chvíli, kdy nota dostane `status: done`, přesuň ji do `Nálezy/Vyřešené/` a její řádek v indexu do tabulky vyřešených; když se nález znovu otevře, vrať ji zpět. V `Nálezy/` tak zůstává jen to, na čem se ještě má pracovat — register s desítkami not se jinak nedá číst. Nové nálezy zakládej vždy do `Nálezy/`. Na nálezy odkazuj **názvem noty** (`[[<PRE>-001 <název>]]`), nikdy cestou: odkaz s cestou přesun rozbije. Když v existujícím vaultu hledáš nález nebo další volné číslo, dívej se do obou složek.
 
 Index `Nálezy/_Nálezy.md`: tabulky po typu (chyby / nedodělky / drift), sloupce ID · nález · závažnost · oblast. Nahoře callout **odkud to je a že to nebyl cílený audit** — nálezy vznikly jako vedlejší produkt mapování, takže seznam není úplný a nesmí se tak tvářit.
 

@@ -3,6 +3,7 @@ name: architect
 description: Software architect focused on simplicity. Makes design decisions, evaluates trade-offs, and prevents over-engineering.
 tools: Read, Grep, Glob
 model: opus
+effort: high
 color: blue
 ---
 

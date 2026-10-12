@@ -3,6 +3,7 @@ name: conventions-analyzer
 description: Analyzes cross-cutting coding conventions - naming, formatting, imports, member order, type definitions, testing. Use to maintain code consistency.
 tools: Read, Write, Grep, Glob, Bash
 model: sonnet
+effort: medium
 color: purple
 ---
 
